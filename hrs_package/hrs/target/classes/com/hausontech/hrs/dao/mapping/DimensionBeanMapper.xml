@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hausontech.hrs.dao.IDimensionDao">
+  <resultMap id="BaseResultMap" type="com.hausontech.hrs.bean.DimensionBean">
+    <id column="DIMENSION_ID" jdbcType="DECIMAL" property="dimensionId" />
+    <result column="DIM_SEQ" jdbcType="DECIMAL" property="dimSeq" />
+    <result column="DIMENSION_CODE" jdbcType="VARCHAR" property="dimensionCode" />
+    <result column="DIMENSION_NAME" jdbcType="VARCHAR" property="dimensionName" />
+    <result column="DIM_SEGMENT" jdbcType="VARCHAR" property="dimSegment" />
+    <result column="FIN_ACCOUNT_FLAG" jdbcType="VARCHAR" property="finAccountFlag" />
+    <result column="CREATION_DATE" jdbcType="TIMESTAMP" property="creationDate" />
+    <result column="CREATED_BY" jdbcType="VARCHAR" property="createdBy" />
+    <result column="LAST_UPDATE_DATE" jdbcType="TIMESTAMP" property="lastUpdateDate" />
+    <result column="LAST_UPDATED_BY" jdbcType="VARCHAR" property="lastUpdatedBy" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    DIMENSION_ID, DIM_SEQ, DIMENSION_CODE, DIMENSION_NAME, DIM_SEGMENT, FIN_ACCOUNT_FLAG, CREATED_BY, CREATION_DATE, LAST_UPDATED_BY,LAST_UPDATE_DATE
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select <include refid="Base_Column_List" />
+    from HRS_CORE_DIMENSION
+    where DIMENSION_ID = #{dimensionId,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectByCondition" resultMap="BaseResultMap" parameterType="com.hausontech.hrs.bean.DimensionBean" >
+    select <include refid="Base_Column_List" />
+    from HRS_CORE_DIMENSION
+    <where>
+      <if test="dimensionId != null">
+        DIMENSION_ID = #{dimensionId,jdbcType=INTEGER}
+      </if>
+      <if test="dimensionCode != null">
+        AND DIMENSION_CODE = #{dimensionCode,jdbcType=VARCHAR}
+      </if>
+      <if test="dimensionName != null">
+        AND DIMENSION_NAME = #{dimensionName,jdbcType=VARCHAR}
+      </if>
+      <if test="dimSegment != null">
+        AND DIM_SEGMENT = #{dimSegment,jdbcType=VARCHAR}
+      </if> 
+    </where>  
+  </select>
+  
+  <insert id="insert" parameterType="com.hausontech.hrs.bean.DimensionBean">
+      <selectKey keyProperty="dimensionId" resultType="long" order="BEFORE">
+          select HRS_CORE_DIMENSION_S from DUAL
+      </selectKey>
+  
+    insert into HRS_CORE_DIMENSION (DIMENSION_ID, DIM_SEQ, DIMENSION_CODE, 
+      DIMENSION_NAME, DIM_SEGMENT, FIN_ACCOUNT_FLAG, 
+      CREATION_DATE, CREATED_BY, LAST_UPDATE_DATE, 
+      LAST_UPDATED_BY)
+    values (#{dimensionId,jdbcType=DECIMAL}, #{dimSeq,jdbcType=DECIMAL}, #{dimensionCode,jdbcType=VARCHAR}, 
+      #{dimensionName,jdbcType=VARCHAR}, #{dimSegment,jdbcType=VARCHAR}, #{finAccountFlag,jdbcType=VARCHAR}, 
+      #{creationDate,jdbcType=TIMESTAMP}, #{createdBy,jdbcType=VARCHAR}, #{lastUpdateDate,jdbcType=TIMESTAMP}, 
+      #{lastUpdatedBy,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hausontech.hrs.bean.DimensionBean">
+    <selectKey keyProperty="dimensionId" resultType="long" order="BEFORE">
+        select HRS_CORE_DIMENSION_S from DUAL
+    </selectKey>
+    insert into HRS_CORE_DIMENSION
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="dimensionId != null">
+        DIMENSION_ID,
+      </if>
+      <if test="dimSeq != null">
+        DIM_SEQ,
+      </if>
+      <if test="dimensionCode != null">
+        DIMENSION_CODE,
+      </if>
+      <if test="dimensionName != null">
+        DIMENSION_NAME,
+      </if>
+      <if test="dimSegment != null">
+        DIM_SEGMENT,
+      </if>
+      <if test="finAccountFlag != null">
+        FIN_ACCOUNT_FLAG,
+      </if>
+      <if test="creationDate != null">
+        CREATION_DATE,
+      </if>
+      <if test="createdBy != null">
+        CREATED_BY,
+      </if>
+      <if test="lastUpdateDate != null">
+        LAST_UPDATE_DATE,
+      </if>
+      <if test="lastUpdatedBy != null">
+        LAST_UPDATED_BY,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="dimensionId != null">
+        #{dimensionId,jdbcType=DECIMAL},
+      </if>
+      <if test="dimSeq != null">
+        #{dimSeq,jdbcType=DECIMAL},
+      </if>
+      <if test="dimensionCode != null">
+        #{dimensionCode,jdbcType=VARCHAR},
+      </if>
+      <if test="dimensionName != null">
+        #{dimensionName,jdbcType=VARCHAR},
+      </if>
+      <if test="dimSegment != null">
+        #{dimSegment,jdbcType=VARCHAR},
+      </if>
+      <if test="finAccountFlag != null">
+        #{finAccountFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="creationDate != null">
+        #{creationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null">
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateDate != null">
+        #{lastUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdatedBy != null">
+        #{lastUpdatedBy,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.hausontech.hrs.bean.DimensionBean" >
+    update HRS_CORE_DIMENSION
+    <set >
+      <if test="dimSeq != null" >
+        DIM_SEQ = #{dimSeq,jdbcType=DECIMAL},
+      </if>
+      <if test="dimensionCode != null" >
+        DIMENSION_CODE = #{dimensionCode,jdbcType=VARCHAR},
+      </if>
+      <if test="dimensionName != null" >
+        DIMENSION_NAME = #{dimensionName,jdbcType=VARCHAR},
+      </if>
+      <if test="dimSegment != null" >
+        DIM_SEGMENT = #{dimSegment,jdbcType=VARCHAR},
+      </if>
+      <if test="finAccountFlag != null" >
+        FIN_ACCOUNT_FLAG = #{finAccountFlag,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where DIMENSION_ID = #{dimensionId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hausontech.hrs.bean.DimensionBean" >
+    update HRS_CORE_DIMENSION
+    set DIM_SEQ = #{dimSeq,jdbcType=DECIMAL},
+        DIMENSION_CODE = #{dimensionCode,jdbcType=VARCHAR},
+        DIMENSION_NAME = #{dimensionName,jdbcType=VARCHAR},
+        DIM_SEGMENT = #{dimSegment,jdbcType=VARCHAR},
+        FIN_ACCOUNT_FLAG = #{finAccountFlag,jdbcType=VARCHAR}
+    where DIMENSION_ID = #{dimensionId,jdbcType=INTEGER}
+  </update>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">  
+        DELETE FROM HRS_CORE_DIMENSION
+        WHERE DIMENSION_ID = #{dimensionId,jdbcType=INTEGER}
+  </delete>
+
+</mapper>
