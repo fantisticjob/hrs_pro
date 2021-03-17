@@ -1,0 +1,496 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper
+	namespace="com.hausontech.hrs.daoImpl.dimensionManager.mapper.DimensionMapper">
+	<resultMap id="BaseResultMap"
+		type="com.hausontech.hrs.bean.dimensionManager.DimensionBean">
+		<result column="DIMENSION_ID" property="dimensionId" jdbcType="DECIMAL" />
+		<result column="DIM_SEQ" property="dimSeq" jdbcType="DECIMAL" />
+		<result column="DIMENSION_CODE" property="dimensionCode"
+			jdbcType="VARCHAR" />
+		<result column="DIMENSION_NAME" property="dimensionName"
+			jdbcType="VARCHAR" />
+		<result column="DIM_SEGMENT" property="dimSegment" jdbcType="VARCHAR" />
+		<result column="FIN_ACCOUNT_FLAG" property="finAccountFlag"
+			jdbcType="VARCHAR" />
+		<result column="CREATION_DATE" property="creationDate" jdbcType="TIMESTAMP" 
+			/> <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" /> 
+			<result column="LAST_UPDATE_DATE" property="lastUpdateDate" jdbcType="TIMESTAMP" 
+			/> <result column="LAST_UPDATED_BY" property="lastUpdatedBy" jdbcType="VARCHAR" 
+			/> 
+	</resultMap>
+
+	<resultMap id="DimensionValueResultMap"
+		type="com.hausontech.hrs.bean.dimensionManager.DimensionValueBean">
+		<result column="DIM_VALUE_ID" property="dimensionValueId"
+			jdbcType="DECIMAL" />
+		<result column="DIMENSION_ID" property="dimensionId" jdbcType="DECIMAL" />
+		<result column="DIM_VALUE" property="dimensionValue" jdbcType="VARCHAR" />
+		<result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+		<result column="ACCOUNT_TYPE" property="accountType" jdbcType="VARCHAR" />
+		<result column="SUMMARY_FLAG" property="summaryFlag" jdbcType="VARCHAR" />
+		<result column="DIM_LEVEL" property="dimensionLevel" jdbcType="VARCHAR" />
+		<result column="START_DATE" property="startDate" jdbcType="TIMESTAMP" />
+		<result column="END_DATE" property="endDate" jdbcType="TIMESTAMP" />
+		<result column="ATTRIBUTE1" property="attribute1" jdbcType="VARCHAR" />
+		<result column="ATTRIBUTE2" property="attribute2" jdbcType="VARCHAR" />
+		<result column="ATTRIBUTE3" property="attribute3" jdbcType="VARCHAR" />
+		<result column="ATTRIBUTE4" property="attribute4" jdbcType="VARCHAR" />
+		<result column="ATTRIBUTE5" property="attribute5" jdbcType="VARCHAR" />
+		<result column="ATTRIBUTE6" property="attribute6" jdbcType="VARCHAR" />
+		<result column="ATTRIBUTE7" property="attribute7" jdbcType="VARCHAR" />
+		<result column="ATTRIBUTE8" property="attribute8" jdbcType="VARCHAR" />
+		<result column="ATTRIBUTE9" property="attribute9" jdbcType="VARCHAR" />
+		<result column="ATTRIBUTE10" property="attribute10" jdbcType="VARCHAR" />
+		<result column="SOURCE" property="source" jdbcType="VARCHAR" />
+		<result column="CREATION_DATE" property="creationDate"
+			jdbcType="TIMESTAMP" />
+		<result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+		<result column="LAST_UPDATE_DATE" property="lastUpdateDate"
+			jdbcType="TIMESTAMP" />
+		<result column="LAST_UPDATED_BY" property="lastUpdatedBy"
+			jdbcType="VARCHAR" />
+	</resultMap>
+
+	<resultMap id="dimensionSonValueResultMap"
+		type="com.hausontech.hrs.bean.dimensionManager.DimensionSonValueBean">
+		<result column="HIERARCHY_ID" property="hierarchyId" jdbcType="DECIMAL" />
+		<result column="DIM_VALUE" property="dimValue" jdbcType="VARCHAR" />
+		<result column="DIMENSION_ID" property="dimensionId" jdbcType="DECIMAL" />
+		<result column="CHILD_DIM_VALUE_LOW" property="childDimValueLow"
+			jdbcType="VARCHAR" />
+		<result column="CHILD_DIM_VALUE_HIGH" property="childDimValueHigh"
+			jdbcType="VARCHAR" />
+		<result column="SOURCE" property="source" jdbcType="VARCHAR" />
+		<result column="CREATION_DATE" property="creationDate"
+			jdbcType="TIMESTAMP" />
+		<result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+		<result column="LAST_UPDATE_DATE" property="lastUpdateDate"
+			jdbcType="TIMESTAMP" />
+		<result column="LAST_UPDATED_BY" property="lastUpdatedBy"
+			jdbcType="VARCHAR" />
+	</resultMap>
+	<!-- 分页前部分sql -->
+	<sql id="pageBefore">
+		SELECT * FROM ( select * from (
+	</sql>
+	<sql id="pageAfter">
+		) innerA where 1=1
+		<if test="rowStartIndex != 0 and rowCount != 0">
+		 	and innerA.row_number &gt;=${rowStartIndex}
+		</if>
+		) outerB where 1=1
+		<if test="rowStartIndex != 0 and rowCount != 0">
+		   and rownum &lt;= ${rowCount}
+		</if>
+	</sql>
+
+	<!-- 维度条件查询 -->
+	<sql id="DIMENSION_CONDITION">
+		<choose>
+			<when test=" dimensionId !=0 ">
+				and DIMENSION_ID=#{dimensionId}
+			</when>
+			<otherwise>
+				<if test="dimensionCode != null and dimensionCode !='' ">
+					and DIMENSION_CODE like '%' || #{dimensionCode}
+					||
+					'%'
+				</if>
+				<if test="dimensionName != null and dimensionName !=''">
+					and DIMENSION_NAME like '%' || #{dimensionName}
+					||
+					'%'
+				</if>
+			</otherwise>
+		</choose>
+	</sql>
+
+	
+
+	<!-- 维值条件查询条件 -->
+	<sql id="DIM_VALUE_CONDITION">
+		<choose>
+			<when test=" dimensionValueId !=0 ">
+				and DIM_VALUE_ID = #{dimensionValueId}
+			</when>
+			<!-- <when test="isSecurityEnabled=true and userName!=null and userName!=''">
+				and EXISTS (SELECT 1 FROM HRS_CORE_USER_AUTHORITY SEC
+				WHERE 1 = 1
+				AND SEC.USER_NAME =#{userName}
+				AND DIM_VAL.DIM_VALUE
+				BETWEEN
+				DECODE(SEC.COMPANY_CODE_FROM,'ALL','0',SEC.COMPANY_CODE_FROM) AND
+				NVL(SEC.COMPANY_CODE_TO, 'ZZZ'))
+			</when> -->
+			<otherwise>
+				<if test="dimensionId != 0 ">
+					and DIMENSION_ID=#{dimensionId}
+				</if>
+				<if test="null != dimensionValue  and dimensionValue !=''">
+					and DIM_VALUE like ('%' || #{dimensionValue} ||
+					'%')
+				</if>
+				<if test="null != summaryFlag and summaryFlag !=''">
+					and SUMMARY_FLAG = #{summaryFlag}
+				</if>
+				<if test="null != description and description !=''">
+					and DESCRIPTION like ('%' || #{description} ||
+					'%')
+				</if>
+			</otherwise>
+		</choose>
+	</sql>
+
+	
+	<!-- 维值子值条件查询条件 -->
+	<sql id="DIM_SON_VALUE_CONDITION">
+		<choose>
+			<when test=" hierarchyId !=0 ">
+				and HIERARCHY_ID = #{hierarchyId}
+			</when>
+			<otherwise>
+				<if test="dimensionId != 0 ">
+					and DIMENSION_ID=#{dimensionId}
+				</if>
+				<if test="null != dimValue  and dimValue !=''">
+					and DIM_VALUE = #{dimValue}
+				</if>
+				<if test="null != childDimValueLow and childDimValueLow !=''">
+					and CHILD_DIM_VALUE_LOW = #{childDimValueLow}
+				</if>
+				<if test="null != childDimValueHigh and childDimValueHigh !=''">
+					and CHILD_DIM_VALUE_HIGH = #{childDimValueHigh}
+				</if>
+			</otherwise>
+		</choose>
+	</sql>
+
+
+	<!-- 插入维度段 -->
+	<insert id="insert"
+		parameterType="com.hausontech.hrs.bean.dimensionManager.DimensionBean">
+		insert into HRS_CORE_DIMENSION (DIMENSION_ID, DIM_SEQ,
+		DIMENSION_CODE,
+		DIMENSION_NAME, DIM_SEGMENT, FIN_ACCOUNT_FLAG,
+		CREATION_DATE, CREATED_BY, LAST_UPDATE_DATE,
+		LAST_UPDATED_BY)
+		values
+		(#{dimensionId,jdbcType=DECIMAL}, #{dimSeq,jdbcType=DECIMAL},
+		#{dimensionCode,jdbcType=VARCHAR},
+		#{dimensionName,jdbcType=VARCHAR},
+		#{dimSegment,jdbcType=VARCHAR}, #{finAccountFlag,jdbcType=VARCHAR},
+		#{creationDate,jdbcType=TIMESTAMP}, #{createdBy,jdbcType=VARCHAR},
+		#{lastUpdateDate,jdbcType=TIMESTAMP},
+		#{lastUpdatedBy,jdbcType=VARCHAR})
+	</insert>
+
+	<!-- 修改维度段 -->
+	<update id="updateByPrimaryKey"
+		parameterType="com.hausontech.hrs.bean.dimensionManager.DimensionBean">
+		update HRS_CORE_DIMENSION
+		set
+		DIM_SEQ
+		=#{dimSeq,jdbcType=DECIMAL},
+		DIMENSION_CODE
+		=#{dimensionCode,jdbcType=VARCHAR},
+		DIMENSION_NAME
+		=#{dimensionName,jdbcType=VARCHAR},
+		DIM_SEGMENT
+		=#{dimSegment,jdbcType=VARCHAR},
+		FIN_ACCOUNT_FLAG
+		=#{finAccountFlag,jdbcType=VARCHAR},
+		LAST_UPDATE_DATE
+		=#{lastUpdateDate,jdbcType=TIMESTAMP},
+		LAST_UPDATED_BY
+		=#{lastUpdatedBy,jdbcType=VARCHAR}
+		where DIMENSION_ID =
+		#{dimensionId,jdbcType=DECIMAL}
+	</update>
+
+	<!-- 根据dimensionCode和dimensionName查询 -->
+	<select id="selectByCondition"
+		parameterType="com.hausontech.hrs.bean.dimensionManager.DimensionBean"
+		resultMap="BaseResultMap">
+		<include refid="pageBefore" />
+		SELECT HRS_CORE_DIMENSION.*
+		
+		<if test="rowStartIndex != 0 and rowCount != 0">
+			, ROW_NUMBER() OVER (ORDER BY
+			DIM_SEQ) AS row_number
+		</if>
+		FROM HRS_CORE_DIMENSION
+		where 1=1
+		<include refid="DIMENSION_CONDITION"/>
+		<include refid="pageAfter"/>
+	</select>
+
+	<!-- 根据dimensionCode和dimensionName查询符合条件的记录总条数 -->
+	<select id="countByCondition" resultType="java.lang.Integer"
+		parameterType="com.hausontech.hrs.bean.dimensionManager.DimensionBean">
+		select count(1) from HRS_CORE_DIMENSION
+		where 1=1
+		<include refid="DIMENSION_CONDITION"/>	
+		
+	</select>
+
+	<!-- 根据dimensionId查询维度段 -->
+	<select id="selectByPrimaryKey" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		SELECT DIMENSION_ID, DIM_SEQ,
+		DIMENSION_CODE,DIMENSION_NAME,DIM_SEGMENT,FIN_ACCOUNT_FLAG,CREATION_DATE,CREATED_BY,LAST_UPDATE_DATE,LAST_UPDATED_BY
+		FROM HRS_CORE_DIMENSION WHERE DIMENSION_ID=#{key}
+	</select>
+
+	<!-- 录入(新增)维值 -->
+	<insert id="saveDimensionValueRecord"
+		parameterType="com.hausontech.hrs.bean.dimensionManager.DimensionValueBean">
+		insert into HRS_CORE_DIMENSION_VALUE (DIM_VALUE_ID,
+		DIMENSION_ID, DIM_VALUE,
+		DESCRIPTION, ACCOUNT_TYPE, SUMMARY_FLAG,
+		DIM_LEVEL, START_DATE, END_DATE,
+		ATTRIBUTE1, ATTRIBUTE2, ATTRIBUTE3,
+		ATTRIBUTE4, ATTRIBUTE5, ATTRIBUTE6,
+		ATTRIBUTE7, ATTRIBUTE8, ATTRIBUTE9,
+		ATTRIBUTE10, SOURCE, CREATION_DATE,
+		CREATED_BY, LAST_UPDATE_DATE,
+		LAST_UPDATED_BY
+		)
+		values (#{dimensionValueId,jdbcType=DECIMAL},
+		#{dimensionId,jdbcType=DECIMAL},
+		#{dimensionValue,jdbcType=VARCHAR},
+		#{description,jdbcType=VARCHAR}, #{accountType,jdbcType=VARCHAR},
+		#{summaryFlag,jdbcType=VARCHAR},
+		#{dimensionLevel,jdbcType=VARCHAR},
+		#{startDate,jdbcType=TIMESTAMP},
+		#{endDate,jdbcType=TIMESTAMP},
+		#{attribute1,jdbcType=VARCHAR}, #{attribute2,jdbcType=VARCHAR},
+		#{attribute3,jdbcType=VARCHAR},
+		#{attribute4,jdbcType=VARCHAR},
+		#{attribute5,jdbcType=VARCHAR},
+		#{attribute6,jdbcType=VARCHAR},
+		#{attribute7,jdbcType=VARCHAR}, #{attribute8,jdbcType=VARCHAR},
+		#{attribute9,jdbcType=VARCHAR},
+		#{attribute10,jdbcType=VARCHAR},
+		#{source,jdbcType=VARCHAR},
+		#{creationDate,jdbcType=TIMESTAMP},
+		#{createdBy,jdbcType=VARCHAR}, #{lastUpdateDate,jdbcType=TIMESTAMP},
+		#{lastUpdatedBy,jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<!-- 更新维值 -->
+	<update id="updateDimensionValueRecord"
+		parameterType="com.hausontech.hrs.bean.dimensionManager.DimensionValueBean">
+		UPDATE HRS_CORE_DIMENSION_VALUE SET
+		DIMENSION_ID
+		=#{dimensionId,jdbcType=DECIMAL},
+		DIM_VALUE
+		=#{dimensionValue,jdbcType=VARCHAR},
+		DESCRIPTION
+		=#{description,jdbcType=VARCHAR},
+		ACCOUNT_TYPE
+		=#{accountType,jdbcType=VARCHAR},
+		SUMMARY_FLAG
+		=#{summaryFlag,jdbcType=VARCHAR},
+		DIM_LEVEL
+		=#{dimensionLevel,jdbcType=VARCHAR},
+		SOURCE
+		=#{source,jdbcType=VARCHAR},
+		ATTRIBUTE1
+		=#{attribute1,jdbcType=VARCHAR},
+		ATTRIBUTE2
+		=#{attribute2,jdbcType=VARCHAR},
+		ATTRIBUTE3
+		=#{attribute3,jdbcType=VARCHAR},
+		ATTRIBUTE4
+		=#{attribute4,jdbcType=VARCHAR},
+		ATTRIBUTE5
+		=#{attribute5,jdbcType=VARCHAR},
+		ATTRIBUTE6
+		=#{attribute6,jdbcType=VARCHAR},
+		ATTRIBUTE7
+		=#{attribute7,jdbcType=VARCHAR},
+		ATTRIBUTE8
+		=#{attribute8,jdbcType=VARCHAR},
+		ATTRIBUTE9
+		=#{attribute9,jdbcType=VARCHAR},
+		ATTRIBUTE10
+		=#{attribute10,jdbcType=VARCHAR},
+		LAST_UPDATE_DATE
+		=#{lastUpdateDate,jdbcType=TIMESTAMP},
+		LAST_UPDATED_BY
+		=#{lastUpdatedBy,jdbcType=VARCHAR}
+		WHERE DIM_VALUE_ID =
+		#{dimensionValueId,jdbcType=DECIMAL}
+	</update>
+
+	<!-- 删除维值 -->
+	<delete id="deleteDimensionValueRecord"
+		parameterType="com.hausontech.hrs.bean.dimensionManager.DimensionValueBean">
+		DELETE HRS_CORE_DIMENSION_VALUE WHERE
+		DIM_VALUE_ID=#{dimensionValueId}
+	</delete>
+
+	<!-- 获取维值列表 -->
+	<select id="getDimensionValueListByCondition"
+		parameterType="com.hausontech.hrs.bean.dimensionManager.DimensionValueBean"
+		resultMap="DimensionValueResultMap">
+		<include refid="pageBefore" />
+		SELECT DIM_VAL.*, (DIM_VALUE || '-' || DESCRIPTION) AS DISP_VALUE
+		<if test="rowStartIndex != 0 and rowCount != 0">
+			, ROW_NUMBER() OVER (ORDER BY DIM_VALUE) AS row_number
+		</if>
+		FROM HRS_CORE_DIMENSION_VALUE DIM_VAL
+		where 1=1
+		<include refid="DIM_VALUE_CONDITION"/>
+		<include refid="pageAfter" />
+	</select>
+
+	<!-- 查询维值记录条数 -->
+	<select id="countByConditionDimensionValue"
+		parameterType="com.hausontech.hrs.bean.dimensionManager.DimensionValueBean"
+		resultType="java.lang.Integer">
+		select count(1) from HRS_CORE_DIMENSION_VALUE DIM_VAL
+		where 1=1
+		<include refid="DIM_VALUE_CONDITION" />
+	</select>
+
+	<!-- 根据维度ID和维值ID查询维值的子值 -->
+	<select id="selectDimensionValueBeanByPrimaryKey" parameterType="java.lang.Long"
+		resultMap="DimensionValueResultMap">
+		SELECT HRS_CORE_DIMENSION_VALUE.* FROM
+		HRS_CORE_DIMENSION_VALUE
+		WHERE DIMENSION_ID=#{parentkey}
+		AND
+		DIM_VALUE_ID=#{headkey}
+	</select>
+
+	<!-- 新增子值 -->
+	<insert id="saveDimensionSonValueRecord"
+		parameterType="com.hausontech.hrs.bean.dimensionManager.DimensionSonValueBean">
+		INSERT INTO HRS_CORE_DIM_VALUE_HIERARCHY(HIERARCHY_ID,
+		DIM_VALUE, DIMENSION_ID, CHILD_DIM_VALUE_LOW,
+		CHILD_DIM_VALUE_HIGH,SOURCE,CREATION_DATE,CREATED_BY,LAST_UPDATE_DATE,LAST_UPDATED_BY)
+		VALUES
+		(#{hierarchyId,jdbcType=DECIMAL},
+		#{dimValue,jdbcType=VARCHAR},
+		#{dimensionId,jdbcType=DECIMAL},
+		#{childDimValueLow,jdbcType=VARCHAR},
+		#{childDimValueHigh,jdbcType=VARCHAR}, #{source,jdbcType=VARCHAR},
+		#{creationDate,jdbcType=TIMESTAMP},
+		#{createdBy,jdbcType=VARCHAR},
+		#{lastUpdateDate,jdbcType=TIMESTAMP},
+		#{lastUpdatedBy,jdbcType=VARCHAR})
+	</insert>
+
+	<!-- -->
+	<update id="updateDimensionSonValueRecord"
+		parameterType="com.hausontech.hrs.bean.dimensionManager.DimensionSonValueBean">
+		UPDATE HRS_CORE_DIM_VALUE_HIERARCHY SET
+		DIM_VALUE = #{dimValue},<!-- NVL(#{dimValue}, 
+			DIM_VALUE), -->
+		DIMENSION_ID = #{dimensionId},<!-- NVL(#{dimensionId}, DIMENSION_ID), -->
+		CHILD_DIM_VALUE_LOW = #{childDimValueLow}, <!--NVL(#{childDimValueLow}, 
+			CHILD_DIM_VALUE_LOW), -->
+		CHILD_DIM_VALUE_HIGH = #{childDimValueHigh},<!-- NVL(#{childDimValueHigh}, 
+			CHILD_DIM_VALUE_HIGH), -->
+		LAST_UPDATE_DATE = #{lastUpdateDate},<!-- NVL(#{lastUpdateDate},LAST_UPDATE_DATE), -->
+		LAST_UPDATED_BY = #{lastUpdatedBy}<!-- NVL(#{lastUpdatedBy},LAST_UPDATED_BY) -->
+		WHERE HIERARCHY_ID = #{hierarchyId}
+	</update>
+
+	<!-- 查询维值的子值 -->
+	<select id="getDimensionSonValueListByCondition"
+		parameterType="com.hausontech.hrs.bean.dimensionManager.DimensionSonValueBean"
+		resultMap="dimensionSonValueResultMap">
+		<include refid="pageBefore"/>
+		SELECT HRS_CORE_DIM_VALUE_HIERARCHY.*
+			<if test="rowStartIndex != 0 and rowCount != 0">
+				, ROW_NUMBER() OVER
+				(ORDER BY CHILD_DIM_VALUE_LOW) AS row_number
+			</if>
+		FROM HRS_CORE_DIM_VALUE_HIERARCHY
+		where 1=1
+		<include refid="DIM_SON_VALUE_CONDITION" />
+		<include refid="pageAfter"/>
+	</select>
+
+	<!-- 查询子值记录条数 -->
+	<select id="countByDimensionSonValueBean"
+		parameterType="com.hausontech.hrs.bean.dimensionManager.DimensionSonValueBean"
+		resultType="java.lang.Integer">
+		select count(1) from HRS_CORE_DIM_VALUE_HIERARCHY innerA
+		where 1=1
+		<include refid="DIM_SON_VALUE_CONDITION" />
+	</select>
+
+	<sql id="LOOK_UP_VALUE_CONDITION">
+		<if test="lookUpType != null and lookUpType != '' ">
+			AND lookupType.Lookup_Type = #{lookUpType}
+		</if>
+		<if test="null != lookupValSearch  and lookupValSearch !=''">
+			AND lookupVal.LOOKUP_VALUE like ('%' || #{lookupValSearch}
+			||
+			'%')
+		</if>
+	</sql>
+
+	<!-- 查询检查头表 -->
+	<select id="getLookUpValueListAsDimension"
+		parameterType="com.hausontech.hrs.bean.reportSetting.ItemLookUpHeaderBean"
+		resultType="java.util.Map">
+		SELECT outerB.DIM_VALUE,outerB.DESCRIPTION,outerB.DISP_VALUE FROM (
+		select * from (
+		SELECT lookupVal.LOOKUP_VALUE AS
+		DIM_VALUE,
+		lookupVal.DESCRIPTION AS DESCRIPTION,
+		(lookupVal.LOOKUP_VALUE || '-' ||
+		lookupVal.DESCRIPTION) AS DISP_VALUE
+		<if test="rowStartIndex != 0 and rowCount != 0">
+			, ROW_NUMBER() OVER (ORDER BY 1) AS row_number
+		</if>
+		FROM HRS_CORE_LOOKUP_TYPE lookupType, HRS_CORE_LOOKUP_VALUE lookupVal
+		WHERE lookupType.Lookup_Type_Id = lookupVal.Lookup_Type_Id
+		<include refid="LOOK_UP_VALUE_CONDITION" />
+		<include refid="pageAfter"/>
+	</select>
+
+
+	<!-- 通过维度信息查询维度信息 -->
+	<select id="getDimensionInfoBySegment" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		SELECT DIMENSION_ID, DIM_SEQ, DIMENSION_CODE,
+		DIMENSION_NAME, DIM_SEGMENT,
+		FIN_ACCOUNT_FLAG,CREATION_DATE,CREATED_BY,LAST_UPDATE_DATE,LAST_UPDATED_BY
+		FROM HRS_CORE_DIMENSION WHERE DIM_SEGMENT= #{segment}
+	</select>
+
+	<!-- 查询检查头表记录条数 -->
+	<select id="countLookUpValueListByCondition"
+		parameterType="com.hausontech.hrs.bean.reportSetting.ItemLookUpHeaderBean"
+		resultType="java.lang.Integer">
+		SELECT count(1) FROM HRS_CORE_LOOKUP_TYPE lookupType,
+		HRS_CORE_LOOKUP_VALUE lookupVal
+		WHERE lookupType.Lookup_Type_Id =
+		lookupVal.Lookup_Type_Id
+		where 1=1
+		<include refid="LOOK_UP_VALUE_CONDITION" />
+	</select>
+
+	<!-- 根据条件查询维值 -->
+	<select id="getDimensionValueByCondition"
+		parameterType="com.hausontech.hrs.bean.dimensionManager.DimensionValueBean"
+		resultMap="DimensionValueResultMap">
+		<include refid="pageBefore" />
+		SELECT DIM_VALUE_ID, DIMENSION_ID, DIM_VALUE, DESCRIPTION, ACCOUNT_TYPE, SUMMARY_FLAG, DIM_LEVEL,START_DATE, END_DATE, SOURCE, CREATION_DATE,CREATED_BY,LAST_UPDATE_DATE,LAST_UPDATED_BY
+		<if test="rowStartIndex != 0 and rowCount != 0">
+			, ROW_NUMBER() OVER (ORDER BY DIM_VALUE) AS row_number
+		</if>
+		FROM HRS_CORE_DIMENSION_VALUE DIM_VAL
+		where 1=1
+		<include refid="DIM_VALUE_CONDITION"/>
+		<include refid="pageAfter"/>
+	</select>
+
+</mapper>

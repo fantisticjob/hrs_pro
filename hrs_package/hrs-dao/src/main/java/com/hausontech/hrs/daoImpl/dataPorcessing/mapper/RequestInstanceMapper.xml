@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper
+	namespace="com.hausontech.hrs.daoImpl.dataPorcessing.mapper.RequestInstanceMapper">
+	<resultMap id="BaseResultMap"
+		type="com.hausontech.hrs.bean.dataProcess.RequestInstanceBean">
+		<result column="INSTANCE_ID" property="instanceId" jdbcType="DECIMAL" />
+		<result column="LEDGER_ID" property="ledgerId" jdbcType="DECIMAL" />
+		<result column="FIN_ELEMENT_TYPE" property="finElementType" jdbcType="VARCHAR" />
+		<result column="PERIOD_FROM" property="periodFrom" jdbcType="VARCHAR" />
+		<result column="PERIOD_TO" property="periodTo" jdbcType="VARCHAR" />
+		<result column="START_TIME" property="startDate" jdbcType="TIMESTAMP" />
+		<result column="END_TIME" property="endDate" jdbcType="TIMESTAMP" />
+		<result column="ELAPSED_TIME" property="elapsedTime" jdbcType="DECIMAL" />
+		<result column="STATUS" property="status" jdbcType="VARCHAR" />
+		<result column="MESSAGE" property="message" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="AUDIT_QUERY_STRING">
+		, CREATION_DATE,
+		CREATED_BY,LAST_UPDATE_DATE,LAST_UPDATED_BY
+	</sql>
+
+	<sql id="AUDIT_QUERY_STRING_L">
+		,#{creationDate},
+		#{createdBy},#{lastUpdateDate},#{lastUpdatedBy}
+	</sql>
+
+	<sql id="PAGE_SQL">
+		) innerA where innerA.row_number &gt;=${start}
+		<if test="jobName != null">
+			and INNERA.JOB_NAME like '%' || #{jobName} || '%'
+		</if>
+		<if test="status != null">
+			and INNERA.STATUS = #{status}
+		</if>
+		) outerB
+		where rownum &lt;= ${count}
+	</sql>
+
+
+	<!--查询状态 -->
+	<select id="getStatus" resultType="java.lang.String"
+		parameterType="java.lang.String">
+		select
+		<choose>
+			<when test="statusId != null">
+				STATUS_TYPE from HRS_STATUS where
+				STATUS_ID=#{statusId}
+			</when>
+			<when test="statusType != null">
+				STATUS_ID from HRS_STATUS where
+				STATUS_TYPE=#{statusType}
+			</when>
+		</choose>
+	</select>
+	
+	
+	<select id="getRequestInstanceList" resultMap="BaseResultMap"
+		parameterType="com.hausontech.hrs.bean.dataProcess.RequestInstanceBean">
+		SELECT
+		outerB.INSTANCE_ID,
+		outerB.LEDGER_ID,
+		outerB.FIN_ELEMENT_TYPE,
+		outerB.PERIOD_FROM,
+		outerB.PERIOD_TO,
+		outerB.START_TIME,
+		outerB.END_TIME,
+		outerB.ELAPSED_TIME,
+		outerB.STATUS,
+		outerB.MESSAGE
+		FROM ( select * from (
+		select INSTANCE_ID, LEDGER_ID, FIN_ELEMENT_TYPE, PERIOD_FROM,
+		PERIOD_TO,START_TIME, END_TIME, ELAPSED_TIME, STATUS, MESSAGE,
+		CREATION_DATE, CREATED_BY, LAST_UPDATE_DATE, LAST_UPDATED_BY
+		<if test="rowStartIndex != 0 and rowCount != 0">
+			, ROW_NUMBER() OVER (ORDER BY INSTANCE_ID DESC) AS row_number
+		</if>
+		FROM HRS_CORE_REQUEST_INSTANCE
+		) innerA where innerA.row_number
+		&gt;=${rowStartIndex}
+		<choose>
+			<when test=" instanceId != 0 ">
+				and innerA.INSTANCE_ID = #{instanceId}
+			</when>
+			<otherwise>
+				<if test="ledgerId != 0">
+					and INNERA.LEDGER_ID = #{ledgerId}
+				</if>
+				<if test="null != finElementType and finElementType !=''">
+					and INNERA.FIN_ELEMENT_TYPE = #{finElementType}
+				</if>
+				<if test="null != periodFrom and periodFrom !=''">
+					and INNERA.PERIOD_FROM &gt;= #{periodFrom}
+				</if>
+				<if test="null != periodTo and periodTo !=''">
+					and INNERA.PERIOD_TO &lt;= #{periodTo}
+				</if>
+				<if test="null != status and status !=''">
+					and INNERA.STATUS = #{status}
+				</if>
+			</otherwise>
+		</choose>
+		) outerB
+		where rownum &lt;= ${rowCount}
+		ORDER BY INSTANCE_ID DESC
+	</select>
+	
+	<select id="getBatchInstanceNumber" resultType="java.lang.Integer"
+		parameterType="com.hausontech.hrs.bean.dataProcess.RequestInstanceBean">
+		select count(1) from HRS_CORE_REQUEST_INSTANCE innerA where 1=1 
+		<choose>
+			<when test=" instanceId != 0 ">
+				and innerA.INSTANCE_ID = #{instanceId}
+			</when>
+			<otherwise>
+				<if test="ledgerId != 0">
+					and INNERA.LEDGER_ID = #{ledgerId}
+				</if>
+				<if test="null != finElementType and finElementType !=''">
+					and INNERA.FIN_ELEMENT_TYPE = #{finElementType}
+				</if>
+				<if test="null != periodFrom and periodFrom !=''">
+					and INNERA.PERIOD_FROM &gt;= #{periodFrom}
+				</if>
+				<if test="null != periodTo and periodTo !=''">
+					and INNERA.PERIOD_TO &lt;= #{periodTo}
+				</if>
+				<if test="null != status and status !=''">
+					and INNERA.STATUS = #{status}
+				</if>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="saveBatchJobRecord" parameterType="com.hausontech.hrs.bean.dataProcess.RequestInstanceBean">
+		INSERT INTO HRS_CORE_REQUEST_INSTANCE(INSTANCE_ID, LEDGER_ID, FIN_ELEMENT_TYPE, PERIOD_FROM, PERIOD_TO, START_TIME, STATUS
+		<include refid="AUDIT_QUERY_STRING" />
+		)
+		VALUES(#{instanceId}, #{ledgerId}, #{finElementType},
+		#{periodFrom},#{periodTo},#{startDate},#{status}
+		<include refid="AUDIT_QUERY_STRING_L" />
+		)
+	</insert>
+	
+	<!-- 更新数据管理 -->
+	<update id="updateBatchJobRecord" parameterType="com.hausontech.hrs.bean.dataProcess.RequestInstanceBean">
+		UPDATE 
+		HRS_CORE_REQUEST_INSTANCE 
+		SET
+		LEDGER_ID = #{ledgerId,jdbcType=DECIMAL},
+		FIN_ELEMENT_TYPE = #{finElementType,jdbcType=VARCHAR},
+		PERIOD_FROM = #{periodFrom,jdbcType=VARCHAR},
+		PERIOD_TO = #{periodTo,jdbcType=VARCHAR},
+		START_TIME =#{startDate,jdbcType=TIMESTAMP},
+		END_TIME =#{endDate,jdbcType=TIMESTAMP},
+		ELAPSED_TIME =#{elapsedTime,jdbcType=DECIMAL},
+		STATUS =#{status,jdbcType=VARCHAR},
+		MESSAGE =#{message,jdbcType=VARCHAR},
+		LAST_UPDATE_DATE =#{lastUpdateDate,jdbcType=TIMESTAMP},
+		LAST_UPDATED_BY =#{lastUpdatedBy,jdbcType=VARCHAR}
+		WHERE INSTANCE_ID =#{instanceId,jdbcType=DECIMAL}
+	</update>
+	
+	
+	<delete id="deleteBatchJobRecord" parameterType="com.hausontech.hrs.bean.dataProcess.RequestInstanceBean">
+		DELETE HRS_CORE_REQUEST_INSTANCE
+			 WHERE INSTANCE_ID = #{instanceId}
+	</delete>
+	
+	<select id="getRequestInstanceByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="com.hausontech.hrs.bean.dataProcess.RequestInstanceBean">
+		SELECT 
+		INSTANCE_ID, LEDGER_ID, FIN_ELEMENT_TYPE,
+		 PERIOD_FROM, PERIOD_TO,START_TIME, END_TIME, 
+		 ELAPSED_TIME, STATUS, MESSAGE 
+		 <include refid="AUDIT_QUERY_STRING" />
+		 FROM HRS_CORE_REQUEST_INSTANCE 
+		 WHERE INSTANCE_ID =#{instanceId}
+	</select>
+</mapper>

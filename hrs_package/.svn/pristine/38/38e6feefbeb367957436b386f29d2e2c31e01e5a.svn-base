@@ -1,0 +1,449 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http#{//mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hausontech.hrs.daoImpl.etlProcess.mapper.JobInstanceMapper">
+	<resultMap id="BaseResultMap"
+		type="com.hausontech.hrs.bean.etlProcess.JobInstanceBean">
+		<id column="JOB_ID" property="jobId" jdbcType="DECIMAL" />
+		<result column="JOB_NAME" property="jobName" jdbcType="VARCHAR" />
+		<result column="FILE_PATH" property="filePath" jdbcType="VARCHAR" />
+		<result column="PARAM_LIST" property="paramList" jdbcType="VARCHAR" />
+		<result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+		<result column="START_TIME" property="startTime" jdbcType="TIMESTAMP" />
+		<result column="END_TIME" property="endTime" jdbcType="TIMESTAMP" />
+		<result column="ELAPSED_TIME" property="elapsedTime" jdbcType="DECIMAL" />
+		<result column="ORDER_ID" property="orderId" jdbcType="DECIMAL" />
+		<result column="MESSAGE" property="message" jdbcType="VARCHAR" />
+		<result column="STATUS" property="status" jdbcType="VARCHAR" />
+		<result column="CREATION_DATE" property="creationDate"
+			jdbcType="TIMESTAMP" />
+		<result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+		<result column="LAST_UPDATE_DATE" property="lastUpdateDate"
+			jdbcType="TIMESTAMP" />
+		<result column="LAST_UPDATED_BY" property="lastUpdatedBy"
+			jdbcType="VARCHAR" />
+	</resultMap>
+
+	<resultMap id="BaseResultMapJobIdByOrderId"
+		type="com.hausontech.hrs.bean.etlProcess.JobInstanceBean">
+		<id column="JOB_ID" property="jobId" jdbcType="DECIMAL" />
+		<result column="JOB_NAME" property="jobName" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<resultMap id="BaseResultMapSchedule"
+		type="com.hausontech.hrs.bean.etlProcess.ScheduleInstanceBean">
+		<id column="JOB_ID" property="jobId" jdbcType="DECIMAL" />
+		<result column="JOB_NAME" property="jobName" jdbcType="VARCHAR" />
+		<result column="TYPE_PROCESS" property="typeProcess" jdbcType="VARCHAR" />
+		<result column="VALUE_PROCESS" property="valueProcess"
+			jdbcType="VARCHAR" />
+		<result column="CONCURRENT" property="concurrent" jdbcType="VARCHAR" />
+		<result column="SCHEDULE_ID" property="scheduleId" jdbcType="DECIMAL" />
+		<result column="CREATION_DATE" property="creationDate"
+			jdbcType="TIMESTAMP" />
+		<result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+		<result column="LAST_UPDATE_DATE" property="lastUpdateDate"
+			jdbcType="TIMESTAMP" />
+		<result column="LAST_UPDATED_BY" property="lastUpdatedBy"
+			jdbcType="VARCHAR" />
+	</resultMap>
+
+	<resultMap id="BaseResultMapScheduleType"
+		type="com.hausontech.hrs.bean.etlProcess.ScheduleTypeBean">
+		<id column="SCHEDULE_TYPE_ID" property="scheduleTypeId" jdbcType="DECIMAL" />
+		<result column="SCHEDULE_TYPE" property="scheduleType"
+			jdbcType="VARCHAR" />
+		<result column="SCHEDULE_DESCRIPTION" property="scheduleDescription"
+			jdbcType="VARCHAR" />
+	</resultMap>
+
+	<resultMap id="BaseResultMapScheduleStatus"
+		type="com.hausontech.hrs.bean.etlProcess.ScheduleStatusBean">
+		<id column="STATUS_ID" property="statusId" jdbcType="DECIMAL" />
+		<result column="STATUS_TYPE" property="statusType" jdbcType="VARCHAR" />
+		<result column="STATUS_DESCRIPTION" property="statusDescription"
+			jdbcType="VARCHAR" />
+	</resultMap>
+
+	<resultMap id="BaseResultMapById"
+		type="com.hausontech.hrs.bean.etlProcess.JobInstanceBean">
+		<id column="JOB_ID" property="jobId" jdbcType="DECIMAL" />
+		<result column="JOB_NAME" property="jobName" jdbcType="VARCHAR" />
+		<result column="FILE_PATH" property="filePath" jdbcType="VARCHAR" />
+		<result column="PARAM_LIST" property="paramList" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<resultMap id="BaseResultMapScheduleById"
+		type="com.hausontech.hrs.bean.etlProcess.ScheduleInstanceBean">
+		<id column="JOB_ID" property="jobId" jdbcType="DECIMAL" />
+		<result column="TYPE_PROCESS" property="typeProcess" jdbcType="VARCHAR" />
+		<result column="VALUE_PROCESS" property="valueProcess"
+			jdbcType="VARCHAR" />
+		<result column="CONCURRENT" property="concurrent" jdbcType="VARCHAR" />
+	</resultMap>
+
+
+	<sql id="AUDIT_QUERY_STRING">
+		, CREATION_DATE,
+		CREATED_BY,LAST_UPDATE_DATE,LAST_UPDATED_BY
+	</sql>
+
+	<sql id="AUDIT_QUERY_STRING_L">
+		,#{creationDate},
+		#{createdBy},#{lastUpdateDate},#{lastUpdatedBy}
+	</sql>
+
+
+
+	<sql id="PAGE_SQL">
+		) innerA where innerA.row_number &gt;=${start}
+		<if test="jobName != null">
+			and INNERA.JOB_NAME like '%' || #{jobName} || '%'
+		</if>
+		<if test="status != null">
+			and INNERA.STATUS = #{status}
+		</if>
+		) outerB
+		where rownum &lt;= ${count}
+	</sql>
+	<!-- 获取调度执行类型数据 -->
+	<select id="getEtlScheduleTypeList" resultMap="BaseResultMapScheduleType">
+		select
+		SCHEDULE_TYPE_ID ,SCHEDULE_TYPE,SCHEDULE_DESCRIPTION from
+		HRS_SCHEDULE_TYPE
+	</select>
+	<!-- 获取调度状态数据 -->
+	<select id="getEtlScheduleStatusList" resultMap="BaseResultMapScheduleStatus">
+		select STATUS_ID
+		,STATUS_TYPE,STATUS_DESCRIPTION from HRS_STATUS
+	</select>
+	<!-- 根据ETLjobID获取ETL任务记录 -->
+	<select id="getJobInfoById" resultMap="BaseResultMapById"
+		parameterType="java.lang.Long">
+		SELECT JOB_ID, JOB_NAME, FILE_PATH, PARAM_LIST
+		FROM
+		HRS_ETL_JOB
+		WHERE JOB_ID=#{jobId}
+	</select>
+	<!-- 根据ETLjobID获取ETL任务名称 -->
+	<select id="getNameById" resultType="java.lang.String"
+		parameterType="java.lang.Long">
+		select JOB_NAME from HRS_ETL_JOB
+		WHERE JOB_ID=#{jobId}
+	</select>
+	<!-- 根据调度ID获取调度任务记录 -->
+	<select id="getScheduleInfoById" resultMap="BaseResultMapScheduleById"
+		parameterType="java.lang.Long">
+		SELECT JOB_ID, TYPE_PROCESS, VALUE_PROCESS, CONCURRENT
+		FROM HRS_ETL_SCHEDULE
+		WHERE SCHEDULE_ID=#{scheduleId}
+	</select>
+	<!-- 获取所有JOBID -->
+	<select id="getAllEtlJobList" resultMap="BaseResultMapJobIdByOrderId">
+		select JOB_ID,JOB_NAME
+		from HRS_ETL_JOB order by ORDER_ID
+	</select>
+	<!-- 获取状态ID、状态MAP -->
+	<select id="getStatus" resultType="java.lang.String"
+		parameterType="java.lang.String">
+		select
+		<choose>
+			<when test="statusId != null">
+				STATUS_TYPE from HRS_STATUS where
+				STATUS_ID=#{statusId}
+			</when>
+			<when test="statusType != null">
+				STATUS_ID from HRS_STATUS where
+				STATUS_TYPE=#{statusType}
+			</when>
+		</choose>
+	</select>
+	<!-- 获取ETL任务界面总数 -->
+	<select id="countByCondition" resultType="java.lang.Integer"
+		parameterType="java.lang.String">
+		select count(1)
+		from
+		<choose>
+			<when test="status != null">
+				(
+				SELECT DISTINCT
+				JOB .*, jobIns.STATUS
+				FROM
+				HRS_ETL_JOB
+				JOB,
+				(select temp.*
+				from (select tt.*,
+				row_number() OVER(PARTITION BY
+				tt.job_id ORDER BY tt.last_update_date desc) as
+				row_flg
+				from
+				Hrs_etl_job_instance tt) temp
+				where temp.row_flg = '1') jobIns
+			</when>
+			<otherwise>
+				HRS_ETL_JOB
+			</otherwise>
+		</choose>
+		<where>
+			<if test="jobName != null">
+				JOB_NAME like '%' || #{jobName} || '%'
+			</if>
+			<choose>
+				<when test="status != null">
+					and jobIns.JOB_ID = JOB .JOB_ID
+					and
+					JOBINS.status=#{status})
+				</when>
+				<otherwise>
+					and 1=1
+				</otherwise>
+			</choose>
+		</where>
+
+	</select>
+	<!-- 获取任务调度界面数据总数 -->
+	<select id="countByConditionSchedule" resultType="java.lang.Integer"
+		parameterType="java.lang.String">
+		select count(1)
+		from
+		<choose>
+			<when test="status != null">
+				(select distinct sch.*, jobIns.STATUS from
+				HRS_ETL_SCHEDULE
+				sch,(select temp.*
+				from (select tt.*,
+				row_number()
+				OVER(PARTITION BY tt.job_id ORDER BY tt.last_update_date desc) as
+				row_flg
+				from Hrs_etl_job_instance tt) temp
+				where temp.row_flg = '1')
+				jobIns,HRS_ETL_JOB job
+			</when>
+			<otherwise>
+				HRS_ETL_SCHEDULE sch
+				,HRS_ETL_JOB job
+			</otherwise>
+		</choose>
+		<where>
+			JOB.JOB_ID=SCH.JOB_ID
+			<if test="jobName != null">
+				and job.JOB_NAME like '%' || #{jobName} || '%'
+			</if>
+			<choose>
+				<when test="status != null">
+					And jobIns.JOB_ID=sch.JOB_ID
+					and
+					JOBINS.status=#{status})
+				</when>
+				<otherwise>
+					and 1=1
+				</otherwise>
+			</choose>
+		</where>
+	</select>
+	<!-- 获取任务调度界面数据 -->
+	<select id="getEtlScheduleList" resultMap="BaseResultMapSchedule"
+		parameterType="java.lang.String">
+		SELECT
+		outerB.*
+		FROM ( select * from (
+		SELECT sch.JOB_ID,
+		job.JOB_NAME,
+		sch.TYPE_PROCESS, sch.VALUE_PROCESS,
+		sch.concurrent,sch.SCHEDULE_ID,jobIns.STATUS,
+		sch.CREATION_DATE,sch.CREATED_BY,sch.LAST_UPDATE_DATE,sch.LAST_UPDATED_BY
+		<if test="start != 0 and count != 0">
+			,
+			ROW_NUMBER() OVER (ORDER
+			BY job.JOB_ID)
+			AS row_number
+		</if>
+		FROM HRS_ETL_JOB
+		job,HRS_ETL_SCHEDULE sch ,
+		(SELECT
+		a.job_id,
+		a.instance_id,
+		b.start_time, b.end_time,
+		b.elapsed_time,
+		b.status,
+		b.message
+		FROM
+		(SELECT JOB_ID, MAX(INSTANCE_ID)
+		INSTANCE_ID
+		FROM
+		HRS_ETL_JOB_INSTANCE
+		GROUP BY JOB_ID) a,
+		HRS_ETL_JOB_INSTANCE b WHERE
+		a.instance_id =
+		b.instance_id and
+		a.job_id=b.job_id) jobIns
+		WHERE
+		job.JOB_ID =
+		jobIns.JOB_ID(+)
+		and
+		SCH.JOB_ID=JOB.JOB_ID
+		<include refid="PAGE_SQL" />
+	</select>
+	<!-- 获取ETL任务界面数据 -->
+	<select id="getEtlJobList" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		SELECT outerB.* FROM ( select * from (
+		select
+		job.JOB_ID, job.JOB_NAME,
+		job.FILE_PATH,
+		job.PARAM_LIST,
+		job.DESCRIPTION,job.ORDER_ID ,
+		job.CREATION_DATE,job.CREATED_BY,job.LAST_UPDATE_DATE,job.LAST_UPDATED_BY,
+		jobIns.START_TIME,
+		jobIns.END_TIME,
+		jobIns.ELAPSED_TIME,
+		jobIns.MESSAGE,jobIns.STATUS
+		<if test="start != 0 and count != 0">
+			,ROW_NUMBER() OVER (ORDER BY job.JOB_ID)
+			AS row_number
+		</if>
+		FROM
+		HRS_ETL_JOB
+		job,(SELECT a.job_id, a.instance_id,
+		b.start_time,
+		b.end_time,
+		b.elapsed_time, b.status, b.message FROM
+		(SELECT JOB_ID,
+		MAX(INSTANCE_ID) INSTANCE_ID FROM HRS_ETL_JOB_INSTANCE
+		GROUP BY
+		JOB_ID)
+		a,HRS_ETL_JOB_INSTANCE b WHERE a.instance_id =
+		b.instance_id
+		and
+		a.job_id=b.job_id) jobIns
+		WHERE job.JOB_ID =
+		jobIns.JOB_ID(+)
+		order by job.ORDER_ID
+		<include refid="PAGE_SQL" />
+	</select>
+	<!-- 删除etl调度任务记录 删除etl任务记录 -->
+	<delete id="deleteJobRecord" parameterType="java.lang.String"
+		statementType="STATEMENT">
+		delete from
+		${tableName}
+		where JOB_ID =${primaryKey}
+	</delete>
+	<!-- 删除任务调度记录 -->
+	<delete id="deleteScheduleRecord" parameterType="java.lang.Long">
+		delete from
+		HRS_ETL_SCHEDULE
+		WHERE SCHEDULE_ID=#{scheduleId}
+	</delete>
+
+	<!-- 增加ETL任务记录 -->
+	<insert id="saveEtlJob" parameterType="com.hausontech.hrs.bean.etlProcess.JobInstanceBean">
+		INSERT INTO HRS_ETL_JOB(JOB_ID, JOB_NAME,FILE_PATH,
+		<if test="paramList != null">
+			PARAM_LIST,
+		</if>
+		<if test="description != null">
+			DESCRIPTION,
+		</if>
+		ORDER_ID
+		<include refid="AUDIT_QUERY_STRING" />
+		)VALUES(#{jobId}, #{jobName}, #{filePath},
+		<if test="paramList != null">
+			#{paramList,jdbcType=VARCHAR},
+		</if>
+		<if test="description != null">
+			#{description,jdbcType=VARCHAR},
+		</if>
+		#{orderId}
+		<include refid="AUDIT_QUERY_STRING_L" />
+		)
+	</insert>
+	<!-- 保存ETL任务执行实例 -->
+	<insert id="saveEtlJobInstance" parameterType="com.hausontech.hrs.bean.etlProcess.JobInstanceBean">
+		INSERT INTO HRS_ETL_JOB_INSTANCE(INSTANCE_ID, JOB_ID,
+		START_TIME,STATUS,MESSAGE
+		<if test="scheduleId != 0">
+			,SCHEDULE_ID
+		</if>
+		<include refid="AUDIT_QUERY_STRING" />
+		)
+		VALUES(#{lastJobInstanceId}, #{jobId}, #{startTime},
+		#{status},#{message}
+		<if test="scheduleId != 0">
+			,#{scheduleId,jdbcType=DECIMAL}
+		</if>
+		<include refid="AUDIT_QUERY_STRING_L" />
+		)
+	</insert>
+	<!-- 增加任务调度记录 -->
+	<insert id="saveScheduleRecord"
+		parameterType="com.hausontech.hrs.bean.etlProcess.ScheduleInstanceBean">
+		INSERT INTO HRS_ETL_SCHEDULE(JOB_ID, TYPE_PROCESS,
+		VALUE_PROCESS,CONCURRENT,SCHEDULE_ID
+		<include refid="AUDIT_QUERY_STRING" />
+		)
+		VALUES(#{jobId}, #{typeProcess}, #{valueProcess},
+		#{concurrent},#{scheduleId}
+		<include refid="AUDIT_QUERY_STRING_L" />
+		)
+	</insert>
+	<!-- 更新etl任务记录 -->
+	<update id="updateJobRecord" parameterType="com.hausontech.hrs.bean.etlProcess.JobInstanceBean">
+		update HRS_ETL_JOB
+		set JOB_NAME = #{jobName,jdbcType=VARCHAR},
+		FILE_PATH =
+		#{filePath,jdbcType=VARCHAR},
+		PARAM_LIST
+		=#{paramList,jdbcType=VARCHAR},
+		DESCRIPTION
+		=#{description,jdbcType=VARCHAR},
+		LAST_UPDATE_DATE =
+		#{lastUpdateDate,jdbcType=TIMESTAMP},
+		LAST_UPDATED_BY =
+		#{lastUpdatedBy,jdbcType=VARCHAR},
+		ORDER_ID =
+		#{orderId,jdbcType=DECIMAL}
+		where JOB_ID =
+		#{jobId,jdbcType=DECIMAL}
+	</update>
+
+	<!-- 更新ETL任务执行实例 -->
+	<update id="updateEtlJobInsRecord" parameterType="com.hausontech.hrs.bean.etlProcess.JobInstanceBean">
+		UPDATE
+		HRS_ETL_JOB_INSTANCE
+		SET
+		END_TIME = #{endTime,jdbcType=TIMESTAMP},
+		ELAPSED_TIME = #{elapsedTime,
+		jdbcType=DECIMAL},
+		STATUS=
+		#{status,jdbcType=VARCHAR},
+		MESSAGE =
+		#{message, jdbcType=VARCHAR},
+		LAST_UPDATE_DATE =
+		#{lastUpdateDate,jdbcType=TIMESTAMP},
+		LAST_UPDATED_BY=
+		#{lastUpdatedBy,jdbcType=VARCHAR}
+		WHERE INSTANCE_ID =
+		#{lastJobInstanceId,jdbcType=DECIMAL}
+	</update>
+
+	<!-- 更新ETL任务调度 -->
+	<update id="updateScheduleRecord"
+		parameterType="com.hausontech.hrs.bean.etlProcess.ScheduleInstanceBean">
+		UPDATE
+		HRS_ETL_SCHEDULE
+		SET
+		TYPE_PROCESS =
+		#{typeProcess,jdbcType=VARCHAR},
+		VALUE_PROCESS =
+		#{valueProcess,jdbcType=VARCHAR},
+		CONCURRENT =
+		#{concurrent,jdbcType=VARCHAR},
+		LAST_UPDATE_DATE =
+		#{lastUpdateDate,jdbcType=TIMESTAMP},
+		LAST_UPDATED_BY =
+		#{lastUpdatedBy,jdbcType=VARCHAR}
+		WHERE SCHEDULE_ID =
+		#{scheduleId,jdbcType=DECIMAL}
+	</update>
+
+
+</mapper>

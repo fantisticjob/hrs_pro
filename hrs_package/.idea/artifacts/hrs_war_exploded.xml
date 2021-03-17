@@ -1,0 +1,125 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="hrs:war exploded">
+    <output-path>$PROJECT_DIR$/hrs/target/hrs</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <exploded>true</exploded>
+        <module>hrs</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="root">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="hrs" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="archive" name="hrs-utils-1.0.jar">
+            <element id="module-output" name="hrs-utils" />
+          </element>
+          <element id="archive" name="hrs-service-1.0.jar">
+            <element id="module-output" name="hrs-service" />
+          </element>
+          <element id="archive" name="hrs-api-1.0.jar">
+            <element id="module-output" name="hrs-api" />
+          </element>
+          <element id="archive" name="hrs-bean-1.0.jar">
+            <element id="module-output" name="hrs-bean" />
+          </element>
+          <element id="archive" name="hrs-exceptions-1.0.jar">
+            <element id="module-output" name="hrs-exceptions" />
+          </element>
+          <element id="archive" name="hrs-dao-1.0.jar">
+            <element id="module-output" name="hrs-dao" />
+          </element>
+          <element id="library" level="project" name="Maven: commons-fileupload:commons-fileupload:1.3.1" />
+          <element id="library" level="project" name="Maven: commons-io:commons-io:2.4" />
+          <element id="library" level="project" name="Maven: pentaho-kettle:kettle-core:6.1.0.1-196" />
+          <element id="library" level="project" name="Maven: pentaho-kettle:kettle-engine:6.1.0.1-196" />
+          <element id="library" level="project" name="Maven: pentaho-kettle:kettle-dbdialog:6.1.0.1-196" />
+          <element id="library" level="project" name="Maven: pentaho-kettle:kettle5-log4j-plugin:6.1.0.1-196" />
+          <element id="library" level="project" name="Maven: pentaho-kettle:kettle-sdk-embedding-samples:5.0.1" />
+          <element id="library" level="project" name="Maven: pentaho-kettle:simple-jndi:1.0.0" />
+          <element id="library" level="project" name="Maven: pentaho-kettle:kettle-ui-swt:6.1.0.1-196" />
+          <element id="library" level="project" name="Maven: com.google.guava:guava:17.0" />
+          <element id="library" level="project" name="Maven: pentaho-kettle:commons-vfs2:2.1-20150824" />
+          <element id="library" level="project" name="Maven: org.apache.hive:metastore:6.1.0.1-196" />
+          <element id="library" level="project" name="Maven: org.scannotation:scannotation:1.0.2" />
+          <element id="library" level="project" name="Maven: pentaho-kettle:pentaho-vfs-browser:6.1.0.1-196" />
+          <element id="library" level="project" name="Maven: pentaho-kettle:commons-collections:3.2.2" />
+          <element id="library" level="project" name="Maven: pentaho-kettle:commons-io:2.1" />
+          <element id="library" level="project" name="Maven: pentaho-kettle:commons-lang3:3.0" />
+          <element id="library" level="project" name="Maven: pentaho-kettle:commons-logging:1.1.3" />
+          <element id="library" level="project" name="Maven: pentaho-kettle:commons-net:1.4.1" />
+          <element id="library" level="project" name="Maven: pentaho-kettle:jcifs:1.3.3" />
+          <element id="library" level="project" name="Maven: pentaho-kettle:jsch:0.1.46" />
+          <element id="library" level="project" name="Maven: pentaho-kettle:avalon-framework:4.1.5" />
+          <element id="library" level="project" name="Maven: pentaho-kettle:batik-script:1.7" />
+          <element id="library" level="project" name="Maven: pentaho-kettle:js:1.7R3" />
+          <element id="library" level="project" name="Maven: pentaho-kettle:kettle-engine-test:6.1.0.1-196" />
+          <element id="file-copy" path="D:/java/apache-maven-3.3.9/apache-maven-3.3.9/conf/RepMavean/pentaho-kettle/commons-beanutils/1.8.0/commons-beanutils-1.8.0.jar" output-file-name="pentaho-kettle-commons-beanutils-1.8.0.jar" />
+          <element id="library" level="project" name="Maven: pentaho-kettle:commons-beanutils-core:1.8.0" />
+          <element id="library" level="project" name="Maven: pentaho-kettle:commons-digester:1.8" />
+          <element id="library" level="project" name="Maven: pentaho-kettle:ognl:2.6.9" />
+          <element id="library" level="project" name="Maven: pentaho-kettle:mail:1.4.7" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-context:4.2.5.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-aop:4.2.5.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-beans:4.2.5.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-expression:4.2.5.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-core:4.2.5.RELEASE" />
+          <element id="library" level="project" name="Maven: commons-logging:commons-logging:1.2" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-webmvc:4.2.5.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-web:4.2.5.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-jdbc:4.2.5.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-tx:4.2.5.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-orm:4.2.5.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework.security:spring-security-web:4.2.1.RELEASE" />
+          <element id="library" level="project" name="Maven: aopalliance:aopalliance:1.0" />
+          <element id="library" level="project" name="Maven: org.springframework.security:spring-security-core:4.2.1.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework.security:spring-security-config:4.2.1.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework.security:spring-security-taglibs:4.2.1.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework.security:spring-security-acl:4.2.1.RELEASE" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.1.0" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.1.0" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-core:2.1.0" />
+          <element id="library" level="project" name="Maven: net.sf.json-lib:json-lib:2.4" />
+          <element id="file-copy" path="D:/java/apache-maven-3.3.9/apache-maven-3.3.9/conf/RepMavean/commons-beanutils/commons-beanutils/1.8.0/commons-beanutils-1.8.0.jar" output-file-name="commons-beanutils-commons-beanutils-1.8.0.jar" />
+          <element id="library" level="project" name="Maven: commons-collections:commons-collections:3.2.1" />
+          <element id="library" level="project" name="Maven: commons-lang:commons-lang:2.5" />
+          <element id="library" level="project" name="Maven: net.sf.ezmorph:ezmorph:1.0.6" />
+          <element id="library" level="project" name="Maven: oracle.jdbc:ojdbc6:11.2.0.1.0" />
+          <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.7.7" />
+          <element id="library" level="project" name="Maven: javax.servlet:jstl:1.2" />
+          <element id="library" level="project" name="Maven: org.hibernate:hibernate-core:4.0.1.Final" />
+          <element id="library" level="project" name="Maven: antlr:antlr:2.7.7" />
+          <element id="library" level="project" name="Maven: org.jboss.spec.javax.transaction:jboss-transaction-api_1.1_spec:1.0.0.Final" />
+          <element id="library" level="project" name="Maven: dom4j:dom4j:1.6.1" />
+          <element id="library" level="project" name="Maven: xml-apis:xml-apis:1.0.b2" />
+          <element id="library" level="project" name="Maven: org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.1.Final" />
+          <element id="library" level="project" name="Maven: org.jboss.logging:jboss-logging:3.1.0.CR2" />
+          <element id="library" level="project" name="Maven: org.javassist:javassist:3.15.0-GA" />
+          <element id="library" level="project" name="Maven: org.hibernate.common:hibernate-commons-annotations:4.0.1.Final" />
+          <element id="library" level="project" name="Maven: javabase64:javabase64:1.3" />
+          <element id="library" level="project" name="Maven: org.apache.poi:poi-ooxml:3.10-FINAL" />
+          <element id="library" level="project" name="Maven: org.apache.poi:poi:3.10-FINAL" />
+          <element id="library" level="project" name="Maven: commons-codec:commons-codec:1.5" />
+          <element id="library" level="project" name="Maven: org.apache.poi:poi-ooxml-schemas:3.10-FINAL" />
+          <element id="library" level="project" name="Maven: org.apache.xmlbeans:xmlbeans:2.3.0" />
+          <element id="library" level="project" name="Maven: stax:stax-api:1.0.1" />
+          <element id="library" level="project" name="Maven: commons-dbcp:commons-dbcp:1.4" />
+          <element id="library" level="project" name="Maven: commons-pool:commons-pool:1.5.4" />
+          <element id="library" level="project" name="Maven: org.quartz-scheduler:quartz:2.2.1" />
+          <element id="library" level="project" name="Maven: c3p0:c3p0:0.9.1.1" />
+          <element id="library" level="project" name="Maven: org.quartz-scheduler:quartz-jobs:2.2.1" />
+          <element id="library" level="project" name="Maven: pentaho-kettle:commons-httpclient:3.1" />
+          <element id="library" level="project" name="Maven: org.mybatis:mybatis:3.2.8" />
+          <element id="library" level="project" name="Maven: org.mybatis:mybatis-spring:1.2.3" />
+        </element>
+      </element>
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/hrs/target/hrs/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="javaee-facet-resources" facet="hrs/web/Web" />
+    </root>
+  </artifact>
+</component>

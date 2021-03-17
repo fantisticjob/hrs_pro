@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/hrs/hrs.iml" filepath="$PROJECT_DIR$/hrs/hrs.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hrs-api/hrs-api.iml" filepath="$PROJECT_DIR$/hrs-api/hrs-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hrs-bean/hrs-bean.iml" filepath="$PROJECT_DIR$/hrs-bean/hrs-bean.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hrs-dao/hrs-dao.iml" filepath="$PROJECT_DIR$/hrs-dao/hrs-dao.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hrs-exceptions/hrs-exceptions.iml" filepath="$PROJECT_DIR$/hrs-exceptions/hrs-exceptions.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hrs-service/hrs-service.iml" filepath="$PROJECT_DIR$/hrs-service/hrs-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hrs-utils/hrs-utils.iml" filepath="$PROJECT_DIR$/hrs-utils/hrs-utils.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hrs_package.iml" filepath="$PROJECT_DIR$/hrs_package.iml" />
+    </modules>
+  </component>
+</project>

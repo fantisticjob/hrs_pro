@@ -1,0 +1,483 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hausontech.hrs.daoImpl.transactionProcess.mapper.TransactionProcessLineMapper" >
+  <resultMap id="BaseResultMap" type="com.hausontech.hrs.bean.transactionProcess.TransactionProcessLine" >
+    <id column="TXN_LINE_ID" property="txnLineId" jdbcType="DECIMAL" />
+    <result column="TXN_HEADER_ID" property="txnHeaderId" jdbcType="DECIMAL" />
+    <result column="LEDGER_ID" property="ledgerId" jdbcType="DECIMAL" />
+    <result column="FIN_ELEMENT" property="finElement" jdbcType="VARCHAR" />
+    <result column="SEGMENT1" property="segment1" jdbcType="VARCHAR" />
+    <result column="SEGMENT2" property="segment2" jdbcType="VARCHAR" />
+    <result column="SEGMENT3" property="segment3" jdbcType="VARCHAR" />
+    <result column="SEGMENT4" property="segment4" jdbcType="VARCHAR" />
+    <result column="SEGMENT5" property="segment5" jdbcType="VARCHAR" />
+    <result column="SEGMENT6" property="segment6" jdbcType="VARCHAR" />
+    <result column="SEGMENT7" property="segment7" jdbcType="VARCHAR" />
+    <result column="SEGMENT8" property="segment8" jdbcType="VARCHAR" />
+    <result column="SEGMENT9" property="segment9" jdbcType="VARCHAR" />
+    <result column="SEGMENT10" property="segment10" jdbcType="VARCHAR" />
+    <result column="SEGMENT11" property="segment11" jdbcType="VARCHAR" />
+    <result column="SEGMENT12" property="segment12" jdbcType="VARCHAR" />
+    <result column="SEGMENT13" property="segment13" jdbcType="VARCHAR" />
+    <result column="SEGMENT14" property="segment14" jdbcType="VARCHAR" />
+    <result column="SEGMENT15" property="segment15" jdbcType="VARCHAR" />
+    <result column="SEGMENT16" property="segment16" jdbcType="VARCHAR" />
+    <result column="SEGMENT17" property="segment17" jdbcType="VARCHAR" />
+    <result column="SEGMENT18" property="segment18" jdbcType="VARCHAR" />
+    <result column="SEGMENT19" property="segment19" jdbcType="VARCHAR" />
+    <result column="SEGMENT20" property="segment20" jdbcType="VARCHAR" />
+    <result column="ATTRIBUTE1" property="attribute1" jdbcType="VARCHAR" />
+    <result column="ATTRIBUTE2" property="attribute2" jdbcType="VARCHAR" />
+    <result column="ATTRIBUTE3" property="attribute3" jdbcType="VARCHAR" />
+    <result column="ATTRIBUTE4" property="attribute4" jdbcType="VARCHAR" />
+    <result column="ATTRIBUTE5" property="attribute5" jdbcType="VARCHAR" />
+    <result column="AMOUNT_DR" property="amountDR" jdbcType="DECIMAL" />
+    <result column="AMOUNT_CR" property="amountCR" jdbcType="DECIMAL" />
+    <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+    <result column="CREATED_DATE" property="creationDate" jdbcType="TIMESTAMP" />
+    <result column="UPDATED_BY" property="lastUpdatedBy" jdbcType="VARCHAR" />
+    <result column="UPDATED_DATE" property="lastUpdateDate" jdbcType="TIMESTAMP" />
+    <result column="SEQ_NUM" property="seqNumber" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    TXN_LINE_ID, TXN_HEADER_ID, LEDGER_ID, FIN_ELEMENT, SEGMENT1, SEGMENT2, SEGMENT3, 
+    SEGMENT4, SEGMENT5, SEGMENT6, SEGMENT7, SEGMENT8, SEGMENT9, SEGMENT10, SEGMENT11, 
+    SEGMENT12, SEGMENT13, SEGMENT14, SEGMENT15, SEGMENT16, SEGMENT17, SEGMENT18, SEGMENT19, 
+    SEGMENT20, ATTRIBUTE1, ATTRIBUTE2, ATTRIBUTE3, ATTRIBUTE4, ATTRIBUTE5, AMOUNT_DR, 
+    AMOUNT_CR, DESCRIPTION, CREATED_BY, CREATED_DATE, UPDATED_BY, UPDATED_DATE, SEQ_NUM
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from HAE_TXN_PROCESS_LINE
+    where TXN_LINE_ID = #{txnLineId,jdbcType=DECIMAL}
+  </select>
+   <select id="selectByHeaderID" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from HAE_TXN_PROCESS_LINE
+    where TXN_HEADER_ID = #{txnProcLine.txnHeaderId,jdbcType=DECIMAL}
+  </select>
+   <select id="selectCountByHeaderId" resultType="java.lang.Long" >
+    select 
+    count(*)
+    from HAE_TXN_PROCESS_LINE
+    where TXN_HEADER_ID = #{txnProcLine.txnHeaderId,jdbcType=DECIMAL}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from HAE_TXN_PROCESS_LINE
+    where TXN_LINE_ID = #{txnLineId,jdbcType=DECIMAL}
+  </delete>
+  <insert id="insert" parameterType="com.hausontech.hrs.bean.transactionProcess.TransactionProcessLine" >
+    insert into HAE_TXN_PROCESS_LINE (TXN_LINE_ID, TXN_HEADER_ID, LEDGER_ID, 
+      FIN_ELEMENT, SEGMENT1, SEGMENT2, 
+      SEGMENT3, SEGMENT4, SEGMENT5, 
+      SEGMENT6, SEGMENT7, SEGMENT8, 
+      SEGMENT9, SEGMENT10, SEGMENT11, 
+      SEGMENT12, SEGMENT13, SEGMENT14, 
+      SEGMENT15, SEGMENT16, SEGMENT17, 
+      SEGMENT18, SEGMENT19, SEGMENT20, 
+      ATTRIBUTE1, ATTRIBUTE2, ATTRIBUTE3, 
+      ATTRIBUTE4, ATTRIBUTE5, AMOUNT_DR, 
+      AMOUNT_CR, DESCRIPTION, CREATED_BY, 
+      CREATED_DATE, UPDATED_BY, UPDATED_DATE, 
+      SEQ_NUM)
+    values (hae_txn_process_line_s.nextval, #{txnHeaderId,jdbcType=DECIMAL}, #{ledgerId,jdbcType=DECIMAL}, 
+      #{finElement,jdbcType=VARCHAR}, #{segment1,jdbcType=VARCHAR}, #{segment2,jdbcType=VARCHAR}, 
+      #{segment3,jdbcType=VARCHAR}, #{segment4,jdbcType=VARCHAR}, #{segment5,jdbcType=VARCHAR}, 
+      #{segment6,jdbcType=VARCHAR}, #{segment7,jdbcType=VARCHAR}, #{segment8,jdbcType=VARCHAR}, 
+      #{segment9,jdbcType=VARCHAR}, #{segment10,jdbcType=VARCHAR}, #{segment11,jdbcType=VARCHAR}, 
+      #{segment12,jdbcType=VARCHAR}, #{segment13,jdbcType=VARCHAR}, #{segment14,jdbcType=VARCHAR}, 
+      #{segment15,jdbcType=VARCHAR}, #{segment16,jdbcType=VARCHAR}, #{segment17,jdbcType=VARCHAR}, 
+      #{segment18,jdbcType=VARCHAR}, #{segment19,jdbcType=VARCHAR}, #{segment20,jdbcType=VARCHAR}, 
+      #{attribute1,jdbcType=VARCHAR}, #{attribute2,jdbcType=VARCHAR}, #{attribute3,jdbcType=VARCHAR}, 
+      #{attribute4,jdbcType=VARCHAR}, #{attribute5,jdbcType=VARCHAR}, #{amountDR,jdbcType=DECIMAL}, 
+      #{amountCR,jdbcType=DECIMAL}, #{description,jdbcType=VARCHAR}, #{createdBy,jdbcType=VARCHAR}, 
+      #{creationDate,jdbcType=TIMESTAMP}, #{lastUpdatedBy,jdbcType=VARCHAR}, #{lastUpdateDate,jdbcType=TIMESTAMP}, 
+      #{seqNumber,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hausontech.hrs.bean.transactionProcess.TransactionProcessLine" >
+    insert into HAE_TXN_PROCESS_LINE
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="txnLineId != null" >
+        TXN_LINE_ID,
+      </if>
+      <if test="txnHeaderId != null" >
+        TXN_HEADER_ID,
+      </if>
+      <if test="ledgerId != null" >
+        LEDGER_ID,
+      </if>
+      <if test="finElement != null" >
+        FIN_ELEMENT,
+      </if>
+      <if test="segment1 != null" >
+        SEGMENT1,
+      </if>
+      <if test="segment2 != null" >
+        SEGMENT2,
+      </if>
+      <if test="segment3 != null" >
+        SEGMENT3,
+      </if>
+      <if test="segment4 != null" >
+        SEGMENT4,
+      </if>
+      <if test="segment5 != null" >
+        SEGMENT5,
+      </if>
+      <if test="segment6 != null" >
+        SEGMENT6,
+      </if>
+      <if test="segment7 != null" >
+        SEGMENT7,
+      </if>
+      <if test="segment8 != null" >
+        SEGMENT8,
+      </if>
+      <if test="segment9 != null" >
+        SEGMENT9,
+      </if>
+      <if test="segment10 != null" >
+        SEGMENT10,
+      </if>
+      <if test="segment11 != null" >
+        SEGMENT11,
+      </if>
+      <if test="segment12 != null" >
+        SEGMENT12,
+      </if>
+      <if test="segment13 != null" >
+        SEGMENT13,
+      </if>
+      <if test="segment14 != null" >
+        SEGMENT14,
+      </if>
+      <if test="segment15 != null" >
+        SEGMENT15,
+      </if>
+      <if test="segment16 != null" >
+        SEGMENT16,
+      </if>
+      <if test="segment17 != null" >
+        SEGMENT17,
+      </if>
+      <if test="segment18 != null" >
+        SEGMENT18,
+      </if>
+      <if test="segment19 != null" >
+        SEGMENT19,
+      </if>
+      <if test="segment20 != null" >
+        SEGMENT20,
+      </if>
+      <if test="attribute1 != null" >
+        ATTRIBUTE1,
+      </if>
+      <if test="attribute2 != null" >
+        ATTRIBUTE2,
+      </if>
+      <if test="attribute3 != null" >
+        ATTRIBUTE3,
+      </if>
+      <if test="attribute4 != null" >
+        ATTRIBUTE4,
+      </if>
+      <if test="attribute5 != null" >
+        ATTRIBUTE5,
+      </if>
+      <if test="amountDR != null" >
+        AMOUNT_DR,
+      </if>
+      <if test="amountCR != null" >
+        AMOUNT_CR,
+      </if>
+      <if test="description != null" >
+        DESCRIPTION,
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY,
+      </if>
+      <if test="creationDate != null" >
+        CREATED_DATE,
+      </if>
+      <if test="lastUpdatedBy != null" >
+        UPDATED_BY,
+      </if>
+      <if test="lastUpdateDate != null" >
+        UPDATED_DATE,
+      </if>
+      <if test="seqNumber != null" >
+        SEQ_NUM,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="txnLineId != null" >
+        hae_txn_process_line_s.nextval,
+      </if>
+      <if test="txnHeaderId != null" >
+        #{txnHeaderId,jdbcType=DECIMAL},
+      </if>
+      <if test="ledgerId != null" >
+        #{ledgerId,jdbcType=DECIMAL},
+      </if>
+      <if test="finElement != null" >
+        #{finElement,jdbcType=VARCHAR},
+      </if>
+      <if test="segment1 != null" >
+        #{segment1,jdbcType=VARCHAR},
+      </if>
+      <if test="segment2 != null" >
+        #{segment2,jdbcType=VARCHAR},
+      </if>
+      <if test="segment3 != null" >
+        #{segment3,jdbcType=VARCHAR},
+      </if>
+      <if test="segment4 != null" >
+        #{segment4,jdbcType=VARCHAR},
+      </if>
+      <if test="segment5 != null" >
+        #{segment5,jdbcType=VARCHAR},
+      </if>
+      <if test="segment6 != null" >
+        #{segment6,jdbcType=VARCHAR},
+      </if>
+      <if test="segment7 != null" >
+        #{segment7,jdbcType=VARCHAR},
+      </if>
+      <if test="segment8 != null" >
+        #{segment8,jdbcType=VARCHAR},
+      </if>
+      <if test="segment9 != null" >
+        #{segment9,jdbcType=VARCHAR},
+      </if>
+      <if test="segment10 != null" >
+        #{segment10,jdbcType=VARCHAR},
+      </if>
+      <if test="segment11 != null" >
+        #{segment11,jdbcType=VARCHAR},
+      </if>
+      <if test="segment12 != null" >
+        #{segment12,jdbcType=VARCHAR},
+      </if>
+      <if test="segment13 != null" >
+        #{segment13,jdbcType=VARCHAR},
+      </if>
+      <if test="segment14 != null" >
+        #{segment14,jdbcType=VARCHAR},
+      </if>
+      <if test="segment15 != null" >
+        #{segment15,jdbcType=VARCHAR},
+      </if>
+      <if test="segment16 != null" >
+        #{segment16,jdbcType=VARCHAR},
+      </if>
+      <if test="segment17 != null" >
+        #{segment17,jdbcType=VARCHAR},
+      </if>
+      <if test="segment18 != null" >
+        #{segment18,jdbcType=VARCHAR},
+      </if>
+      <if test="segment19 != null" >
+        #{segment19,jdbcType=VARCHAR},
+      </if>
+      <if test="segment20 != null" >
+        #{segment20,jdbcType=VARCHAR},
+      </if>
+      <if test="attribute1 != null" >
+        #{attribute1,jdbcType=VARCHAR},
+      </if>
+      <if test="attribute2 != null" >
+        #{attribute2,jdbcType=VARCHAR},
+      </if>
+      <if test="attribute3 != null" >
+        #{attribute3,jdbcType=VARCHAR},
+      </if>
+      <if test="attribute4 != null" >
+        #{attribute4,jdbcType=VARCHAR},
+      </if>
+      <if test="attribute5 != null" >
+        #{attribute5,jdbcType=VARCHAR},
+      </if>
+      <if test="amountDR != null" >
+        #{amountDR,jdbcType=DECIMAL},
+      </if>
+      <if test="amountCR != null" >
+        #{amountCR,jdbcType=DECIMAL},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="creationDate != null" >
+        #{creationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdatedBy != null" >
+        #{lastUpdatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateDate != null" >
+        #{lastUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="seqNumber != null" >
+        #{seqNumber,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hausontech.hrs.bean.transactionProcess.TransactionProcessLine" >
+    update HAE_TXN_PROCESS_LINE
+    <set >
+      <if test="txnHeaderId != null" >
+        TXN_HEADER_ID = #{txnHeaderId,jdbcType=DECIMAL},
+      </if>
+      <if test="ledgerId != null" >
+        LEDGER_ID = #{ledgerId,jdbcType=DECIMAL},
+      </if>
+      <if test="finElement != null" >
+        FIN_ELEMENT = #{finElement,jdbcType=VARCHAR},
+      </if>
+      <if test="segment1 != null" >
+        SEGMENT1 = #{segment1,jdbcType=VARCHAR},
+      </if>
+      <if test="segment2 != null" >
+        SEGMENT2 = #{segment2,jdbcType=VARCHAR},
+      </if>
+      <if test="segment3 != null" >
+        SEGMENT3 = #{segment3,jdbcType=VARCHAR},
+      </if>
+      <if test="segment4 != null" >
+        SEGMENT4 = #{segment4,jdbcType=VARCHAR},
+      </if>
+      <if test="segment5 != null" >
+        SEGMENT5 = #{segment5,jdbcType=VARCHAR},
+      </if>
+      <if test="segment6 != null" >
+        SEGMENT6 = #{segment6,jdbcType=VARCHAR},
+      </if>
+      <if test="segment7 != null" >
+        SEGMENT7 = #{segment7,jdbcType=VARCHAR},
+      </if>
+      <if test="segment8 != null" >
+        SEGMENT8 = #{segment8,jdbcType=VARCHAR},
+      </if>
+      <if test="segment9 != null" >
+        SEGMENT9 = #{segment9,jdbcType=VARCHAR},
+      </if>
+      <if test="segment10 != null" >
+        SEGMENT10 = #{segment10,jdbcType=VARCHAR},
+      </if>
+      <if test="segment11 != null" >
+        SEGMENT11 = #{segment11,jdbcType=VARCHAR},
+      </if>
+      <if test="segment12 != null" >
+        SEGMENT12 = #{segment12,jdbcType=VARCHAR},
+      </if>
+      <if test="segment13 != null" >
+        SEGMENT13 = #{segment13,jdbcType=VARCHAR},
+      </if>
+      <if test="segment14 != null" >
+        SEGMENT14 = #{segment14,jdbcType=VARCHAR},
+      </if>
+      <if test="segment15 != null" >
+        SEGMENT15 = #{segment15,jdbcType=VARCHAR},
+      </if>
+      <if test="segment16 != null" >
+        SEGMENT16 = #{segment16,jdbcType=VARCHAR},
+      </if>
+      <if test="segment17 != null" >
+        SEGMENT17 = #{segment17,jdbcType=VARCHAR},
+      </if>
+      <if test="segment18 != null" >
+        SEGMENT18 = #{segment18,jdbcType=VARCHAR},
+      </if>
+      <if test="segment19 != null" >
+        SEGMENT19 = #{segment19,jdbcType=VARCHAR},
+      </if>
+      <if test="segment20 != null" >
+        SEGMENT20 = #{segment20,jdbcType=VARCHAR},
+      </if>
+      <if test="attribute1 != null" >
+        ATTRIBUTE1 = #{attribute1,jdbcType=VARCHAR},
+      </if>
+      <if test="attribute2 != null" >
+        ATTRIBUTE2 = #{attribute2,jdbcType=VARCHAR},
+      </if>
+      <if test="attribute3 != null" >
+        ATTRIBUTE3 = #{attribute3,jdbcType=VARCHAR},
+      </if>
+      <if test="attribute4 != null" >
+        ATTRIBUTE4 = #{attribute4,jdbcType=VARCHAR},
+      </if>
+      <if test="attribute5 != null" >
+        ATTRIBUTE5 = #{attribute5,jdbcType=VARCHAR},
+      </if>
+      <if test="amountDR != null" >
+        AMOUNT_DR = #{amountDR,jdbcType=DECIMAL},
+      </if>
+      <if test="amountCR != null" >
+        AMOUNT_CR = #{amountCR,jdbcType=DECIMAL},
+      </if>
+      <if test="description != null" >
+        DESCRIPTION = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="creationDate != null" >
+        CREATED_DATE = #{creationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdatedBy != null" >
+        UPDATED_BY = #{lastUpdatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateDate != null" >
+        UPDATED_DATE = #{lastUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="seqNumber != null" >
+        SEQ_NUM = #{seqNumber,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where TXN_LINE_ID = #{txnLineId,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hausontech.hrs.bean.transactionProcess.TransactionProcessLine" >
+    update HAE_TXN_PROCESS_LINE
+    set TXN_HEADER_ID = #{txnHeaderId,jdbcType=DECIMAL},
+      LEDGER_ID = #{ledgerId,jdbcType=DECIMAL},
+      FIN_ELEMENT = #{finElement,jdbcType=VARCHAR},
+      SEGMENT1 = #{segment1,jdbcType=VARCHAR},
+      SEGMENT2 = #{segment2,jdbcType=VARCHAR},
+      SEGMENT3 = #{segment3,jdbcType=VARCHAR},
+      SEGMENT4 = #{segment4,jdbcType=VARCHAR},
+      SEGMENT5 = #{segment5,jdbcType=VARCHAR},
+      SEGMENT6 = #{segment6,jdbcType=VARCHAR},
+      SEGMENT7 = #{segment7,jdbcType=VARCHAR},
+      SEGMENT8 = #{segment8,jdbcType=VARCHAR},
+      SEGMENT9 = #{segment9,jdbcType=VARCHAR},
+      SEGMENT10 = #{segment10,jdbcType=VARCHAR},
+      SEGMENT11 = #{segment11,jdbcType=VARCHAR},
+      SEGMENT12 = #{segment12,jdbcType=VARCHAR},
+      SEGMENT13 = #{segment13,jdbcType=VARCHAR},
+      SEGMENT14 = #{segment14,jdbcType=VARCHAR},
+      SEGMENT15 = #{segment15,jdbcType=VARCHAR},
+      SEGMENT16 = #{segment16,jdbcType=VARCHAR},
+      SEGMENT17 = #{segment17,jdbcType=VARCHAR},
+      SEGMENT18 = #{segment18,jdbcType=VARCHAR},
+      SEGMENT19 = #{segment19,jdbcType=VARCHAR},
+      SEGMENT20 = #{segment20,jdbcType=VARCHAR},
+      ATTRIBUTE1 = #{attribute1,jdbcType=VARCHAR},
+      ATTRIBUTE2 = #{attribute2,jdbcType=VARCHAR},
+      ATTRIBUTE3 = #{attribute3,jdbcType=VARCHAR},
+      ATTRIBUTE4 = #{attribute4,jdbcType=VARCHAR},
+      ATTRIBUTE5 = #{attribute5,jdbcType=VARCHAR},
+      AMOUNT_DR = #{amountDR,jdbcType=DECIMAL},
+      AMOUNT_CR = #{amountCR,jdbcType=DECIMAL},
+      DESCRIPTION = #{description,jdbcType=VARCHAR},
+      CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      CREATED_DATE = #{creationDate,jdbcType=TIMESTAMP},
+      UPDATED_BY = #{lastUpdatedBy,jdbcType=VARCHAR},
+      UPDATED_DATE = #{lastUpdateDate,jdbcType=TIMESTAMP},
+      SEQ_NUM = #{seqNumber,jdbcType=DECIMAL}
+    where TXN_LINE_ID = #{txnLineId,jdbcType=DECIMAL}
+  </update>
+</mapper>

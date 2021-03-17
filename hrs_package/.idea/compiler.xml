@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="hrs-bean" />
+        <module name="hrs-service" />
+        <module name="hrs-dao" />
+        <module name="hrs" />
+        <module name="hrs-api" />
+        <module name="hrs-exceptions" />
+        <module name="hrs-utils" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="hrs" target="1.8" />
+      <module name="hrs-api" target="1.8" />
+      <module name="hrs-bean" target="1.8" />
+      <module name="hrs-dao" target="1.8" />
+      <module name="hrs-exceptions" target="1.8" />
+      <module name="hrs-service" target="1.8" />
+      <module name="hrs-utils" target="1.8" />
+      <module name="hrs_package" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="hrs" options="-Xlint:all" />
+      <module name="hrs-api" options="-Xlint:all" />
+      <module name="hrs-bean" options="-Xlint:all" />
+      <module name="hrs-dao" options="-Xlint:all" />
+      <module name="hrs-exceptions" options="-Xlint:all" />
+      <module name="hrs-service" options="-Xlint:all" />
+      <module name="hrs-utils" options="-Xlint:all" />
+    </option>
+  </component>
+</project>

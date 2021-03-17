@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hausontech.hrs.daoImpl.dataPorcessing.mapper.FinElementMapper" >
+  
+  
+  <select id="getFinElementMapForDisplay" resultType="java.util.Map">
+	SELECT lookupVal.LOOKUP_VALUE finEleCode, lookupVal.DESCRIPTION finEleName
+      	FROM HRS_CORE_LOOKUP_TYPE lookupType, HRS_CORE_LOOKUP_VALUE lookupVal
+       where lookupType.Lookup_Type_Id = lookupVal.Lookup_Type_Id and lookupType.Lookup_Type='HRS_CORE_FIN_ELEMENT'
+       ORDER BY finEleCode
+	</select>
+  
+</mapper>

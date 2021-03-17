@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.apache.hive:metastore:6.1.0.1-196">
+    <CLASSES>
+      <root url="jar://D:/java/apache-maven-3.3.9/apache-maven-3.3.9/conf/RepMavean/org/apache/hive/metastore/6.1.0.1-196/metastore-6.1.0.1-196.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://D:/java/apache-maven-3.3.9/apache-maven-3.3.9/conf/RepMavean/org/apache/hive/metastore/6.1.0.1-196/metastore-6.1.0.1-196-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://D:/java/apache-maven-3.3.9/apache-maven-3.3.9/conf/RepMavean/org/apache/hive/metastore/6.1.0.1-196/metastore-6.1.0.1-196-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

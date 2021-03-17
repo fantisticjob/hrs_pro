@@ -1,0 +1,1816 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper
+	namespace="com.hausontech.hrs.daoImpl.reportSetting.mapper.RptSettingMapper">
+	<resultMap id="itemLookUpHeaderResultMap"
+		type="com.hausontech.hrs.bean.reportSetting.ItemLookUpHeaderBean">
+		<result column="LOOKUP_TYPE_ID" property="lookUpTypeId"
+			jdbcType="DECIMAL" />
+		<result column="LOOKUP_TYPE" property="lookUpType" jdbcType="VARCHAR" />
+		<result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+		<result column="CREATION_DATE" property="creationDate"
+			jdbcType="TIMESTAMP" />
+		<result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+		<result column="LAST_UPDATE_DATE" property="lastUpdateDate"
+			jdbcType="TIMESTAMP" />
+		<result column="LAST_UPDATED_BY" property="lastUpdatedBy"
+			jdbcType="VARCHAR" />
+	</resultMap>
+
+	<resultMap id="BaseResultMapCalculationList"
+		type="com.hausontech.hrs.bean.reportSetting.ItemRowCalculationBean">
+		<result column="ROW_CAL_ID" property="rowCalId" jdbcType="DECIMAL" />
+		<result column="ROW_ID" property="rowId" jdbcType="DECIMAL" />
+		<result column="ROW_CAL_NUM" property="rowCalNum" jdbcType="DECIMAL" />
+		<result column="SIGN" property="sign" jdbcType="VARCHAR" />
+		<result column="CAL_ITEM_CODE" property="calItemCode" jdbcType="VARCHAR" />
+		<result column="CREATION_DATE" property="creationDate"
+			jdbcType="TIMESTAMP" />
+		<result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+		<result column="LAST_UPDATE_DATE" property="lastUpdateDate"
+			jdbcType="TIMESTAMP" />
+		<result column="LAST_UPDATED_BY" property="lastUpdatedBy"
+			jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="AUDIT_QUERY_STRING">
+		, CREATION_DATE,
+		CREATED_BY,LAST_UPDATE_DATE,LAST_UPDATED_BY
+	</sql>
+
+	<sql id="AUDIT_QUERY_STRING_L">
+		,#{creationDate},
+		#{createdBy},#{lastUpdateDate},#{lastUpdatedBy}
+	</sql>
+	<resultMap id="BaseResultMapSetLineList"
+		type="com.hausontech.hrs.bean.reportSetting.ItemRowSetLineBean">
+		<result column="ROW_ID" property="rowId" jdbcType="DECIMAL" />
+		<result column="ROW_SET_ID" property="rowSetId" jdbcType="DECIMAL" />
+		<result column="ROW_NUM" property="rowNum" jdbcType="VARCHAR" />
+		<result column="LINE_NUM" property="lineNum" jdbcType="DECIMAL" />
+		<result column="ROW_NAME" property="rowName" jdbcType="VARCHAR" />
+		<result column="CHANGE_SIGN" property="changeSign" jdbcType="VARCHAR" />
+		<result column="DISPLAY_FLAG" property="displayFlag" jdbcType="VARCHAR" />
+		<result column="EXTERNAL_CODE" property="externalCode"
+			jdbcType="VARCHAR" />
+		<result column="rule_Code" property="ruleCode" jdbcType="VARCHAR" />
+		<result column="ATTRIBUTE1" property="attribute1" jdbcType="VARCHAR" />
+		<result column="ATTRIBUTE2" property="attribute2" jdbcType="VARCHAR" />
+		<result column="ATTRIBUTE3" property="attribute3" jdbcType="VARCHAR" />
+		<result column="ATTRIBUTE4" property="attribute4" jdbcType="VARCHAR" />
+		<result column="ATTRIBUTE5" property="attribute5" jdbcType="VARCHAR" />
+		<result column="ATTRIBUTE6" property="attribute6" jdbcType="VARCHAR" />
+		<result column="ATTRIBUTE7" property="attribute7" jdbcType="VARCHAR" />
+		<result column="ATTRIBUTE8" property="attribute8" jdbcType="VARCHAR" />
+		<result column="ATTRIBUTE9" property="attribute9" jdbcType="VARCHAR" />
+		<result column="ATTRIBUTE10" property="attribute10" jdbcType="VARCHAR" />
+		<result column="CREATION_DATE" property="creationDate"
+			jdbcType="TIMESTAMP" />
+		<result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+		<result column="LAST_UPDATE_DATE" property="lastUpdateDate"
+			jdbcType="TIMESTAMP" />
+		<result column="LAST_UPDATED_BY" property="lastUpdatedBy"
+			jdbcType="VARCHAR" />
+	</resultMap>
+
+	<resultMap id="BaseResultMapHeaderList"
+		type="com.hausontech.hrs.bean.reportSetting.ItemRowSetHeaderBean">
+		<result column="ROW_SET_ID" property="rowSetId" jdbcType="DECIMAL" />
+		<result column="ROW_SET_NAME" property="rowSetName" jdbcType="VARCHAR" />
+		<result column="RULE_CODE" property="ruleCode" jdbcType="VARCHAR" />
+		<result column="EXT_ITEM_TYPE" property="extItemType" jdbcType="VARCHAR" />
+		<result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+		<result column="CREATION_DATE" property="creationDate"
+			jdbcType="TIMESTAMP" />
+		<result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+		<result column="LAST_UPDATE_DATE" property="lastUpdateDate"
+			jdbcType="TIMESTAMP" />
+		<result column="LAST_UPDATED_BY" property="lastUpdatedBy"
+			jdbcType="VARCHAR" />
+	</resultMap>
+
+
+	<!-- 分页sql片段 -->
+	<sql id="pageBefore">
+		SELECT * FROM ( select * from (
+	</sql>
+	<sql id="pageAfter">
+		) innerA where 1=1
+		<if test="rowStartIndex != 0 and rowCount != 0">
+			and innerA.row_number &gt;=${rowStartIndex}
+		</if>
+		) outerB where 1=1
+		<if test="rowStartIndex != 0 and rowCount != 0">
+			and rownum &lt;= ${rowCount}
+		</if>
+	</sql>
+
+
+	<insert id="saveLookUpHeader"
+		parameterType="com.hausontech.hrs.bean.reportSetting.ItemLookUpHeaderBean">
+		insert into HRS_CORE_LOOKUP_TYPE (LOOKUP_TYPE_ID,
+		LOOKUP_TYPE,
+		DESCRIPTION,
+		CREATION_DATE, CREATED_BY, LAST_UPDATE_DATE,
+		LAST_UPDATED_BY) values
+		(#{lookUpTypeId,jdbcType=DECIMAL},
+		#{lookUpType,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR},
+		#{creationDate,jdbcType=TIMESTAMP},
+		#{createdBy,jdbcType=VARCHAR},
+		#{lastUpdateDate,jdbcType=TIMESTAMP},
+		#{lastUpdatedBy,jdbcType=VARCHAR})
+	</insert>
+
+	<!-- 修改值集 -->
+	<update id="updateLookUpHeader"
+		parameterType="com.hausontech.hrs.bean.reportSetting.ItemLookUpHeaderBean">
+		UPDATE HRS_CORE_LOOKUP_TYPE SET
+		LOOKUP_TYPE
+		=#{lookUpType,jdbcType=VARCHAR},
+		DESCRIPTION =#{description,jdbcType=VARCHAR},
+		LAST_UPDATE_DATE
+		=#{lastUpdateDate,jdbcType=TIMESTAMP},
+		LAST_UPDATED_BY =#{lastUpdatedBy,jdbcType=VARCHAR}
+		WHERE
+		LOOKUP_TYPE_ID=#{lookUpTypeId,jdbcType=DECIMAL}
+	</update>
+
+	<!-- 根据主键查询值集 -->
+	<select id="getLookUpHeaderByByPrimaryKey" parameterType="java.lang.Integer"
+		resultMap="itemLookUpHeaderResultMap">
+		SELECT LOOKUP_TYPE_ID, LOOKUP_TYPE, DESCRIPTION ,
+		CREATION_DATE, CREATED_BY, LAST_UPDATE_DATE, LAST_UPDATED_BY
+		FROM
+		HRS_CORE_LOOKUP_TYPE
+		WHERE LOOKUP_TYPE_ID= #{primaryKey}
+	</select>
+
+	<!-- 删除值集 -->
+	<delete id="deleteReferencedLookUpLine"
+		parameterType="com.hausontech.hrs.bean.reportSetting.ItemLookUpHeaderBean">
+		DELETE HRS_CORE_LOOKUP_VALUE WHERE
+		LOOKUP_TYPE_ID=#{lookUpTypeId}
+	</delete>
+
+	<!-- 删除值集 -->
+	<delete id="deleteLookUpHeader"
+		parameterType="com.hausontech.hrs.bean.reportSetting.ItemLookUpHeaderBean">
+		DELETE HRS_CORE_LOOKUP_TYPE WHERE
+		LOOKUP_TYPE_ID=#{lookUpTypeId}
+	</delete>
+	<!-- 根据rowId删除报表行定义记录 -->
+	<delete id="deleteRefRowSetLines" parameterType="java.lang.Integer">
+		DELETE
+		HRS_DEF_ROW WHERE
+		ROW_SET_ID=#{rowSetId}
+	</delete>
+	<!-- 删除报表行计算定义界面记录 -->
+	<delete id="deleteRowCalculationRecord" parameterType="java.lang.Long">
+		DELETE
+		HRS_DEF_ROW_CALCULATION
+		WHERE ROW_CAL_ID = #{rowCalId}
+	</delete>
+
+	<!-- 根据rowId删除报表行集定义记录 -->
+	<delete id="deleteRowSetRecord" parameterType="java.lang.Integer">
+		DELETE
+		HRS_DEF_ROW_SET WHERE
+		ROW_SET_ID=#{rowSetId}
+	</delete>
+	<!-- 根据rowId删除报表行计算定义记录 -->
+	<delete id="deleteRefRowCalculations" parameterType="java.lang.Long">
+		DELETE
+		HRS_DEF_ROW_CALCULATION WHERE
+		ROW_ID=#{rowId}
+	</delete>
+	<!-- 根据rowId删除报表行定义记录 -->
+	<delete id="deleteRowSetLineRecord" parameterType="java.lang.Long">
+		DELETE
+		HRS_DEF_ROW WHERE
+		ROW_ID=#{rowId}
+	</delete>
+
+	<sql id="lookUpHeaderCondition">
+		<choose>
+			<when test="lookUpTypeId != 0">
+				and LOOKUP_TYPE_ID=#{lookUpTypeId}
+			</when>
+			<otherwise>
+				<if test="lookUpType != null and lookUpType !=''">
+					and LOOKUP_TYPE like '%' || #{lookUpType} ||'%'
+				</if>
+				<if test="description != null and description !=''">
+					and DESCRIPTION like '%' || #{description} ||'%'
+				</if>
+			</otherwise>
+		</choose>
+	</sql>
+
+
+	<!-- 值集查询 -->
+	<select id="getLookUpHeaderList"
+		parameterType="com.hausontech.hrs.bean.reportSetting.ItemLookUpHeaderBean"
+		resultMap="itemLookUpHeaderResultMap">
+		<include refid="pageBefore" />
+		SELECT HRS_CORE_LOOKUP_TYPE.*
+		<if test="rowStartIndex != 0 and rowCount != 0">
+			, ROW_NUMBER() OVER (ORDER BY 1) AS row_number
+		</if>
+		FROM HRS_CORE_LOOKUP_TYPE
+		where 1=1
+		<include refid="lookUpHeaderCondition" />
+		<include refid="pageAfter" />
+	</select>
+	<!-- 获取计算行项目数据 -->
+	<select id="getCalItemListForCal" parameterType="java.lang.String"
+		resultType="java.util.Map">
+		SELECT
+		ITEM_CODE, DESCRIPTION, (ITEM_CODE || '_' ||
+		DESCRIPTION) AS DISP_NAME
+		FROM HRS_DEF_ITEM_HEADER
+		WHERE RULE_CODE =
+		#{ruleCode}
+		ORDER BY ITEM_CODE
+	</select>
+	<!-- 根据id获取行计算loopDimForm记录 -->
+	<select id="getRowSetLineByByPrimaryKey" parameterType="java.lang.Long"
+		resultMap="BaseResultMapSetLineList">
+		SELECT
+		a.ROW_ID, a.ROW_SET_ID, a.LINE_NUM, a.ROW_NAME,
+		a.ROW_NUM, a.CHANGE_SIGN,
+		a.DISPLAY_FLAG, a.EXTERNAL_CODE
+		,a.ATTRIBUTE1, a.ATTRIBUTE2, a.ATTRIBUTE3, a.ATTRIBUTE4, a.ATTRIBUTE5,
+		b.RULE_CODE
+		, a.CREATION_DATE, a.CREATED_BY, a.LAST_UPDATE_DATE,
+		a.LAST_UPDATED_BY
+		FROM HRS_DEF_ROW a, HRS_DEF_ROW_SET b
+		WHERE
+		a.ROW_SET_ID = b.ROW_SET_ID
+		AND a.ROW_ID= #{primaryKey}
+	</select>
+	<!-- 根据id获取行loopDimForm记录 -->
+	<select id="getRowSetHeaderByByPrimaryKey" parameterType="java.lang.Integer"
+		resultMap="BaseResultMapHeaderList">
+		SELECT
+		ROW_SET_ID, ROW_SET_NAME,RULE_CODE,EXT_ITEM_TYPE,
+		DESCRIPTION,CREATION_DATE,CREATED_BY
+		FROM HRS_DEF_ROW_SET
+		WHERE
+		ROW_SET_ID= #{primaryKey}
+	</select>
+	<!-- 根据行计算id获取行计算记录 -->
+	<select id="getRowCalculationRecordByPrimaryKey" parameterType="java.lang.Integer"
+		resultMap="BaseResultMapCalculationList">
+		SELECT ROW_CAL_ID,ROW_ID, ROW_CAL_NUM,SIGN,CAL_ITEM_CODE
+		FROM HRS_DEF_ROW_CALCULATION
+		WHERE ROW_CAL_ID=#{parseInt}
+	</select>
+
+	<!-- 获取复制表名数量 -->
+	<select id="getCountByCopyTableName" parameterType="java.lang.String"
+		resultType="java.lang.Integer">
+		select
+		count(*) COUNT from HRS_DEF_ROW_SET se where
+		substr(SE.ROW_SET_NAME,0,${length})=#{rowSetName}
+	</select>
+
+	<!-- 获取行集循环组数据 -->
+	<select id="getRuleHeaderListForSet" resultType="java.util.Map">
+		SELECT
+		HRS_DEF_RULE_HEADER.*, (RULE_CODE || '_' || DESCRIPTION) AS DISP_NAME
+		<if test="rowStartIndex != 0 and rowCount != 0">
+			, ROW_NUMBER() OVER (ORDER BY RULE_CODE) AS row_number
+		</if>
+		FROM
+		HRS_DEF_RULE_HEADER
+	</select>
+	<!-- 根据rowSetId获取行记录 -->
+	<select id="getRowIdByRowSetId" resultType="java.util.Map">
+		select ROW_ID from
+		HRS_DEF_ROW where ROW_SET_ID=#{rowSetId}
+	</select>
+	<!-- 根据rowId获取行计算记录 -->
+	<select id="getRowCalIdByRowId" resultType="java.util.Map">
+		select CAL.ROW_CAL_ID
+		from HRS_DEF_ROW_CALCULATION cal where CAL.ROW_ID=#{rowId}
+	</select>
+
+
+	<!-- 获取报表行集定义界面数据 -->
+	<select id="getRowSetHeaderList" resultMap="BaseResultMapHeaderList"
+		parameterType="java.lang.String">
+		SELECT
+		outerB.*
+		FROM ( select * from (
+		SELECT
+		<choose>
+			<when test="start != 0 and count != 0">
+				ROW_SET_ID,ROW_SET_NAME,RULE_CODE,EXT_ITEM_TYPE,DESCRIPTION,CREATION_DATE,CREATED_BY,LAST_UPDATE_DATE,LAST_UPDATED_BY,
+				ROW_NUMBER() OVER (ORDER BY 1) AS row_number
+			</when>
+			<otherwise>
+				ROW_SET_ID,ROW_SET_NAME,RULE_CODE,EXT_ITEM_TYPE,DESCRIPTION,CREATION_DATE,CREATED_BY,LAST_UPDATE_DATE,LAST_UPDATED_BY
+			</otherwise>
+		</choose>
+		from HRS_DEF_ROW_SET
+		) innerA where innerA.row_number &gt;=${start}
+		<if test="rowSetName != null and rowSetName != '' ">
+			and row_Set_Name like '%' || #{rowSetName} || '%'
+		</if>
+		<if test="description != null and description != '' ">
+			and description like '%' || #{description} || '%'
+		</if>
+		) outerB
+		where rownum &lt;= ${count}
+	</select>
+	<!-- 获取报表行定义界面数据 -->
+	<select id="getRowSetLineList" resultMap="BaseResultMapSetLineList"
+		parameterType="java.lang.String">
+		SELECT
+		outerB.*
+		FROM ( select * from (
+		SELECT
+		<choose>
+			<when test="start != 0 and count != 0">
+				HRS_DEF_ROW.*, ROW_NUMBER() OVER (ORDER BY 1) AS
+				row_number
+			</when>
+			<otherwise>
+				HRS_DEF_ROW.*
+			</otherwise>
+		</choose>
+		from HRS_DEF_ROW
+		) innerA where innerA.row_number &gt;=${start}
+		and
+		innerA.row_Set_id = #{rowSetHeaderId}
+		<if test="rowName != null and rowName != ''">
+			and innerA.row_Name like '%' || #{rowName} || '%'
+		</if>
+		) outerB
+		where rownum &lt;= ${count}
+		order by outerB.LINE_NUM
+	</select>
+	<!-- 获取报表行计算定义界面数据 -->
+	<select id="getRowCalculationList" resultMap="BaseResultMapCalculationList"
+		parameterType="java.lang.String">
+		SELECT
+		outerB.*
+		FROM ( select * from (
+		SELECT
+		<choose>
+			<when test="start != 0 and count != 0">
+				HRS_DEF_ROW_CALCULATION.*, ROW_NUMBER() OVER (ORDER
+				BY 1) AS row_number
+			</when>
+			<otherwise>
+				HRS_DEF_ROW_CALCULATION.*
+			</otherwise>
+		</choose>
+		from HRS_DEF_ROW_CALCULATION
+		) innerA where innerA.row_number
+		&gt;=${start}
+		and
+		innerA.ROW_ID = #{rowSetLineId}
+		<if test="calItemCode != null and calItemCode != ''">
+			and innerA.CAL_ITEM_CODE like '%' || #{calItemCode} || '%'
+		</if>
+		) outerB
+		where rownum &lt;= ${count}
+		ORDER BY outerB.ROW_CAL_NUM
+	</select>
+
+	<!-- 获取报表行集定义界面数据总数 -->
+	<select id="countByRowSetHeaderBean" parameterType="java.lang.String"
+		resultType="java.lang.Integer">
+		select count(1) from HRS_DEF_ROW_SET
+		<where>
+			<if test="rowSetName != null and rowSetName != '' ">
+				row_Set_Name like '%' || #{rowSetName} || '%'
+			</if>
+			<if test="description != null and description != '' ">
+				and description like '%' || #{description} || '%'
+			</if>
+		</where>
+	</select>
+	<!-- 获取报表行计算定义界面数据总数 -->
+	<select id="countByRowCalculationBean" parameterType="java.lang.String"
+		resultType="java.lang.Integer">
+		select count(1) from HRS_DEF_ROW_CALCULATION
+		where
+		row_id=#{rowSetLineId}
+		<if test="calItemCode != null and calItemCode != '' ">
+			and CAL_ITEM_CODE like '%' || #{calItemCode} || '%'
+		</if>
+	</select>
+
+	<!-- 查询值集记录条数 -->
+	<select id="countByLookUpHeaderBean"
+		parameterType="com.hausontech.hrs.bean.reportSetting.ItemLookUpHeaderBean"
+		resultType="java.lang.Integer">
+		select count(1) from HRS_CORE_LOOKUP_TYPE
+		where 1=1
+		<include refid="lookUpHeaderCondition" />
+	</select>
+	<!-- 获取报表行定义界面数据总数 -->
+	<select id="countByRowSetLineBean" parameterType="java.lang.String"
+		resultType="java.lang.Integer">
+		select count(1) from HRS_DEF_ROW
+		where
+		row_set_id=#{rowSetHeaderId}
+		<if test="rowName != null and rowName != '' ">
+			and row_Name like '%' || #{rowName} || '%'
+		</if>
+	</select>
+
+
+	<resultMap id="lookUpValueResultMap"
+		type="com.hausontech.hrs.bean.reportSetting.ItemLookUpLineBean">
+		<result column="LOOKUP_VALUE_ID" property="lookUpValueId"
+			jdbcType="DECIMAL" />
+		<result column="LOOKUP_TYPE_ID" property="lookUpTypeId"
+			jdbcType="DECIMAL" />
+		<result column="LOOKUP_VALUE" property="lookUpValue" jdbcType="VARCHAR" />
+		<result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+		<result column="START_DATE" property="startDate" jdbcType="TIMESTAMP" />
+		<result column="END_DATE" property="endDate" jdbcType="TIMESTAMP" />
+		<result column="ATTRIBUTE1" property="attribute1" jdbcType="VARCHAR" />
+		<result column="ATTRIBUTE2" property="attribute2" jdbcType="VARCHAR" />
+		<result column="ATTRIBUTE3" property="attribute3" jdbcType="VARCHAR" />
+		<result column="ATTRIBUTE4" property="attribute4" jdbcType="VARCHAR" />
+		<result column="ATTRIBUTE5" property="attribute5" jdbcType="VARCHAR" />
+		<result column="ATTRIBUTE6" property="attribute6" jdbcType="VARCHAR" />
+		<result column="ATTRIBUTE7" property="attribute7" jdbcType="VARCHAR" />
+		<result column="ATTRIBUTE8" property="attribute8" jdbcType="VARCHAR" />
+		<result column="ATTRIBUTE9" property="attribute9" jdbcType="VARCHAR" />
+		<result column="ATTRIBUTE10" property="attribute10" jdbcType="VARCHAR" />
+		<result column="CREATION_DATE" property="creationDate"
+			jdbcType="TIMESTAMP" />
+		<result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+		<result column="LAST_UPDATE_DATE" property="lastUpdateDate"
+			jdbcType="TIMESTAMP" />
+		<result column="LAST_UPDATED_BY" property="lastUpdatedBy"
+			jdbcType="VARCHAR" />
+	</resultMap>
+
+	<!-- 插入值集行记录 -->
+	<insert id="saveLookUpLineRecord"
+		parameterType="com.hausontech.hrs.bean.reportSetting.ItemLookUpLineBean">
+		insert into HRS_CORE_LOOKUP_VALUE (LOOKUP_VALUE_ID,
+		LOOKUP_TYPE_ID,
+		LOOKUP_VALUE,
+		DESCRIPTION, START_DATE, END_DATE,
+		ATTRIBUTE1, ATTRIBUTE2, ATTRIBUTE3, ATTRIBUTE4,
+		ATTRIBUTE5, ATTRIBUTE6,
+		ATTRIBUTE7, ATTRIBUTE8, ATTRIBUTE9,
+		ATTRIBUTE10,
+		CREATION_DATE,
+		CREATED_BY, LAST_UPDATE_DATE, LAST_UPDATED_BY) values
+		(#{lookUpValueId,jdbcType=DECIMAL},
+		#{lookUpTypeId,jdbcType=DECIMAL},
+		#{lookUpValue,jdbcType=VARCHAR},
+		#{description,jdbcType=VARCHAR},
+		#{startDate,jdbcType=TIMESTAMP},
+		#{endDate,jdbcType=TIMESTAMP},
+		#{attribute1,jdbcType=VARCHAR},
+		#{attribute2,jdbcType=VARCHAR},
+		#{attribute3,jdbcType=VARCHAR},
+		#{attribute4,jdbcType=VARCHAR},
+		#{attribute5,jdbcType=VARCHAR},
+		#{attribute6,jdbcType=VARCHAR},
+		#{attribute7,jdbcType=VARCHAR},
+		#{attribute8,jdbcType=VARCHAR},
+		#{attribute9,jdbcType=VARCHAR},
+		#{attribute10,jdbcType=VARCHAR},
+		#{creationDate,jdbcType=TIMESTAMP},
+		#{createdBy,jdbcType=VARCHAR},
+		#{lastUpdateDate,jdbcType=TIMESTAMP},
+		#{lastUpdatedBy,jdbcType=VARCHAR})
+	</insert>
+	<!-- 增加报表行计算定义界面记录 -->
+	<insert id="saveRowCalculationRecord"
+		parameterType="com.hausontech.hrs.bean.reportSetting.ItemRowCalculationBean">
+		insert into HRS_DEF_ROW_CALCULATION (
+		ROW_CAL_ID,ROW_ID,
+		ROW_CAL_NUM,SIGN,CAL_ITEM_CODE,
+		CREATION_DATE,
+		CREATED_BY,
+		LAST_UPDATE_DATE, LAST_UPDATED_BY) values
+		(#{rowCalId,jdbcType=DECIMAL},
+		#{rowId,jdbcType=DECIMAL},
+		#{rowCalNum,jdbcType=DECIMAL}, #{sign,jdbcType=VARCHAR},
+		#{calItemCode,jdbcType=VARCHAR},
+		#{creationDate,jdbcType=TIMESTAMP},
+		#{createdBy,jdbcType=VARCHAR},
+		#{lastUpdateDate,jdbcType=TIMESTAMP},
+		#{lastUpdatedBy,jdbcType=VARCHAR})
+	</insert>
+	<!-- 增加报表行集定义记录 -->
+	<insert id="saveRowSetHeader"
+		parameterType="com.hausontech.hrs.bean.reportSetting.ItemRowSetHeaderBean">
+		insert into HRS_DEF_ROW_SET (
+		ROW_SET_ID,
+		ROW_SET_NAME,RULE_CODE,EXT_ITEM_TYPE, DESCRIPTION,
+		CREATION_DATE,CREATED_BY,LAST_UPDATE_DATE,LAST_UPDATED_BY) values
+		(#{rowSetId,jdbcType=DECIMAL}, #{rowSetName,jdbcType=VARCHAR},
+		#{ruleCode,jdbcType=VARCHAR}, #{extItemType,jdbcType=VARCHAR},
+		#{description,jdbcType=VARCHAR},
+		#{creationDate,jdbcType=TIMESTAMP},
+		#{createdBy,jdbcType=VARCHAR},
+		#{lastUpdateDate,jdbcType=TIMESTAMP},
+		#{lastUpdatedBy,jdbcType=VARCHAR})
+	</insert>
+	<!-- 增加报表行定义记录 -->
+	<insert id="saveRowSetLineRecord"
+		parameterType="com.hausontech.hrs.bean.reportSetting.ItemRowSetLineBean">
+		insert into HRS_DEF_ROW (ROW_ID,ROW_SET_ID, LINE_NUM,
+		ROW_NAME, ROW_NUM,CHANGE_SIGN,DISPLAY_FLAG,EXTERNAL_CODE,
+		ATTRIBUTE1,
+		ATTRIBUTE2, ATTRIBUTE3, ATTRIBUTE4,
+		ATTRIBUTE5, ATTRIBUTE6,
+		ATTRIBUTE7,
+		ATTRIBUTE8, ATTRIBUTE9,
+		ATTRIBUTE10,
+		CREATION_DATE,
+		CREATED_BY,
+		LAST_UPDATE_DATE, LAST_UPDATED_BY) values
+		(#{rowId,jdbcType=DECIMAL},
+		#{rowSetId,jdbcType=DECIMAL},
+		#{lineNum,jdbcType=DECIMAL},
+		#{rowName,jdbcType=VARCHAR},
+		#{rowNum,jdbcType=VARCHAR},
+		#{changeSign,jdbcType=VARCHAR}, #{displayFlag,jdbcType=VARCHAR},
+		#{externalCode,jdbcType=VARCHAR},
+		#{attribute1,jdbcType=VARCHAR},
+		#{attribute2,jdbcType=VARCHAR},
+		#{attribute3,jdbcType=VARCHAR},
+		#{attribute4,jdbcType=VARCHAR},
+		#{attribute5,jdbcType=VARCHAR},
+		#{attribute6,jdbcType=VARCHAR},
+		#{attribute7,jdbcType=VARCHAR},
+		#{attribute8,jdbcType=VARCHAR},
+		#{attribute9,jdbcType=VARCHAR},
+		#{attribute10,jdbcType=VARCHAR},
+		#{creationDate,jdbcType=TIMESTAMP},
+		#{createdBy,jdbcType=VARCHAR},
+		#{lastUpdateDate,jdbcType=TIMESTAMP},
+		#{lastUpdatedBy,jdbcType=VARCHAR})
+	</insert>
+
+	<!-- 更新、修改行记录 -->
+	<update id="updateLookUpLineRecord"
+		parameterType="com.hausontech.hrs.bean.reportSetting.ItemLookUpLineBean">
+		UPDATE HRS_CORE_LOOKUP_VALUE SET
+		LOOKUP_TYPE_ID =
+		#{lookUpTypeId,jdbcType=DECIMAL}, <!-- NVL(:lookUpTypeId,LOOKUP_TYPE_ID), -->
+		LOOKUP_VALUE = #{lookUpValue,jdbcType=VARCHAR}, <!-- NVL(:lookUpValue,LOOKUP_VALUE), -->
+		DESCRIPTION =#{description,jdbcType=VARCHAR}, <!-- NVL(:description,DESCRIPTION), -->
+		START_DATE = NVL(#{startDate,jdbcType=TIMESTAMP},START_DATE), <!--NVL(:startDate,START_DATE), -->
+		END_DATE = NVL(#{endDate,jdbcType=TIMESTAMP},END_DATE), <!--NVL(:endDate,END_DATE), -->
+		ATTRIBUTE1 = #{attribute1,jdbcType=VARCHAR}, <!--NVL(:attribute1,ATTRIBUTE1), -->
+		ATTRIBUTE2 = #{attribute2,jdbcType=VARCHAR}, <!--NVL(:attribute2,ATTRIBUTE2), -->
+		ATTRIBUTE3 = #{attribute3,jdbcType=VARCHAR}, <!--NVL(:attribute3,ATTRIBUTE3), -->
+		ATTRIBUTE4 = #{attribute4,jdbcType=VARCHAR}, <!--NVL(:attribute4,ATTRIBUTE4), -->
+		ATTRIBUTE5 = #{attribute5,jdbcType=VARCHAR}, <!--NVL(:attribute5,ATTRIBUTE5), -->
+		ATTRIBUTE6 = #{attribute6,jdbcType=VARCHAR}, <!--NVL(:attribute6,ATTRIBUTE6), -->
+		ATTRIBUTE7 = #{attribute7,jdbcType=VARCHAR}, <!--NVL(:attribute7,ATTRIBUTE7), -->
+		ATTRIBUTE8 = #{attribute8,jdbcType=VARCHAR}, <!--NVL(:attribute8,ATTRIBUTE8), -->
+		ATTRIBUTE9 = #{attribute9,jdbcType=VARCHAR}, <!--NVL(:attribute9,ATTRIBUTE9), -->
+		ATTRIBUTE10 = #{attribute10,jdbcType=VARCHAR}, <!--NVL(:attribute10,ATTRIBUTE10), -->
+		LAST_UPDATE_DATE = #{lastUpdateDate,jdbcType=TIMESTAMP}, <!--NVL(:lastUpdateDate,LAST_UPDATE_DATE), -->
+		LAST_UPDATED_BY = #{lastUpdatedBy,jdbcType=VARCHAR} <!--NVL(:lastUpdatedBy,LAST_UPDATED_BY) -->
+		WHERE LOOKUP_VALUE_ID = #{lookUpValueId,jdbcType=DECIMAL}
+	</update>
+
+	<update id="updateRowSetLineRecord"
+		parameterType="com.hausontech.hrs.bean.reportSetting.ItemRowSetLineBean">
+		UPDATE HRS_DEF_ROW SET
+		ROW_SET_ID =
+		#{rowSetId,jdbcType=DECIMAL},
+		LINE_NUM = #{lineNum,jdbcType=DECIMAL},
+		ROW_NAME = #{rowName,jdbcType=VARCHAR},
+		ROW_NUM =
+		#{rowNum,jdbcType=VARCHAR},
+		CHANGE_SIGN =
+		#{changeSign,jdbcType=VARCHAR},
+		DISPLAY_FLAG =
+		#{displayFlag,jdbcType=VARCHAR},
+		EXTERNAL_CODE =
+		#{externalCode,jdbcType=VARCHAR},
+		ATTRIBUTE1 =
+		#{attribute1,jdbcType=VARCHAR},
+		ATTRIBUTE2 =
+		#{attribute2,jdbcType=VARCHAR},
+		ATTRIBUTE3 =
+		#{attribute3,jdbcType=VARCHAR},
+		ATTRIBUTE4 =
+		#{attribute4,jdbcType=VARCHAR},
+		ATTRIBUTE5 =
+		#{attribute5,jdbcType=VARCHAR},
+		ATTRIBUTE6 =
+		#{attribute6,jdbcType=VARCHAR},
+		ATTRIBUTE7 =
+		#{attribute7,jdbcType=VARCHAR},
+		ATTRIBUTE8 =
+		#{attribute8,jdbcType=VARCHAR},
+		ATTRIBUTE9 =
+		#{attribute9,jdbcType=VARCHAR},
+		ATTRIBUTE10 =
+		#{attribute10,jdbcType=VARCHAR},
+		LAST_UPDATE_DATE =
+		#{lastUpdateDate,jdbcType=TIMESTAMP},
+		LAST_UPDATED_BY =
+		#{lastUpdatedBy,jdbcType=VARCHAR}
+		WHERE ROW_ID =
+		#{rowId,jdbcType=DECIMAL}
+	</update>
+	<!-- 更新报表行集定义记录 -->
+	<update id="updateRowSetHeader"
+		parameterType="com.hausontech.hrs.bean.reportSetting.ItemRowSetHeaderBean">
+		UPDATE HRS_DEF_ROW_SET SET
+		ROW_SET_NAME
+		=#{rowSetName,jdbcType=VARCHAR},
+		RULE_CODE
+		=#{ruleCode,jdbcType=VARCHAR},
+		EXT_ITEM_TYPE
+		=#{extItemType,jdbcType=VARCHAR},
+		DESCRIPTION
+		=#{description,jdbcType=VARCHAR},
+		LAST_UPDATE_DATE
+		=#{lastUpdateDate,jdbcType=TIMESTAMP},
+		LAST_UPDATED_BY
+		=#{lastUpdatedBy,jdbcType=VARCHAR}
+		WHERE ROW_SET_ID =
+		#{rowSetId,jdbcType=DECIMAL}
+	</update>
+	<!-- 更新报表行计算定义界面记录 -->
+	<update id="updateRowCalculationRecord"
+		parameterType="com.hausontech.hrs.bean.reportSetting.ItemRowCalculationBean">
+		UPDATE HRS_DEF_ROW_CALCULATION SET
+		ROW_ID =
+		#{rowId,jdbcType=DECIMAL},
+		ROW_CAL_NUM = #{rowCalNum,jdbcType=DECIMAL},
+		SIGN = #{sign,jdbcType=VARCHAR},
+		CAL_ITEM_CODE =
+		#{calItemCode,jdbcType=VARCHAR},
+		LAST_UPDATE_DATE
+		=#{lastUpdateDate,jdbcType=TIMESTAMP},
+		LAST_UPDATED_BY
+		=#{lastUpdatedBy,jdbcType=VARCHAR}
+		WHERE ROW_CAL_ID =
+		#{rowCalId,jdbcType=DECIMAL}
+	</update>
+
+	<!-- 行记录SQL片段 -->
+	<sql id="lookUpValueCondition">
+		<choose>
+			<when test="lookUpValueId != 0 ">
+				and LOOKUP_VALUE_ID=#{lookUpValueId}
+			</when>
+			<otherwise>
+				<if test="lookUpTypeId != 0 ">
+					and LOOKUP_TYPE_ID = #{lookUpTypeId}
+				</if>
+				<if test="lookUpValue != null and lookUpValue != ''">
+					and LOOKUP_VALUE like '%' || #{lookUpValue} ||'%'
+				</if>
+			</otherwise>
+		</choose>
+	</sql>
+
+	<!-- 查询值集的行记录 -->
+	<select id="getLookUpLineList"
+		parameterType="com.hausontech.hrs.bean.reportSetting.ItemLookUpLineBean"
+		resultMap="lookUpValueResultMap">
+		<include refid="pageBefore" />
+		SELECT HRS_CORE_LOOKUP_VALUE.*
+		<if test="rowStartIndex != 0 and rowCount != 0">
+			, ROW_NUMBER() OVER (ORDER BY 1) AS row_number
+		</if>
+		FROM HRS_CORE_LOOKUP_VALUE
+		where 1=1
+		<include refid="lookUpValueCondition" />
+		<include refid="pageAfter" />
+	</select>
+
+	<!-- 查询值集行记录条数 -->
+	<select id="countByLookUpLineBean"
+		parameterType="com.hausontech.hrs.bean.reportSetting.ItemLookUpLineBean"
+		resultType="java.lang.Integer">
+		select count(1) from HRS_CORE_LOOKUP_VALUE where 1=1
+		<include refid="lookUpValueCondition" />
+	</select>
+
+	<!-- 外部代码定义 -->
+	<resultMap id="externalItemTypeResultMap"
+		type="com.hausontech.hrs.bean.reportSetting.ItemCodeExtHeaderBean">
+		<result column="ITEM_TYPE_ID" property="extItemTypeId"
+			jdbcType="DECIMAL" />
+		<result column="ITEM_TYPE" property="extItemType" jdbcType="VARCHAR" />
+		<result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+		<result column="CREATION_DATE" property="creationDate"
+			jdbcType="TIMESTAMP" />
+		<result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+		<result column="LAST_UPDATE_DATE" property="lastUpdateDate"
+			jdbcType="TIMESTAMP" />
+		<result column="LAST_UPDATED_BY" property="lastUpdatedBy"
+			jdbcType="VARCHAR" />
+	</resultMap>
+
+	<!-- 插入、添加外部代码记录 -->
+	<insert id="saveCodeExtHeader"
+		parameterType="com.hausontech.hrs.bean.reportSetting.ItemCodeExtHeaderBean">
+		insert into HRS_CORE_EXTERNAL_ITEM_TYPE (ITEM_TYPE_ID,
+		ITEM_TYPE,
+		DESCRIPTION,
+		CREATION_DATE, CREATED_BY, LAST_UPDATE_DATE,
+		LAST_UPDATED_BY)
+		values (#{extItemTypeId,jdbcType=DECIMAL},
+		#{extItemType,jdbcType=VARCHAR},
+		#{description,jdbcType=VARCHAR},
+		#{creationDate,jdbcType=TIMESTAMP}, #{createdBy,jdbcType=VARCHAR},
+		#{lastUpdateDate,jdbcType=TIMESTAMP},
+		#{lastUpdatedBy,jdbcType=VARCHAR})
+	</insert>
+
+	<!-- 更新、修改外部代码记录 -->
+	<update id="updateCodeExtHeader"
+		parameterType="com.hausontech.hrs.bean.reportSetting.ItemCodeExtHeaderBean">
+		UPDATE HRS_CORE_EXTERNAL_ITEM_TYPE SET
+		ITEM_TYPE
+		=#{extItemType},
+		DESCRIPTION =#{description},
+		LAST_UPDATE_DATE
+		=#{lastUpdateDate},
+		LAST_UPDATED_BY =#{lastUpdatedBy}
+		WHERE
+		ITEM_TYPE_ID=#{extItemTypeId}
+	</update>
+
+	<!-- 删除外部代码记录 -->
+	<delete id="deleteReferencedCodeExtLine"
+		parameterType="com.hausontech.hrs.bean.reportSetting.ItemCodeExtHeaderBean">
+		DELETE HRS_CORE_EXTERNAL_ITEM_VALUE
+		WHERE
+		ITEM_TYPE_ID=#{extItemTypeId}
+	</delete>
+
+	<!-- 删除外部代码 -->
+	<delete id="deleteCodeExtHeader"
+		parameterType="com.hausontech.hrs.bean.reportSetting.ItemCodeExtHeaderBean">
+		DELETE HRS_CORE_EXTERNAL_ITEM_TYPE
+		WHERE
+		ITEM_TYPE_ID=#{extItemTypeId}
+	</delete>
+
+	<!-- 外部代码定义条件查询 -->
+	<sql id="externalItemTypeCondition">
+		<choose>
+			<when test="extItemTypeId != 0">
+				and ITEM_TYPE_ID=#{extItemTypeId}
+			</when>
+			<otherwise>
+				<if test="null != extItemType and extItemType != '' ">
+					and ITEM_TYPE like '%' || #{extItemType} ||'%'
+				</if>
+				<if test="null != description and description != ''">
+					and DESCRIPTION like '%' || #{description} ||'%'
+				</if>
+			</otherwise>
+		</choose>
+	</sql>
+
+	<!-- 查询外部代码 -->
+	<select id="getExtHeaderList"
+		parameterType="com.hausontech.hrs.bean.reportSetting.ItemCodeExtHeaderBean"
+		resultMap="externalItemTypeResultMap">
+		<include refid="pageBefore" />
+		SELECT HRS_CORE_EXTERNAL_ITEM_TYPE.*, (ITEM_TYPE || '_' ||
+		DESCRIPTION) AS DISP_NAME
+		<if test="rowStartIndex != 0 and rowCount != 0">
+			, ROW_NUMBER() OVER (ORDER BY ITEM_TYPE) AS row_number
+		</if>
+		FROM HRS_CORE_EXTERNAL_ITEM_TYPE
+		where 1=1
+		<include refid="externalItemTypeCondition" />
+		<include refid="pageAfter" />
+	</select>
+
+	<!-- 查询外部代码定义记录条数 -->
+	<select id="countByCodeExtHeaderBean"
+		parameterType="com.hausontech.hrs.bean.reportSetting.ItemCodeExtHeaderBean"
+		resultType="java.lang.Integer">
+		select count(1) from HRS_CORE_EXTERNAL_ITEM_TYPE
+		where 1=1
+		<include refid="externalItemTypeCondition" />
+	</select>
+
+	<!-- 查询根据外部代码主键查询代码 -->
+	<select id="getCodeExtHeaderByByPrimaryKey" parameterType="java.lang.Integer"
+		resultMap="externalItemTypeResultMap">
+		SELECT ITEM_TYPE_ID, ITEM_TYPE, DESCRIPTION, CREATION_DATE,
+		CREATED_BY, LAST_UPDATE_DATE, LAST_UPDATED_BY
+		FROM
+		HRS_CORE_EXTERNAL_ITEM_TYPE
+		WHERE ITEM_TYPE_ID=#{primaryKey}
+	</select>
+
+
+	<!-- 外部代码行定义页面 -->
+	<resultMap id="ItemCodeExtLineResultMap"
+		type="com.hausontech.hrs.bean.reportSetting.ItemCodeExtLineBean">
+		<result column="ITEM_VALUE_ID" property="extItemValueId"
+			jdbcType="DECIMAL" />
+		<result column="ITEM_TYPE_ID" property="extItemTypeId"
+			jdbcType="DECIMAL" />
+		<result column="ITEM_VALUE" property="extItemValue" jdbcType="VARCHAR" />
+		<result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+		<result column="START_DATE" property="startDate" jdbcType="TIMESTAMP" />
+		<result column="END_DATE" property="endDate" jdbcType="TIMESTAMP" />
+		<result column="ATTRIBUTE1" property="attribute1" jdbcType="VARCHAR" />
+		<result column="ATTRIBUTE2" property="attribute2" jdbcType="VARCHAR" />
+		<result column="ATTRIBUTE3" property="attribute3" jdbcType="VARCHAR" />
+		<result column="ATTRIBUTE4" property="attribute4" jdbcType="VARCHAR" />
+		<result column="ATTRIBUTE5" property="attribute5" jdbcType="VARCHAR" />
+		<result column="ATTRIBUTE6" property="attribute6" jdbcType="VARCHAR" />
+		<result column="ATTRIBUTE7" property="attribute7" jdbcType="VARCHAR" />
+		<result column="ATTRIBUTE8" property="attribute8" jdbcType="VARCHAR" />
+		<result column="ATTRIBUTE9" property="attribute9" jdbcType="VARCHAR" />
+		<result column="ATTRIBUTE10" property="attribute10" jdbcType="VARCHAR" />
+		<result column="CREATION_DATE" property="creationDate"
+			jdbcType="TIMESTAMP" />
+		<result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+		<result column="LAST_UPDATE_DATE" property="lastUpdateDate"
+			jdbcType="TIMESTAMP" />
+		<result column="LAST_UPDATED_BY" property="lastUpdatedBy"
+			jdbcType="VARCHAR" />
+	</resultMap>
+
+	<!-- 新增外部代码行 -->
+	<insert id="saveCodeExtLineRecord"
+		parameterType="com.hausontech.hrs.bean.reportSetting.ItemCodeExtLineBean">
+		insert into HRS_CORE_EXTERNAL_ITEM_VALUE (ITEM_VALUE_ID,
+		ITEM_TYPE_ID,
+		ITEM_VALUE,
+		DESCRIPTION, START_DATE, END_DATE,
+		ATTRIBUTE1,
+		ATTRIBUTE2, ATTRIBUTE3,
+		ATTRIBUTE4, ATTRIBUTE5, ATTRIBUTE6,
+		ATTRIBUTE7,
+		ATTRIBUTE8, ATTRIBUTE9,
+		ATTRIBUTE10, CREATION_DATE, CREATED_BY,
+		LAST_UPDATE_DATE, LAST_UPDATED_BY)
+		values
+		(#{extItemValueId,jdbcType=DECIMAL},
+		#{extItemTypeId,jdbcType=DECIMAL}, #{extItemValue,jdbcType=VARCHAR},
+		#{description,jdbcType=VARCHAR}, #{startDate,jdbcType=TIMESTAMP},
+		#{endDate,jdbcType=TIMESTAMP},
+		#{attribute1,jdbcType=VARCHAR},
+		#{attribute2,jdbcType=VARCHAR}, #{attribute3,jdbcType=VARCHAR},
+		#{attribute4,jdbcType=VARCHAR}, #{attribute5,jdbcType=VARCHAR},
+		#{attribute6,jdbcType=VARCHAR},
+		#{attribute7,jdbcType=VARCHAR},
+		#{attribute8,jdbcType=VARCHAR}, #{attribute9,jdbcType=VARCHAR},
+		#{attribute10,jdbcType=VARCHAR}, #{creationDate,jdbcType=TIMESTAMP},
+		#{createdBy,jdbcType=VARCHAR},
+		#{lastUpdateDate,jdbcType=TIMESTAMP},
+		#{lastUpdatedBy,jdbcType=VARCHAR})
+	</insert>
+
+	<!-- 更新外部代码行 -->
+	<update id="updateCodeExtLineRecord"
+		parameterType="com.hausontech.hrs.bean.reportSetting.ItemCodeExtLineBean">
+		UPDATE HRS_CORE_EXTERNAL_ITEM_VALUE SET
+		ITEM_TYPE_ID =
+		NVL(#{extItemTypeId},ITEM_TYPE_ID),
+		ITEM_VALUE =
+		NVL(#{extItemValue},ITEM_VALUE),
+		DESCRIPTION =
+		NVL(#{description},DESCRIPTION),
+		START_DATE =
+		NVL(#{startDate},START_DATE),
+		END_DATE = NVL(#{endDate},END_DATE),
+		ATTRIBUTE1 = NVL(#{attribute1},ATTRIBUTE1),
+		ATTRIBUTE2 =
+		NVL(#{attribute2},ATTRIBUTE2),
+		ATTRIBUTE3 =
+		NVL(#{attribute3},ATTRIBUTE3),
+		ATTRIBUTE4 =
+		NVL(#{attribute4},ATTRIBUTE4),
+		ATTRIBUTE5 =
+		NVL(#{attribute5},ATTRIBUTE5),
+		ATTRIBUTE6 =
+		NVL(#{attribute6},ATTRIBUTE6),
+		ATTRIBUTE7 =
+		NVL(#{attribute7},ATTRIBUTE7),
+		ATTRIBUTE8 =
+		NVL(#{attribute8},ATTRIBUTE8),
+		ATTRIBUTE9 =
+		NVL(#{attribute9},ATTRIBUTE9),
+		ATTRIBUTE10 =
+		NVL(#{attribute10},ATTRIBUTE10),
+		LAST_UPDATE_DATE =
+		NVL(#{lastUpdateDate},LAST_UPDATE_DATE),
+		LAST_UPDATED_BY =
+		NVL(#{lastUpdatedBy},LAST_UPDATED_BY)
+		WHERE ITEM_VALUE_ID =
+		#{extItemValueId}
+	</update>
+
+	<sql id="ItemCodeExtLineCondition">
+		<choose>
+			<when test="extItemValueId != 0">
+				and ITEM_VALUE_ID=#{extItemValueId}
+			</when>
+			<otherwise>
+				<if test="extItemTypeId != 0">
+					and ITEM_TYPE_ID = #{extItemTypeId}
+				</if>
+				<if test="null != extItemValue and extItemValue != null">
+					and ITEM_VALUE like '%' || #{extItemValue} || '%'
+				</if>
+				<if test="null != description and description != ''">
+					and DESCRIPTION like '%' || #{description} || '%'
+				</if>
+			</otherwise>
+		</choose>
+	</sql>
+
+	<!-- 查询外部代码行定义记录 -->
+	<select id="getCodeExtLineList"
+		parameterType="com.hausontech.hrs.bean.reportSetting.ItemCodeExtLineBean"
+		resultMap="ItemCodeExtLineResultMap">
+		<include refid="pageBefore" />
+		SELECT HRS_CORE_EXTERNAL_ITEM_VALUE.*
+		<if test="rowStartIndex != 0 and rowCount != 0">
+			, ROW_NUMBER() OVER (ORDER BY 1) AS row_number
+		</if>
+		FROM HRS_CORE_EXTERNAL_ITEM_VALUE
+		WHERE 1=1
+		<include refid="ItemCodeExtLineCondition" />
+		<include refid="pageAfter" />
+	</select>
+	<!-- 查询外部代码行定义记录条数 -->
+	<select id="countByCodeExtLineBean"
+		parameterType="com.hausontech.hrs.bean.reportSetting.ItemCodeExtLineBean"
+		resultType="java.lang.Integer">
+		select count(1) from HRS_CORE_EXTERNAL_ITEM_VALUE
+		WHERE 1=1
+		<include refid="ItemCodeExtLineCondition" />
+	</select>
+
+
+
+	<resultMap id="itemGroupRuleHeaderResultMap"
+		type="com.hausontech.hrs.bean.reportSetting.ItemGroupRuleHeaderBean">
+		<result column="RULE_HEADER_ID" property="ruleHeaderId"
+			jdbcType="DECIMAL" />
+		<result column="RULE_CODE" property="ruleCode" jdbcType="VARCHAR" />
+		<result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+		<result column="CREATION_DATE" property="creationDate"
+			jdbcType="TIMESTAMP" />
+		<result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+		<result column="LAST_UPDATE_DATE" property="lastUpdateDate"
+			jdbcType="TIMESTAMP" />
+		<result column="LAST_UPDATED_BY" property="lastUpdatedBy"
+			jdbcType="VARCHAR" />
+	</resultMap>
+
+
+	<!-- 新增表项循环组定义 -->
+	<insert id="saveRuleHeader"
+		parameterType="com.hausontech.hrs.bean.reportSetting.ItemGroupRuleHeaderBean">
+		insert into HRS_DEF_RULE_HEADER (RULE_HEADER_ID,
+		RULE_CODE,
+		DESCRIPTION,
+		CREATION_DATE, CREATED_BY, LAST_UPDATE_DATE,
+		LAST_UPDATED_BY) values
+		(#{ruleHeaderId,jdbcType=DECIMAL},
+		#{ruleCode,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR},
+		#{creationDate,jdbcType=TIMESTAMP},
+		#{createdBy,jdbcType=VARCHAR},
+		#{lastUpdateDate,jdbcType=TIMESTAMP},
+		#{lastUpdatedBy,jdbcType=VARCHAR})
+	</insert>
+
+	<!-- 更新、修改表项循环组定义 -->
+	<update id="updateRuleHeader"
+		parameterType="com.hausontech.hrs.bean.reportSetting.ItemGroupRuleHeaderBean">
+		UPDATE HRS_DEF_RULE_HEADER SET
+		RULE_CODE
+		=NVL(#{ruleCode,jdbcType=VARCHAR},RULE_CODE),
+		DESCRIPTION
+		=NVL(#{description,jdbcType=VARCHAR},DESCRIPTION),
+		LAST_UPDATE_DATE
+		=NVL(#{lastUpdateDate,jdbcType=TIMESTAMP},LAST_UPDATE_DATE),
+		LAST_UPDATED_BY
+		=NVL(#{lastUpdatedBy,jdbcType=VARCHAR},LAST_UPDATED_BY)
+		WHERE
+		RULE_HEADER_ID=#{ruleHeaderId,jdbcType=DECIMAL}
+	</update>
+
+	<!-- 查询循环组定义 -->
+	<select id="getRuleHeaderByByPrimaryKey" parameterType="java.lang.Integer"
+		resultMap="itemGroupRuleHeaderResultMap">
+		SELECT RULE_HEADER_ID, RULE_CODE, DESCRIPTION,
+		CREATION_DATE, CREATED_BY, LAST_UPDATE_DATE, LAST_UPDATED_BY
+		FROM
+		HRS_DEF_RULE_HEADER
+		WHERE RULE_HEADER_ID=#{primaryKey}
+	</select>
+
+	<!-- 查询循环组条数 -->
+	<select id="getRuleHeaderReferencedNum"
+		parameterType="com.hausontech.hrs.bean.reportSetting.ItemGroupRuleHeaderBean"
+		resultType="java.lang.Integer">
+		select count(1) from HRS_DEF_ITEM_HEADER
+		where
+		RULE_CODE=#{ruleCode}
+	</select>
+
+	<!-- 删除循环组行 -->
+	<delete id="deleteReferencedRuleLine"
+		parameterType="com.hausontech.hrs.bean.reportSetting.ItemGroupRuleHeaderBean">
+		DELETE HRS_DEF_RULE_LINE WHERE
+		RULE_HEADER_ID=#{ruleHeaderId}
+	</delete>
+
+	<!-- 删除循环组行 -->
+	<delete id="deleteRuleHeader"
+		parameterType="com.hausontech.hrs.bean.reportSetting.ItemGroupRuleHeaderBean">
+		DELETE HRS_DEF_RULE_HEADER WHERE
+		RULE_HEADER_ID=#{ruleHeaderId}
+	</delete>
+
+	<!-- 循环组查询条件 -->
+	<sql id="itemGroupRuleHeaderCondition">
+		where 1=1
+		<choose>
+			<when test="ruleHeaderId != 0">
+				and RULE_HEADER_ID=#{ruleHeaderId}
+			</when>
+			<otherwise>
+				<if test="ruleCode != null and ruleCode != '' ">
+					and RULE_CODE like '%' || #{ruleCode} || '%'
+				</if>
+				<if test="description != null and description != ''">
+					and DESCRIPTION like '%' || #{description} || '%'
+				</if>
+			</otherwise>
+		</choose>
+	</sql>
+
+
+	<!-- 循环组查询条件 1 -->
+	<sql id="itemGroupRuleHeaderCondition1">
+		<choose>
+			<when test="ruleHeaderId != 0">
+				and RULE_HEADER_ID=#{ruleHeaderId}
+			</when>
+			<otherwise>
+				<if test="ruleCode != null and ruleCode != '' ">
+					and RULE_CODE like '%' || #{ruleCode} || '%'
+				</if>
+				<if test="description != null and description != ''">
+					and DESCRIPTION like '%' || #{description} || '%'
+				</if>
+			</otherwise>
+		</choose>
+	</sql>
+
+	<!-- 获取循环组下拉列表 -->
+	<select id="getRuleHeaderList"
+		parameterType="com.hausontech.hrs.bean.reportSetting.ItemGroupRuleHeaderBean"
+		resultMap="itemGroupRuleHeaderResultMap">
+		<include refid="pageBefore" />
+		SELECT HRS_DEF_RULE_HEADER.*, (RULE_CODE || '_' || DESCRIPTION) AS
+		DISP_NAME
+		<if test="rowStartIndex != 0 and rowCount != 0">
+			, ROW_NUMBER() OVER (ORDER BY RULE_CODE) AS row_number
+		</if>
+		FROM HRS_DEF_RULE_HEADER
+		<include refid="itemGroupRuleHeaderCondition" />
+		<include refid="pageAfter" />
+	</select>
+
+	<!-- 查询表项循环组定义条数 -->
+	<select id="countByItemGroupRuleHeaderBean"
+		parameterType="com.hausontech.hrs.bean.reportSetting.ItemGroupRuleHeaderBean"
+		resultType="java.lang.Integer">
+		select count(1) from HRS_DEF_RULE_HEADER
+		<include refid="itemGroupRuleHeaderCondition" />
+	</select>
+
+	<!-- 根据ruleCode查询表项 -->
+	<select id="getLoopUpByRuleCode" parameterType="java.lang.String"
+		resultType="java.lang.String">
+		SELECT RULE_CODE FROM HRS_DEF_RULE_HEADER WHERE
+		DESCRIPTION
+		like '%' || #{ruleCode} || '%'
+	</select>
+
+	<!-- 表项resultMap -->
+	<resultMap id="itemHeaderResultMap"
+		type="com.hausontech.hrs.bean.reportSetting.ItemHeaderBean">
+		<result column="ITEM_HEADER_ID" property="itemHeaderId"
+			jdbcType="DECIMAL" />
+		<result column="ITEM_CODE" property="itemCode" jdbcType="VARCHAR" />
+		<result column="DESCRIPTION" property="itemDescription"
+			jdbcType="VARCHAR" />
+		<result column="RULE_CODE" property="ruleCode" jdbcType="VARCHAR" />
+		<result column="IS_CONTENT" property="isContent" jdbcType="VARCHAR" />
+		<result column="IS_CALCULATION" property="isCalculation"
+			jdbcType="VARCHAR" />
+		<result column="START_DATE" property="startDate" jdbcType="TIMESTAMP" />
+		<result column="END_DATE" property="endDate" jdbcType="TIMESTAMP" />
+		<result column="CREATION_DATE" property="creationDate"
+			jdbcType="TIMESTAMP" />
+		<result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+		<result column="LAST_UPDATE_DATE" property="lastUpdateDate"
+			jdbcType="TIMESTAMP" />
+		<result column="LAST_UPDATED_BY" property="lastUpdatedBy"
+			jdbcType="VARCHAR" />
+	</resultMap>
+
+	<!-- 插入表项记录 -->
+	<insert id="saveItemHeader"
+		parameterType="com.hausontech.hrs.bean.reportSetting.ItemHeaderBean">
+		insert into HRS_DEF_ITEM_HEADER (ITEM_HEADER_ID,
+		ITEM_CODE,
+		DESCRIPTION,
+		RULE_CODE, START_DATE, END_DATE, CREATION_DATE,
+		CREATED_BY, LAST_UPDATE_DATE,
+		LAST_UPDATED_BY) values
+		(#{itemHeaderId,jdbcType=DECIMAL},
+		#{itemCode,jdbcType=VARCHAR},
+		#{itemDescription,jdbcType=VARCHAR}, #{ruleCode,jdbcType=VARCHAR},
+		#{startDate,jdbcType=TIMESTAMP},
+		#{endDate,jdbcType=TIMESTAMP},
+		#{creationDate,jdbcType=TIMESTAMP},
+		#{createdBy,jdbcType=VARCHAR},
+		#{lastUpdateDate,jdbcType=TIMESTAMP},
+		#{lastUpdatedBy,jdbcType=VARCHAR})
+	</insert>
+
+	<!-- 更新、修改表项 -->
+	<update id="updateItemHeader"
+		parameterType="com.hausontech.hrs.bean.reportSetting.ItemHeaderBean">
+		UPDATE HRS_DEF_ITEM_HEADER SET
+		ITEM_CODE
+		=NVL(#{itemCode},ITEM_CODE),
+		DESCRIPTION
+		=NVL(#{itemDescription},DESCRIPTION),
+		RULE_CODE
+		=NVL(#{ruleCode},RULE_CODE),
+		LAST_UPDATE_DATE
+		=NVL(#{lastUpdateDate},LAST_UPDATE_DATE),
+		LAST_UPDATED_BY
+		=NVL(#{lastUpdatedBy},LAST_UPDATED_BY)
+		WHERE
+		ITEM_HEADER_ID=#{itemHeaderId}
+	</update>
+
+	<!-- 删除表项 -->
+	<delete id="deleteItemHeader"
+		parameterType="com.hausontech.hrs.bean.reportSetting.ItemHeaderBean">
+		DELETE HRS_DEF_ITEM_HEADER WHERE
+		ITEM_HEADER_ID=#{itemHeaderId}
+	</delete>
+
+	<!-- 表项查询条件 -->
+	<sql id="itemHeaderCondition">
+		where 1=1
+		<choose>
+			<when test="itemHeaderId != 0">
+				and a.ITEM_HEADER_ID=#{itemHeaderId}
+			</when>
+			<otherwise>
+				<if test="ruleCode != null and ruleCode != ''">
+					and a.RULE_CODE like '%' || #{ruleCode} || '%'
+				</if>
+				<if test="itemCode != null and itemCode != ''">
+					and a.ITEM_CODE like '%' || #{itemCode} || '%'
+				</if>
+				<if test="itemDescription != null and itemDescription != ''">
+					and a. DESCRIPTION like '%' || #{itemDescription} || '%'
+				</if>
+			</otherwise>
+		</choose>
+	</sql>
+
+	<!-- 查询表项记录 -->
+	<select id="getItemHeaderList"
+		parameterType="com.hausontech.hrs.bean.reportSetting.ItemHeaderBean"
+		resultMap="itemHeaderResultMap">
+		<include refid="pageBefore" />
+		SELECT ITEM_HEADER_ID, ITEM_CODE, DESCRIPTION, RULE_CODE ,
+		CREATION_DATE, CREATED_BY, LAST_UPDATE_DATE, LAST_UPDATED_BY
+		<if test="rowStartIndex != 0 and rowCount != 0">
+			, ROW_NUMBER() OVER (ORDER BY 1) AS row_number ,
+		</if>
+		CASE (SELECT COUNT(1) FROM HRS_DEF_ITEM_CONTENT b WHERE a.item_code =
+		b.item_code)
+		WHEN 0 THEN 'N' ELSE 'Y' END IS_CONTENT,
+		CASE (SELECT
+		COUNT(1) FROM HRS_DEF_ITEM_CALCULATION c WHERE c.item_code =
+		a.item_code)
+		WHEN 0 THEN 'N' ELSE 'Y' END IS_CALCULATION
+		FROM
+		HRS_DEF_ITEM_HEADER a
+		<include refid="itemHeaderCondition" />
+		<include refid="pageAfter" />
+	</select>
+
+	<!-- 表项记录条数 -->
+	<select id="countByItemHeaderBean"
+		parameterType="com.hausontech.hrs.bean.reportSetting.ItemHeaderBean"
+		resultType="java.lang.Integer">
+		select count(1) from HRS_DEF_ITEM_HEADER a
+		<include refid="itemHeaderCondition" />
+	</select>
+
+	<select id="getItemHeaderByByPrimaryKey" parameterType="java.lang.Long"
+		resultMap="itemHeaderResultMap">
+		SELECT ITEM_HEADER_ID, ITEM_CODE, DESCRIPTION, RULE_CODE,
+		CREATION_DATE, CREATED_BY, LAST_UPDATE_DATE, LAST_UPDATED_BY
+		FROM
+		HRS_DEF_ITEM_HEADER
+		WHERE ITEM_HEADER_ID=#{primaryKey}
+	</select>
+
+	<!-- 表项账户配置 -->
+	<resultMap id="itemContentResultMap"
+		type="com.hausontech.hrs.bean.reportSetting.ItemContentBean2">
+		<result column="ITEM_CONTENT_ID" property="itemContentId"
+			jdbcType="DECIMAL" />
+		<result column="ITEM_HEADER_ID" property="itemHeaderId"
+			jdbcType="DECIMAL" />
+		<result column="ITEM_CODE" property="itemCode" jdbcType="VARCHAR" />
+		<result column="LINE_NUM" property="lineNum" jdbcType="DECIMAL" />
+		<result column="SIGN" property="sign" jdbcType="VARCHAR" />
+		<result column="SEGMENT1_LOW" property="segment1Low" jdbcType="VARCHAR" />
+		<result column="SEGMENT1_HIGH" property="segment1Hign"
+			jdbcType="VARCHAR" />
+		<result column="SEGMENT1_TYPE" property="segment1Type"
+			jdbcType="VARCHAR" />
+		<result column="SEGMENT2_LOW" property="segment2Low" jdbcType="VARCHAR" />
+		<result column="SEGMENT2_HIGH" property="segment2Hign"
+			jdbcType="VARCHAR" />
+		<result column="SEGMENT2_TYPE" property="segment2Type"
+			jdbcType="VARCHAR" />
+		<result column="SEGMENT3_LOW" property="segment3Low" jdbcType="VARCHAR" />
+		<result column="SEGMENT3_HIGH" property="segment3Hign"
+			jdbcType="VARCHAR" />
+		<result column="SEGMENT3_TYPE" property="segment3Type"
+			jdbcType="VARCHAR" />
+		<result column="SEGMENT4_LOW" property="segment4Low" jdbcType="VARCHAR" />
+		<result column="SEGMENT4_HIGH" property="segment4Hign"
+			jdbcType="VARCHAR" />
+		<result column="SEGMENT4_TYPE" property="segment4Type"
+			jdbcType="VARCHAR" />
+		<result column="SEGMENT5_LOW" property="segment5Low" jdbcType="VARCHAR" />
+		<result column="SEGMENT5_HIGH" property="segment5Hign"
+			jdbcType="VARCHAR" />
+		<result column="SEGMENT5_TYPE" property="segment5Type"
+			jdbcType="VARCHAR" />
+		<result column="SEGMENT6_LOW" property="segment6Low" jdbcType="VARCHAR" />
+		<result column="SEGMENT6_HIGH" property="segment6Hign"
+			jdbcType="VARCHAR" />
+		<result column="SEGMENT6_TYPE" property="segment6Type"
+			jdbcType="VARCHAR" />
+		<result column="SEGMENT7_LOW" property="segment7Low" jdbcType="VARCHAR" />
+		<result column="SEGMENT7_HIGH" property="segment7Hign"
+			jdbcType="VARCHAR" />
+		<result column="SEGMENT7_TYPE" property="segment7Type"
+			jdbcType="VARCHAR" />
+		<result column="SEGMENT8_LOW" property="segment8Low" jdbcType="VARCHAR" />
+		<result column="SEGMENT8_HIGH" property="segment8Hign"
+			jdbcType="VARCHAR" />
+		<result column="SEGMENT8_TYPE" property="segment8Type"
+			jdbcType="VARCHAR" />
+		<result column="SEGMENT9_LOW" property="segment9Low" jdbcType="VARCHAR" />
+		<result column="SEGMENT9_HIGH" property="segment9Hign"
+			jdbcType="VARCHAR" />
+		<result column="SEGMENT9_TYPE" property="segment9Type"
+			jdbcType="VARCHAR" />
+		<result column="SEGMENT10_LOW" property="segment10Low"
+			jdbcType="VARCHAR" />
+		<result column="SEGMENT10_HIGH" property="segment10Hign"
+			jdbcType="VARCHAR" />
+		<result column="SEGMENT10_TYPE" property="segment10Type"
+			jdbcType="VARCHAR" />
+		<result column="SEGMENT11_LOW" property="segment11Low"
+			jdbcType="VARCHAR" />
+		<result column="SEGMENT11_HIGH" property="segment11Hign"
+			jdbcType="VARCHAR" />
+		<result column="SEGMENT11_TYPE" property="segment11Type"
+			jdbcType="VARCHAR" />
+		<result column="SEGMENT12_LOW" property="segment12Low"
+			jdbcType="VARCHAR" />
+		<result column="SEGMENT12_HIGH" property="segment12Hign"
+			jdbcType="VARCHAR" />
+		<result column="SEGMENT12_TYPE" property="segment12Type"
+			jdbcType="VARCHAR" />
+		<result column="SEGMENT13_LOW" property="segment13Low"
+			jdbcType="VARCHAR" />
+		<result column="SEGMENT13_HIGH" property="segment13Hign"
+			jdbcType="VARCHAR" />
+		<result column="SEGMENT13_TYPE" property="segment13Type"
+			jdbcType="VARCHAR" />
+		<result column="SEGMENT14_LOW" property="segment14Low"
+			jdbcType="VARCHAR" />
+		<result column="SEGMENT14_HIGH" property="segment14Hign"
+			jdbcType="VARCHAR" />
+		<result column="SEGMENT14_TYPE" property="segment14Type"
+			jdbcType="VARCHAR" />
+		<result column="SEGMENT15_LOW" property="segment15Low"
+			jdbcType="VARCHAR" />
+		<result column="SEGMENT15_HIGH" property="segment15Hign"
+			jdbcType="VARCHAR" />
+		<result column="SEGMENT15_TYPE" property="segment15Type"
+			jdbcType="VARCHAR" />
+		<result column="SEGMENT16_LOW" property="segment16Low"
+			jdbcType="VARCHAR" />
+		<result column="SEGMENT16_HIGH" property="segment16Hign"
+			jdbcType="VARCHAR" />
+		<result column="SEGMENT16_TYPE" property="segment16Type"
+			jdbcType="VARCHAR" />
+		<result column="SEGMENT17_LOW" property="segment17Low"
+			jdbcType="VARCHAR" />
+		<result column="SEGMENT17_HIGH" property="segment17Hign"
+			jdbcType="VARCHAR" />
+		<result column="SEGMENT17_TYPE" property="segment17Type"
+			jdbcType="VARCHAR" />
+		<result column="SEGMENT18_LOW" property="segment18Low"
+			jdbcType="VARCHAR" />
+		<result column="SEGMENT18_HIGH" property="segment18Hign"
+			jdbcType="VARCHAR" />
+		<result column="SEGMENT18_TYPE" property="segment18Type"
+			jdbcType="VARCHAR" />
+		<result column="SEGMENT19_LOW" property="segment19Low"
+			jdbcType="VARCHAR" />
+		<result column="SEGMENT19_HIGH" property="segment19Hign"
+			jdbcType="VARCHAR" />
+		<result column="SEGMENT19_TYPE" property="segment19Type"
+			jdbcType="VARCHAR" />
+		<result column="SEGMENT20_LOW" property="segment20Low"
+			jdbcType="VARCHAR" />
+		<result column="SEGMENT20_HIGH" property="segment20Hign"
+			jdbcType="VARCHAR" />
+		<result column="SEGMENT20_TYPE" property="segment20Type"
+			jdbcType="VARCHAR" />
+		<result column="CREATION_DATE" property="creationDate"
+			jdbcType="TIMESTAMP" />
+		<result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+		<result column="LAST_UPDATE_DATE" property="lastUpdateDate"
+			jdbcType="TIMESTAMP" />
+		<result column="LAST_UPDATED_BY" property="lastUpdatedBy"
+			jdbcType="VARCHAR" />
+		<result column="CONTENT_LOW" property="contentLow" jdbcType="VARCHAR" />
+		<result column="CONTENT_HIGH" property="contentHigh" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<!-- 新增表项账户配置 -->
+	<insert id="saveItemContenHeader"
+		parameterType="com.hausontech.hrs.bean.reportSetting.ItemContentBean2">
+		INSERT INTO HRS_DEF_ITEM_CONTENT(ITEM_CONTENT_ID,
+		ITEM_HEADER_ID,
+		ITEM_CODE, LINE_NUM, SIGN,
+		CREATION_DATE,CREATED_BY,LAST_UPDATE_DATE,LAST_UPDATED_BY)
+		VALUES(#{itemContentId, jdbcType=DECIMAL},
+		#{itemHeaderId,jdbcType=DECIMAL},
+		#{itemCode,jdbcType=VARCHAR},
+		#{lineNum,jdbcType=DECIMAL},
+		#{sign,jdbcType=VARCHAR},
+		#{creationDate,
+		jdbcType=TIMESTAMP},
+		#{createdBy,jdbcType=VARCHAR},
+		#{lastUpdateDate,
+		jdbcType=TIMESTAMP},
+		#{lastUpdatedBy,jdbcType=VARCHAR})
+	</insert>
+
+	<!-- 更新、修改账户配置 -->
+	<update id="updateItemContenHeader"
+		parameterType="com.hausontech.hrs.bean.reportSetting.ItemContentBean2">
+		UPDATE HRS_DEF_ITEM_CONTENT SET
+		ITEM_CONTENT_ID =
+		NVL(#{itemContentId},ITEM_CONTENT_ID),
+		ITEM_HEADER_ID =
+		NVL(#{itemHeaderId},ITEM_HEADER_ID),
+		ITEM_CODE =
+		NVL(#{itemCode},ITEM_CODE),
+		LINE_NUM = NVL(#{lineNum},LINE_NUM),
+		SIGN =
+		NVL(#{sign}, SIGN),
+		LAST_UPDATE_DATE =
+		NVL(#{lastUpdateDate},LAST_UPDATE_DATE),
+		LAST_UPDATED_BY =
+		NVL(#{lastUpdatedBy},LAST_UPDATED_BY)
+		WHERE ITEM_CONTENT_ID =
+		#{itemContentId}
+	</update>
+
+	<!-- 删除账户配置 -->
+	<delete id="deleteItemContentHeaderRecord"
+		parameterType="com.hausontech.hrs.bean.reportSetting.ItemContentBean2">
+		DELETE HRS_DEF_ITEM_CONTENT WHERE
+		ITEM_CONTENT_ID=#{itemContentId}
+	</delete>
+
+	<sql id="itemContentCondition">
+		where 1=1
+		<if test="itemContentId != 0">
+			and ITEM_CONTENT_ID=#{itemContentId}
+		</if>
+		<if test="itemHeaderId != 0">
+			and ITEM_HEADER_ID=#{itemHeaderId}
+		</if>
+	</sql>
+
+	<!-- 查询表项账户配置 -->
+	<select id="getItemContentList"
+		parameterType="com.hausontech.hrs.bean.reportSetting.ItemContentBean2"
+		resultMap="itemContentResultMap">
+		<include refid="pageBefore" />
+		SELECT HRS_DEF_ITEM_CONTENT_V.*
+		<if test="rowStartIndex != 0 and rowCount != 0">
+			, ROW_NUMBER() OVER (ORDER BY LINE_NUM) AS row_number
+		</if>
+		FROM HRS_DEF_ITEM_CONTENT_V
+		<include refid="itemContentCondition" />
+		<include refid="pageAfter" />
+	</select>
+
+	<select id="countByItemContentBean"
+		parameterType="com.hausontech.hrs.bean.reportSetting.ItemContentBean2"
+		resultType="java.lang.Integer">
+		select count(1) from HRS_DEF_ITEM_CONTENT
+		<include refid="itemContentCondition" />
+	</select>
+
+	<!-- 账户上下限配置 -->
+	<select id="getItemContentByByPrimaryKey" parameterType="java.lang.Integer"
+		resultMap="itemContentResultMap">
+		SELECT ITEM_CONTENT_ID, ITEM_HEADER_ID, ITEM_CODE, LINE_NUM,
+		SIGN, SEGMENT1_LOW, SEGMENT1_HIGH,SEGMENT1_TYPE,
+		SEGMENT2_LOW,
+		SEGMENT2_HIGH, SEGMENT2_TYPE, SEGMENT3_LOW, SEGMENT3_HIGH,
+		SEGMENT3_TYPE, SEGMENT4_LOW, SEGMENT4_HIGH, SEGMENT4_TYPE,
+		SEGMENT5_LOW, SEGMENT5_HIGH, SEGMENT5_TYPE, SEGMENT6_LOW,
+		SEGMENT6_HIGH, SEGMENT6_TYPE, SEGMENT7_LOW, SEGMENT7_HIGH,
+		SEGMENT7_TYPE,
+		SEGMENT8_LOW, SEGMENT8_HIGH, SEGMENT8_TYPE,
+		SEGMENT9_LOW, SEGMENT9_HIGH, SEGMENT9_TYPE, SEGMENT10_LOW,
+		SEGMENT10_HIGH, SEGMENT10_TYPE,
+		SEGMENT11_LOW, SEGMENT11_HIGH,
+		SEGMENT11_TYPE, SEGMENT12_LOW, SEGMENT12_HIGH, SEGMENT12_TYPE,
+		SEGMENT13_LOW, SEGMENT13_HIGH, SEGMENT13_TYPE,
+		SEGMENT14_LOW,
+		SEGMENT14_HIGH, SEGMENT14_TYPE, SEGMENT15_LOW, SEGMENT15_HIGH,
+		SEGMENT15_TYPE, SEGMENT16_LOW, SEGMENT16_HIGH, SEGMENT16_TYPE,
+		SEGMENT17_LOW, SEGMENT17_HIGH, SEGMENT17_TYPE, SEGMENT18_LOW,
+		SEGMENT18_HIGH, SEGMENT18_TYPE, SEGMENT19_LOW, SEGMENT19_HIGH,
+		SEGMENT19_TYPE,
+		SEGMENT20_LOW, SEGMENT20_HIGH, SEGMENT20_TYPE,
+		CREATION_DATE, CREATED_BY, LAST_UPDATE_DATE, LAST_UPDATED_BY
+		FROM
+		HRS_DEF_ITEM_CONTENT WHERE ITEM_CONTENT_ID=#{primaryKey}
+	</select>
+
+
+	<resultMap id="dimensionResultMap"
+		type="com.hausontech.hrs.bean.dimensionManager.DimensionBean">
+		<result column="DIMENSION_ID" property="dimensionId" jdbcType="DECIMAL" />
+		<result column="DIM_SEQ" property="dimSeq" jdbcType="DECIMAL" />
+		<result column="DIMENSION_CODE" property="dimensionCode"
+			jdbcType="VARCHAR" />
+		<result column="DIMENSION_NAME" property="dimensionName"
+			jdbcType="VARCHAR" />
+		<result column="DIM_SEGMENT" property="dimSegment" jdbcType="VARCHAR" />
+		<!-- <result column="FIN_ACCOUNT_FLAG" property="finAccountFlag" jdbcType="VARCHAR" 
+			/> <result column="CREATION_DATE" property="creationDate" jdbcType="TIMESTAMP" 
+			/> <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" /> 
+			<result column="LAST_UPDATE_DATE" property="lastUpdateDate" jdbcType="TIMESTAMP" 
+			/> <result column="LAST_UPDATED_BY" property="lastUpdatedBy" jdbcType="VARCHAR" 
+			/> -->
+	</resultMap>
+
+	<!-- 获取维度上下限 -->
+	<select id="getConfigurableLowHighDimList" resultMap="dimensionResultMap">
+		SELECT
+		DISTINCT a.DIMENSION_ID, a.DIMENSION_CODE, a.DIMENSION_NAME,
+		a.DIM_SEGMENT FROM HRS_CORE_DIMENSION a
+		ORDER BY a.DIMENSION_CODE
+	</select>
+
+	<!-- 表项计算配置 -->
+	<resultMap id="itemCalculationResultMap"
+		type="com.hausontech.hrs.bean.reportSetting.ItemCalBean">
+		<result column="ITEM_CAL_ID" property="itemCalId" jdbcType="DECIMAL" />
+		<result column="ITEM_HEADER_ID" property="itemHeaderId"
+			jdbcType="DECIMAL" />
+		<result column="ITEM_CODE" property="itemCode" jdbcType="VARCHAR" />
+		<result column="LINE_NUM" property="lineNum" jdbcType="DECIMAL" />
+		<result column="SIGN" property="sign" jdbcType="VARCHAR" />
+		<result column="CAL_ITEM_CODE" property="calItemCode" jdbcType="VARCHAR" />
+		<result column="CONSTANT" property="constant" jdbcType="DECIMAL" />
+		<result column="CREATION_DATE" property="creationDate"
+			jdbcType="TIMESTAMP" />
+		<result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+		<result column="LAST_UPDATE_DATE" property="lastUpdateDate"
+			jdbcType="TIMESTAMP" />
+		<result column="LAST_UPDATED_BY" property="lastUpdatedBy"
+			jdbcType="VARCHAR" />
+	</resultMap>
+
+	<!-- 新增表项计算项 -->
+	<insert id="saveItemCalculation" parameterType="com.hausontech.hrs.bean.reportSetting.ItemCalBean">
+		insert into
+		HRS_DEF_ITEM_CALCULATION (ITEM_CAL_ID, ITEM_HEADER_ID,
+		ITEM_CODE,
+		LINE_NUM, SIGN, CAL_ITEM_CODE, CONSTANT, CREATION_DATE, CREATED_BY,
+		LAST_UPDATE_DATE,
+		LAST_UPDATED_BY) values
+		(#{itemCalId,jdbcType=DECIMAL},
+		#{itemHeaderId,jdbcType=DECIMAL},
+		#{itemCode,jdbcType=VARCHAR}, #{lineNum,jdbcType=DECIMAL},
+		#{sign,jdbcType=VARCHAR},
+		#{calItemCode,jdbcType=VARCHAR},
+		#{constant,jdbcType=DECIMAL},
+		#{creationDate,jdbcType=TIMESTAMP},
+		#{createdBy,jdbcType=VARCHAR}, #{lastUpdateDate,jdbcType=TIMESTAMP},
+		#{lastUpdatedBy,jdbcType=VARCHAR})
+	</insert>
+
+	<!-- 更新、修改表项计算项 -->
+	<update id="updateItemCaculation" parameterType="com.hausontech.hrs.bean.reportSetting.ItemCalBean">
+		UPDATE
+		HRS_DEF_ITEM_CALCULATION SET
+		ITEM_HEADER_ID =
+		NVL(#{itemHeaderId,jdbcType=DECIMAL},
+		ITEM_HEADER_ID),
+		ITEM_CODE =
+		NVL(#{itemCode,jdbcType=VARCHAR},ITEM_CODE),
+		LINE_NUM =
+		NVL(#{lineNum,jdbcType=DECIMAL},LINE_NUM),
+		SIGN =
+		NVL(#{sign,jdbcType=VARCHAR},SIGN),
+		CAL_ITEM_CODE =
+		NVL(#{calItemCode,jdbcType=VARCHAR},CAL_ITEM_CODE),
+		CONSTANT =
+		NVL(#{constant,jdbcType=DECIMAL},CONSTANT),
+		LAST_UPDATE_DATE =
+		NVL(#{lastUpdateDate,jdbcType=TIMESTAMP},LAST_UPDATE_DATE),
+		LAST_UPDATED_BY =
+		NVL(#{lastUpdatedBy,jdbcType=DECIMAL},LAST_UPDATED_BY)
+		WHERE
+		ITEM_CAL_ID = #{itemCalId,jdbcType=DECIMAL}
+	</update>
+
+	<!-- 删除表项计算项 -->
+	<delete id="deleteItemCalculation" parameterType="com.hausontech.hrs.bean.reportSetting.ItemCalBean">
+		DELETE
+		HRS_DEF_ITEM_CALCULATION WHERE ITEM_CAL_ID=#{itemCalId}
+	</delete>
+
+	<sql id="itemCalculationCondition">
+		where 1=1
+		<if test="itemHeaderId != 0">
+			and ITEM_HEADER_ID=#{itemHeaderId}
+		</if>
+	</sql>
+
+	<!-- 获取计算配置列表 -->
+	<select id="getItemCalculationList" parameterType="com.hausontech.hrs.bean.reportSetting.ItemCalBean"
+		resultMap="itemCalculationResultMap">
+		<include refid="pageBefore" />
+		SELECT HRS_DEF_ITEM_CALCULATION.*
+		<if test="rowStartIndex != 0 and rowCount != 0">
+			, ROW_NUMBER() OVER (ORDER BY 1) AS row_number
+		</if>
+		FROM HRS_DEF_ITEM_CALCULATION
+		<include refid="itemCalculationCondition" />
+		ORDER BY LINE_NUM
+		<include refid="pageAfter" />
+	</select>
+
+	<!-- 获取表项计算配置记录条数 -->
+	<select id="getItemCalculationCount" parameterType="com.hausontech.hrs.bean.reportSetting.ItemCalBean"
+		resultType="java.lang.Integer">
+		select count(1) from HRS_DEF_ITEM_CALCULATION
+		<include refid="itemCalculationCondition" />
+	</select>
+
+	<!-- 查询计算表项 -->
+	<select id="getCalItemList"
+		parameterType="com.hausontech.hrs.bean.reportSetting.ItemHeaderBean"
+		resultMap="itemHeaderResultMap">
+		SELECT ITEM_CODE, DESCRIPTION, (ITEM_CODE || '_' ||
+		DESCRIPTION) AS DISP_NAME
+		FROM HRS_DEF_ITEM_HEADER
+		WHERE RULE_CODE =
+		#{ruleCode}
+		ORDER BY ITEM_CODE
+	</select>
+
+	<resultMap id="dimensionValueSetResultMap"
+		type="com.hausontech.hrs.bean.reportSetting.DimensionValueSetBean">
+		<result column="DIMENSION_ID" property="dimensionId" jdbcType="DECIMAL" />
+		<result column="DIMENSION_CODE" property="dimensionCode"
+			jdbcType="VARCHAR" />
+		<result column="DIMENSION_NAME" property="dimensionDescription"
+			jdbcType="VARCHAR" />
+		<result column="DIM_SEGMENT" property="dimSegment" jdbcType="VARCHAR" />
+		<result column="DIM_VALUE_ID" property="dimValueId" jdbcType="DECIMAL" />
+		<result column="DIM_VALUE" property="dimValue" jdbcType="VARCHAR" />
+		<result column="DESCRIPTION" property="dimValDescription"
+			jdbcType="VARCHAR" />
+		<result column="SUMMARY_FLAG" property="summaryFlag" jdbcType="VARCHAR" />
+	</resultMap>
+
+
+	<!-- 查询维值定义列表 -->
+	<select id="getDimensionValueSetList" resultMap="dimensionValueSetResultMap">
+		SELECT
+		a.DIMENSION_ID, a.DIMENSION_CODE, a.DIMENSION_NAME, a.DIM_SEGMENT,
+		b.DIM_VALUE_ID, b.DIM_VALUE, b.DESCRIPTION, b.SUMMARY_FLAG
+		FROM
+		HRS_CORE_DIMENSION a, HRS_CORE_DIMENSION_VALUE b
+		WHERE
+		a.DIMENSION_ID =
+		b.DIMENSION_ID
+		ORDER BY a.DIMENSION_CODE
+	</select>
+
+	<!-- 更新修改表项上下限 -->
+	<update id="updateItemContenLowHigh"
+		parameterType="com.hausontech.hrs.bean.reportSetting.ItemContentBean2">
+		UPDATE HRS_DEF_ITEM_CONTENT SET
+		SEGMENT1_LOW=NVL(#{segment1Low,jdbcType=VARCHAR},SEGMENT1_LOW),
+		SEGMENT1_HIGH=NVL(#{segment1Hign,jdbcType=VARCHAR},SEGMENT1_HIGH),
+		SEGMENT1_TYPE=NVL(#{segment1Type,jdbcType=VARCHAR},SEGMENT1_TYPE),
+		SEGMENT2_LOW=NVL(#{segment2Low,jdbcType=VARCHAR},SEGMENT2_LOW),
+		SEGMENT2_HIGH=NVL(#{segment2Hign,jdbcType=VARCHAR},SEGMENT2_HIGH),
+		SEGMENT2_TYPE=NVL(#{segment2Type,jdbcType=VARCHAR},SEGMENT2_TYPE),
+		SEGMENT3_LOW=NVL(#{segment3Low,jdbcType=VARCHAR},SEGMENT3_LOW),
+		SEGMENT3_HIGH=NVL(#{segment3Hign,jdbcType=VARCHAR},SEGMENT3_HIGH),
+		SEGMENT3_TYPE=NVL(#{segment3Type,jdbcType=VARCHAR},SEGMENT3_TYPE),
+		SEGMENT4_LOW=NVL(#{segment4Low,jdbcType=VARCHAR},SEGMENT4_LOW),
+		SEGMENT4_HIGH=NVL(#{segment4Hign,jdbcType=VARCHAR},SEGMENT4_HIGH),
+		SEGMENT4_TYPE=NVL(#{segment4Type,jdbcType=VARCHAR},SEGMENT4_TYPE),
+		SEGMENT5_LOW=NVL(#{segment5Low,jdbcType=VARCHAR},SEGMENT5_LOW),
+		SEGMENT5_HIGH=NVL(#{segment5Hign,jdbcType=VARCHAR},SEGMENT5_HIGH),
+		SEGMENT5_TYPE=NVL(#{segment5Type,jdbcType=VARCHAR},SEGMENT5_TYPE),
+		SEGMENT6_LOW=NVL(#{segment6Low,jdbcType=VARCHAR},SEGMENT6_LOW),
+		SEGMENT6_HIGH=NVL(#{segment6Hign,jdbcType=VARCHAR},SEGMENT6_HIGH),
+		SEGMENT6_TYPE=NVL(#{segment6Type,jdbcType=VARCHAR},SEGMENT6_TYPE),
+		SEGMENT7_LOW=NVL(#{segment7Low,jdbcType=VARCHAR},SEGMENT7_LOW),
+		SEGMENT7_HIGH=NVL(#{segment7Hign,jdbcType=VARCHAR},SEGMENT7_HIGH),
+		SEGMENT7_TYPE=NVL(#{segment7Type,jdbcType=VARCHAR},SEGMENT7_TYPE),
+		SEGMENT8_LOW=NVL(#{segment8Low,jdbcType=VARCHAR},SEGMENT8_LOW),
+		SEGMENT8_HIGH=NVL(#{segment8Hign,jdbcType=VARCHAR},SEGMENT8_HIGH),
+		SEGMENT8_TYPE=NVL(#{segment8Type,jdbcType=VARCHAR},SEGMENT8_TYPE),
+		SEGMENT9_LOW=NVL(#{segment9Low,jdbcType=VARCHAR},SEGMENT9_LOW),
+		SEGMENT9_HIGH=NVL(#{segment9Hign,jdbcType=VARCHAR},SEGMENT9_HIGH),
+		SEGMENT9_TYPE=NVL(#{segment9Type,jdbcType=VARCHAR},SEGMENT9_TYPE),
+		SEGMENT10_LOW=NVL(#{segment10Low,jdbcType=VARCHAR},SEGMENT10_LOW),
+		SEGMENT10_HIGH=NVL(#{segment10Hign,jdbcType=VARCHAR},SEGMENT10_HIGH),
+		SEGMENT10_TYPE=NVL(#{segment10Type,jdbcType=VARCHAR},SEGMENT10_TYPE),
+		SEGMENT11_LOW=NVL(#{segment11Low,jdbcType=VARCHAR},SEGMENT11_LOW),
+		SEGMENT11_HIGH=NVL(#{segment11Hign,jdbcType=VARCHAR},SEGMENT11_HIGH),
+		SEGMENT11_TYPE=NVL(#{segment11Type,jdbcType=VARCHAR},SEGMENT11_TYPE),
+		SEGMENT12_LOW=NVL(#{segment12Low,jdbcType=VARCHAR},SEGMENT12_LOW),
+		SEGMENT12_HIGH=NVL(#{segment12Hign,jdbcType=VARCHAR},SEGMENT12_HIGH),
+		SEGMENT12_TYPE=NVL(#{segment12Type,jdbcType=VARCHAR},SEGMENT12_TYPE),
+		SEGMENT13_LOW=NVL(#{segment13Low,jdbcType=VARCHAR},SEGMENT13_LOW),
+		SEGMENT13_HIGH=NVL(#{segment13Hign,jdbcType=VARCHAR},SEGMENT13_HIGH),
+		SEGMENT13_TYPE=NVL(#{segment13Type,jdbcType=VARCHAR},SEGMENT13_TYPE),
+		SEGMENT14_LOW=NVL(#{segment14Low,jdbcType=VARCHAR},SEGMENT14_LOW),
+		SEGMENT14_HIGH=NVL(#{segment14Hign,jdbcType=VARCHAR},SEGMENT14_HIGH),
+		SEGMENT14_TYPE=NVL(#{segment14Type,jdbcType=VARCHAR},SEGMENT14_TYPE),
+		SEGMENT15_LOW=NVL(#{segment15Low,jdbcType=VARCHAR},SEGMENT15_LOW),
+		SEGMENT15_HIGH=NVL(#{segment15Hign,jdbcType=VARCHAR},SEGMENT15_HIGH),
+		SEGMENT15_TYPE=NVL(#{segment15Type,jdbcType=VARCHAR},SEGMENT15_TYPE),
+		SEGMENT16_LOW=NVL(#{segment16Low,jdbcType=VARCHAR},SEGMENT16_LOW),
+		SEGMENT16_HIGH=NVL(#{segment16Hign,jdbcType=VARCHAR},SEGMENT16_HIGH),
+		SEGMENT16_TYPE=NVL(#{segment16Type,jdbcType=VARCHAR},SEGMENT16_TYPE),
+		SEGMENT17_LOW=NVL(#{segment17Low,jdbcType=VARCHAR},SEGMENT17_LOW),
+		SEGMENT17_HIGH=NVL(#{segment17Hign,jdbcType=VARCHAR},SEGMENT17_HIGH),
+		SEGMENT17_TYPE=NVL(#{segment17Type,jdbcType=VARCHAR},SEGMENT17_TYPE),
+		SEGMENT18_LOW=NVL(#{segment18Low,jdbcType=VARCHAR},SEGMENT18_LOW),
+		SEGMENT18_HIGH=NVL(#{segment18Hign,jdbcType=VARCHAR},SEGMENT18_HIGH),
+		SEGMENT18_TYPE=NVL(#{segment18Type,jdbcType=VARCHAR},SEGMENT18_TYPE),
+		SEGMENT19_LOW=NVL(#{segment19Low,jdbcType=VARCHAR},SEGMENT19_LOW),
+		SEGMENT19_HIGH=NVL(#{segment19Hign,jdbcType=VARCHAR},SEGMENT19_HIGH),
+		SEGMENT19_TYPE=NVL(#{segment19Type,jdbcType=VARCHAR},SEGMENT19_TYPE),
+		SEGMENT20_LOW=NVL(#{segment20Low,jdbcType=VARCHAR},SEGMENT20_LOW),
+		SEGMENT20_HIGH=NVL(#{segment20Hign,jdbcType=VARCHAR},SEGMENT20_HIGH),
+		SEGMENT20_TYPE=NVL(#{segment20Type,jdbcType=VARCHAR},SEGMENT20_TYPE),
+		LAST_UPDATE_DATE=NVL(#{lastUpdateDate,jdbcType=TIMESTAMP},LAST_UPDATE_DATE),
+		LAST_UPDATED_BY=NVL(#{lastUpdatedBy,jdbcType=VARCHAR},LAST_UPDATED_BY)
+		WHERE ITEM_CONTENT_ID=#{itemContentId}
+	</update>
+
+
+
+	<resultMap
+		type="com.hausontech.hrs.bean.reportSetting.ItemGroupRuleLineBean" id="RuleLineResultMap">
+		<result column="RULE_LINE_ID" property="ruleLineId" jdbcType="DECIMAL" />
+		<result column="RULE_HEADER_ID" property="ruleHeaderId"
+			jdbcType="DECIMAL" />
+		<result column="RULE_LINE_SEQ" property="ruleLineSeq" jdbcType="DECIMAL" />
+		<result column="DIM_SEGMENT" property="dimSegment" jdbcType="VARCHAR" />
+		<result column="DESCRIPTION" property="dimSegDescription"
+			jdbcType="VARCHAR" />
+		<result column="CREATION_DATE" property="creationDate"
+			jdbcType="TIMESTAMP" />
+		<result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+		<result column="LAST_UPDATE_DATE" property="lastUpdateDate"
+			jdbcType="TIMESTAMP" />
+		<result column="LAST_UPDATED_BY" property="lastUpdatedBy"
+			jdbcType="VARCHAR" />
+	</resultMap>
+
+	<!-- 新增维度定义描述记录 -->
+	<insert id="saveRuleLineRecord"
+		parameterType="com.hausontech.hrs.bean.reportSetting.ItemGroupRuleLineBean">
+		INSERT INTO HRS_DEF_RULE_LINE(RULE_LINE_ID,
+		RULE_LINE_SEQ, RULE_HEADER_ID, DIM_SEGMENT,
+		CREATION_DATE,CREATED_BY,LAST_UPDATE_DATE,LAST_UPDATED_BY)
+		VALUES(#{ruleLineId,jdbcType=DECIMAL},
+		#{ruleLineSeq,jdbcType=DECIMAL},
+		#{ruleHeaderId,jdbcType=DECIMAL},
+		#{dimSegment,jdbcType=VARCHAR},
+		#{creationDate,jdbcType=TIMESTAMP},
+		#{createdBy,jdbcType=VARCHAR},
+		#{lastUpdateDate,jdbcType=TIMESTAMP},
+		#{lastUpdatedBy,jdbcType=VARCHAR})
+	</insert>
+
+	<!-- 更新、修改维度定义描述记录 -->
+	<update id="updateRuleLineRecord"
+		parameterType="com.hausontech.hrs.bean.reportSetting.ItemGroupRuleLineBean">
+		UPDATE HRS_DEF_RULE_LINE SET
+		RULE_LINE_SEQ = NVL(#{ruleLineSeq,jdbcType=DECIMAL},RULE_LINE_SEQ),
+		RULE_HEADER_ID = NVL(#{ruleHeaderId,jdbcType=DECIMAL},RULE_HEADER_ID),
+		DIM_SEGMENT = NVL(#{dimSegment,jdbcType=VARCHAR},DIM_SEGMENT),
+		LAST_UPDATE_DATE = NVL(#{lastUpdateDate,jdbcType=TIMESTAMP},LAST_UPDATE_DATE),
+		LAST_UPDATED_BY =
+		NVL(#{lastUpdatedBy,jdbcType=VARCHAR},LAST_UPDATED_BY)
+		WHERE RULE_LINE_ID = #{ruleLineId,jdbcType=DECIMAL}
+	</update>
+
+	<!-- 删除维度定义描述记录 -->
+	<delete id="deleteRuleLineRecord"
+		parameterType="com.hausontech.hrs.bean.reportSetting.ItemGroupRuleLineBean">
+		DELETE HRS_DEF_RULE_LINE WHERE
+		RULE_LINE_ID=#{ruleLineId,jdbcType=DECIMAL}
+	</delete>
+
+	<!-- 维度定义描述记录查询条件 -->
+	<sql id="RuleLineCondition">
+		<choose>
+			<when test="ruleLineId != 0">
+				and t.RULE_LINE_ID= #{ruleLineId}
+			</when>
+			<otherwise>
+				<if test="ruleHeaderId != 0">
+					and t.RULE_HEADER_ID = #{ruleHeaderId}
+				</if>
+				<if test="dimSegment !=null and dimSegment !=''">
+					and t.DIM_SEGMENT like '%' || #{dimSegment} || '%'
+				</if>
+			</otherwise>
+		</choose>
+	</sql>
+
+	<!-- 查询维度定义描述记录集合 -->
+	<select id="getRuleLineList"
+		parameterType="com.hausontech.hrs.bean.reportSetting.ItemGroupRuleLineBean"
+		resultMap="RuleLineResultMap">
+		<include refid="pageBefore" />
+		SELECT t.RULE_LINE_ID,t.RULE_HEADER_ID,t.RULE_LINE_SEQ,
+		t.DIM_SEGMENT,t.CREATION_DATE,t.CREATED_BY,t.LAST_UPDATE_DATE,t.LAST_UPDATED_BY,
+		d.dimension_name as DESCRIPTION
+		<if test="rowStartIndex != 0 and rowCount != 0">
+			, ROW_NUMBER() OVER (ORDER BY 1) AS row_number
+		</if>
+		FROM HRS_DEF_RULE_LINE t, HRS_CORE_DIMENSION d
+		WHERE t.dim_segment =
+		d.dim_segment
+		<include refid="RuleLineCondition" />
+		<include refid="pageAfter" />
+	</select>
+
+
+	<!-- 查询维度定义描述记录条数 -->
+	<select id="countByItemGroupRuleLineBean"
+		parameterType="com.hausontech.hrs.bean.reportSetting.ItemGroupRuleLineBean"
+		resultType="java.lang.Integer">
+		select count(1) from HRS_DEF_RULE_LINE t
+		where 1=1
+		<include refid="RuleLineCondition" />
+	</select>
+
+
+</mapper>

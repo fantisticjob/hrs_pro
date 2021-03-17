@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: pentaho-kettle:mail:1.4.7">
+    <CLASSES>
+      <root url="jar://D:/java/apache-maven-3.3.9/apache-maven-3.3.9/conf/RepMavean/pentaho-kettle/mail/1.4.7/mail-1.4.7.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://D:/java/apache-maven-3.3.9/apache-maven-3.3.9/conf/RepMavean/pentaho-kettle/mail/1.4.7/mail-1.4.7-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://D:/java/apache-maven-3.3.9/apache-maven-3.3.9/conf/RepMavean/pentaho-kettle/mail/1.4.7/mail-1.4.7-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -1,0 +1,1849 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper
+	namespace="com.hausontech.hrs.daoImpl.allocationManager.mapper.HaeDimFilterHeaderMapper">
+	<resultMap id="BaseResultMap"
+		type="com.hausontech.hrs.bean.allocationManager.DimFilterHeaderBean">
+		<result column="FILTER_HEADER_ID" property="filterHeaderId"
+			jdbcType="DECIMAL" />
+		<result column="FILTER_HEADER_NAME" property="filterHeaderName"
+			jdbcType="VARCHAR" />
+		<result column="DIMENSION_SEGMENT" property="dimensionSegment"
+			jdbcType="VARCHAR" />
+		<result column="TYPE" property="type" jdbcType="VARCHAR" />
+		<result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+		<result column="CREATED_DATE" property="creationDate" jdbcType="TIMESTAMP" />
+		<result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+		<result column="LAST_UPDATED_DATE" property="lastUpdateDate"
+			jdbcType="TIMESTAMP" />
+		<result column="LAST_UPDATED_BY" property="lastUpdatedBy"
+			jdbcType="VARCHAR" />
+	</resultMap>
+
+	<resultMap id="BaseResultMapAllocRuleBean"
+		type="com.hausontech.hrs.bean.allocationManager.AllocRuleBean">
+		<result column="LINE_NUM" property="lineNum" jdbcType="DECIMAL" />
+		<result column="RULE_ID" property="ruleId" jdbcType="DECIMAL" />
+		<result column="RULE_NAME" property="ruleName" jdbcType="VARCHAR" />
+		<result column="DRIVER_TYPE" property="driverType" jdbcType="VARCHAR" />
+		<result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+		<result column="START_DATE_ACTIVE" property="startDateActive"
+			jdbcType="TIMESTAMP" />
+		<result column="END_DATE_ACTIVE" property="endDateActive"
+			jdbcType="TIMESTAMP" />
+		<result column="SOURCE_ID" property="sourceId" jdbcType="DECIMAL" />
+		<result column="DRIVER_ID" property="driverId" jdbcType="DECIMAL" />
+		<result column="TARGET_ID" property="targetId" jdbcType="DECIMAL" />
+		<result column="OFFSET_ID" property="offsetId" jdbcType="DECIMAL" />
+		<result column="CREATED_DATE" property="creationDate" jdbcType="TIMESTAMP" />
+		<result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+		<result column="UPDATED_DATE" property="lastUpdateDate"
+			jdbcType="TIMESTAMP" />
+		<result column="UPDATED_BY" property="lastUpdatedBy" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<resultMap id="BaseResultMapAllocSourceBean"
+		type="com.hausontech.hrs.bean.allocationManager.AllocSourceBean">
+		<result column="SOURCE_ID" property="sourceId" jdbcType="DECIMAL" />
+		<result column="RULE_ID" property="ruleId" jdbcType="DECIMAL" />
+		<result column="SOURCE_TYPE" property="sourceType" jdbcType="VARCHAR" />
+		<result column="CONSTANT" property="constant" jdbcType="DECIMAL" />
+		<result column="ACTUAL_FLAG" property="actualFlag" jdbcType="VARCHAR" />
+		<result column="CURRENCY_TYPE" property="currencyType"
+			jdbcType="VARCHAR" />
+		<result column="CURRENCY_CODE" property="currencyCode"
+			jdbcType="VARCHAR" />
+		<result column="AMOUNT_TYPE" property="amountType" jdbcType="VARCHAR" />
+		<result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+		<result column="OPERATOR" property="operator" jdbcType="VARCHAR" />
+		<result column="DIRECTION_CODE" property="directionCode"
+			jdbcType="VARCHAR" />
+		<result column="CREATED_DATE" property="creationDate" jdbcType="TIMESTAMP" />
+		<result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+		<result column="UPDATED_DATE" property="lastUpdateDate"
+			jdbcType="TIMESTAMP" />
+		<result column="UPDATED_BY" property="lastUpdatedBy" jdbcType="VARCHAR" />
+	</resultMap>
+
+
+	<resultMap id="BaseResultMapTargetAccount"
+		type="com.hausontech.hrs.bean.allocationManager.AllocTargetAccountBean">
+		<result column="target_Acc_Id" property="targetAccId" jdbcType="DECIMAL" />
+		<result column="target_Id" property="targetId" jdbcType="DECIMAL" />
+		<result column="LEDGER_ID" property="ledgerId" jdbcType="DECIMAL" />
+		<result column="FIN_ELEMENT" property="finElement" jdbcType="VARCHAR" />
+		<result column="DIMENSION_SEGMENT" property="dimensionSegment"
+			jdbcType="VARCHAR" />
+		<result column="DIMENSION_NAME" property="dimensionName"
+			jdbcType="VARCHAR" />
+		<result column="DIMENSION_VALUE" property="dimensionValue"
+			jdbcType="VARCHAR" />
+		<result column="dim_Alloc_Type" property="dimAllocType"
+			jdbcType="VARCHAR" />
+		<result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<resultMap id="BaseResultMapDriverAccount"
+		type="com.hausontech.hrs.bean.allocationManager.AllocDriverAccountBean">
+		<result column="DRVIER_ACC_ID" property="drvierAccId" jdbcType="DECIMAL" />
+		<result column="DRVIER_ID" property="drvierId" jdbcType="DECIMAL" />
+		<result column="LEDGER_ID" property="ledgerId" jdbcType="DECIMAL" />
+		<result column="FIN_ELEMENT" property="finElement" jdbcType="VARCHAR" />
+		<result column="DIMENSION_SEGMENT" property="dimensionSegment"
+			jdbcType="VARCHAR" />
+		<result column="DIMENSION_NAME" property="dimensionName"
+			jdbcType="VARCHAR" />
+		<result column="DIMENSION_VALUE" property="dimensionValue"
+			jdbcType="VARCHAR" />
+		<result column="FILTER_HEADER_ID" property="filterHeaderId"
+			jdbcType="DECIMAL" />
+		<result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<resultMap id="BaseResultMapSourceAccount"
+		type="com.hausontech.hrs.bean.allocationManager.AllocSourceAccountBean">
+		<result column="source_Acc_Id" property="sourceAccId" jdbcType="DECIMAL" />
+		<result column="source_Id" property="sourceId" jdbcType="DECIMAL" />
+		<result column="LEDGER_ID" property="ledgerId" jdbcType="DECIMAL" />
+		<result column="FIN_ELEMENT" property="finElement" jdbcType="VARCHAR" />
+		<result column="DIMENSION_SEGMENT" property="dimensionSegment"
+			jdbcType="VARCHAR" />
+		<result column="DIMENSION_NAME" property="dimensionName"
+			jdbcType="VARCHAR" />
+		<result column="DIMENSION_VALUE" property="dimensionValue"
+			jdbcType="VARCHAR" />
+		<result column="FILTER_HEADER_ID" property="filterHeaderId"
+			jdbcType="DECIMAL" />
+		<result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<resultMap id="BaseResultMapStaticLine"
+		type="com.hausontech.hrs.bean.allocationManager.DriverStaticLine">
+		<result column="STATIC_LINE_ID" property="staticLineId"
+			jdbcType="DECIMAL" />
+		<result column="STATIC_HEADER_ID" property="staticHeaderId"
+			jdbcType="DECIMAL" />
+		<result column="DIM_VALUE" property="dimValue" jdbcType="VARCHAR" />
+		<result column="DRIVER_NAME" property="driverName" jdbcType="VARCHAR" />
+		<result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+		<result column="PROPORTION" property="proportion" jdbcType="DECIMAL" />
+		<result column="START_DATE_ACTIVE" property="startDateActive"
+			jdbcType="TIMESTAMP" />
+		<result column="END_DATE_ACTIVE" property="endDateActive"
+			jdbcType="TIMESTAMP" />
+		<result column="CREATED_DATE" property="creationDate" jdbcType="TIMESTAMP" />
+		<result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+		<result column="LAST_UPDATED_DATE" property="lastUpdateDate"
+			jdbcType="TIMESTAMP" />
+		<result column="LAST_UPDATED_BY" property="lastUpdatedBy"
+			jdbcType="VARCHAR" />
+	</resultMap>
+
+	<resultMap id="BaseResultMapDriverDataGrid"
+		type="com.hausontech.hrs.bean.allocationManager.model.AllocDriverRecord">
+		<result column="driver_Type" property="driverType" jdbcType="DECIMAL" />
+		<result column="actual_Flag" property="actualFlag" jdbcType="DECIMAL" />
+		<result column="currency_Type" property="currencyType"
+			jdbcType="VARCHAR" />
+		<result column="currency_Code" property="currencyCode"
+			jdbcType="VARCHAR" />
+		<result column="direction_Code" property="directionCode"
+			jdbcType="VARCHAR" />
+		<result column="description" property="description" jdbcType="VARCHAR" />
+		<result column="constant" property="constant" jdbcType="DECIMAL" />
+		<result column="static_Header_Id" property="staticHeaderId"
+			jdbcType="DECIMAL" />
+		<result column="AMOUNT_TYPE" property="amountType" jdbcType="VARCHAR" />
+		<result column="driver_Id" property="driverId" jdbcType="DECIMAL" />
+		<result column="RULE_ID" property="ruleId" jdbcType="DECIMAL" />
+		<result column="CREATED_DATE" property="creationDate" jdbcType="TIMESTAMP" />
+		<result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+		<result column="UPDATED_DATE" property="lastUpdateDate"
+			jdbcType="TIMESTAMP" />
+		<result column="UPDATED_BY" property="lastUpdatedBy" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<resultMap id="BaseResultMapSourceDataGrid"
+		type="com.hausontech.hrs.bean.allocationManager.model.AllocSourceRecord">
+		<result column="rule_id" property="allocRuleId" jdbcType="DECIMAL" />
+		<result column="source_Type" property="sourceType" jdbcType="VARCHAR" />
+		<result column="actual_Flag" property="actualFlag" jdbcType="VARCHAR" />
+		<result column="currency_Type" property="currencyType"
+			jdbcType="VARCHAR" />
+		<result column="currency_Code" property="currencyCode"
+			jdbcType="VARCHAR" />
+		<result column="amount_Type" property="amountType" jdbcType="VARCHAR" />
+		<result column="direction_Code" property="directionCode"
+			jdbcType="VARCHAR" />
+		<result column="operator" property="operator" jdbcType="VARCHAR" />
+		<result column="constant" property="constantValue" jdbcType="DECIMAL" />
+		<result column="description" property="description" jdbcType="VARCHAR" />
+		<result column="source_Id" property="sourceId" jdbcType="DECIMAL" />
+	</resultMap>
+
+	<resultMap id="BaseResultMapTargetDataGrid"
+		type="com.hausontech.hrs.bean.allocationManager.model.AllocTargetRecord">
+		<result column="rule_id" property="allocRuleId" jdbcType="DECIMAL" />
+		<result column="type" property="targetType" jdbcType="VARCHAR" />
+		<result column="actual_Flag" property="actualFlag" jdbcType="VARCHAR" />
+		<result column="currency_Type" property="currencyType"
+			jdbcType="VARCHAR" />
+		<result column="currency_Code" property="currencyCode"
+			jdbcType="VARCHAR" />
+		<result column="amount_Type" property="amountType" jdbcType="VARCHAR" />
+		<result column="direction_Code" property="directionCode"
+			jdbcType="VARCHAR" />
+		<result column="description" property="description" jdbcType="VARCHAR" />
+		<result column="target_Id" property="targetId" jdbcType="DECIMAL" />
+	</resultMap>
+
+	<resultMap id="BaseResultMapRuleDataGrid"
+		type="com.hausontech.hrs.bean.allocationManager.model.AllocRuleRecord">
+		<result column="RULE_ID" property="allocRuleId" jdbcType="DECIMAL" />
+		<result column="LINE_NUM" property="lineNumber" jdbcType="DECIMAL" />
+		<result column="rule_Name" property="ruleName" jdbcType="VARCHAR" />
+		<result column="driver_Type" property="driverType" jdbcType="VARCHAR" />
+		<result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+		<result column="source_id" property="sourceId" jdbcType="DECIMAL" />
+		<result column="target_id" property="targetId" jdbcType="DECIMAL" />
+		<result column="driver_id" property="driverId" jdbcType="DECIMAL" />
+		<result column="offset_id" property="offsetId" jdbcType="DECIMAL" />
+		<result column="isSourceOver" property="isSourceOver" jdbcType="VARCHAR" />
+		<result column="isDriverOver" property="isDriverOver" jdbcType="VARCHAR" />
+		<result column="START_DATE_ACTIVE" property="startDateActive"
+			jdbcType="TIMESTAMP" />
+		<result column="END_DATE_ACTIVE" property="endDateActive"
+			jdbcType="TIMESTAMP" />
+		<result column="CREATED_DATE" property="creationDate" jdbcType="TIMESTAMP" />
+		<result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+		<result column="UPDATED_DATE" property="lastUpdateDate"
+			jdbcType="TIMESTAMP" />
+		<result column="UPDATED_BY" property="lastUpdatedBy" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<resultMap id="BaseResultMapRulesGroupLine"
+		type="com.hausontech.hrs.bean.allocationManager.AllocRulesGroupLineBean">
+		<result column="GROUP_LINE_ID" property="groupLineId" jdbcType="DECIMAL" />
+		<result column="GROUP_HEADER_ID" property="groupHeaderId"
+			jdbcType="DECIMAL" />
+		<result column="LINE_NUM" property="lineNum" jdbcType="DECIMAL" />
+		<result column="RULE_ID" property="ruleId" jdbcType="DECIMAL" />
+		<result column="RULE_NAME" property="ruleName" jdbcType="VARCHAR" />
+		<result column="DRIVER_TYPE" property="alRuleType" jdbcType="VARCHAR" />
+		<result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+		<result column="START_DATE_ACTIVE" property="startDateActive"
+			jdbcType="TIMESTAMP" />
+		<result column="END_DATE_ACTIVE" property="endDateActive"
+			jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<resultMap id="BaseResultMapAllocRequestInstance"
+		type="com.hausontech.hrs.bean.allocationManager.AllocRulesGroupHaeaderBean">
+		<result column="GROUP_HEADER_ID" property="groupHeaderId"
+			jdbcType="DECIMAL" />
+		<result column="GROUP_NUM" property="groupNum" jdbcType="DECIMAL" />
+		<result column="GROUP_NAME" property="groupName" jdbcType="VARCHAR" />
+		<result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+		<result column="START_DATE_ACTIVE" property="startDateActive"
+			jdbcType="TIMESTAMP" />
+		<result column="END_DATE_ACTIVE" property="endDateActive"
+			jdbcType="TIMESTAMP" />
+		<result column="CREATED_DATE" property="creationDate" jdbcType="TIMESTAMP" />
+		<result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+		<result column="UPDATED_DATE" property="lastUpdateDate"
+			jdbcType="TIMESTAMP" />
+		<result column="UPDATED_BY" property="lastUpdatedBy" jdbcType="VARCHAR" />
+	</resultMap>
+
+
+	<resultMap id="BaseResultMapDriverHeader"
+		type="com.hausontech.hrs.bean.allocationManager.DriverStaticHeader">
+		<result column="STATIC_HEADER_ID" property="staticHeaderId"
+			jdbcType="DECIMAL" />
+		<result column="DRIVER_CODE" property="driverCode" jdbcType="VARCHAR" />
+		<result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+		<result column="DIMENSION_SEGMENT" property="dimensionSegment"
+			jdbcType="VARCHAR" />
+		<result column="START_DATE_ACTIVE" property="startDateActive"
+			jdbcType="TIMESTAMP" />
+		<result column="END_DATE_ACTIVE" property="endDateActive"
+			jdbcType="TIMESTAMP" />
+		<result column="CREATED_DATE" property="creationDate" jdbcType="TIMESTAMP" />
+		<result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+		<result column="LAST_UPDATED_DATE" property="lastUpdateDate"
+			jdbcType="TIMESTAMP" />
+		<result column="LAST_UPDATED_BY" property="lastUpdatedBy"
+			jdbcType="VARCHAR" />
+	</resultMap>
+
+	<resultMap id="BaseResultMapById"
+		type="com.hausontech.hrs.bean.allocationManager.DimFilterLineBean">
+		<result column="FILTER_LINE_ID" property="filterLineId"
+			jdbcType="DECIMAL" />
+		<result column="FILTER_HEADER_ID" property="filterHeaderId"
+			jdbcType="DECIMAL" />
+		<result column="VALUE_LOW" property="valueLow" jdbcType="VARCHAR" />
+		<result column="VALUE_HIGH" property="valueHigh" jdbcType="VARCHAR" />
+		<result column="INC_EXC_INDICATOR" property="incExcIndicator"
+			jdbcType="VARCHAR" />
+		<result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+		<result column="CREATED_DATE" property="creationDate" jdbcType="TIMESTAMP" />
+		<result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+		<result column="LAST_UPDATED_DATE" property="lastUpdateDate"
+			jdbcType="TIMESTAMP" />
+		<result column="LAST_UPDATED_BY" property="lastUpdatedBy"
+			jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="AUDIT_QUERY_STRING">
+		, CREATED_DATE,
+		CREATED_BY,LAST_UPDATED_DATE,LAST_UPDATED_BY
+	</sql>
+
+	<sql id="AUDIT_QUERY_STRING_L">
+		,#{creationDate},
+		#{createdBy},#{lastUpdateDate},#{lastUpdatedBy}
+	</sql>
+
+	<sql id="PAGE_SQL">
+		) innerA where innerA.row_number &gt;=${start}
+		<if test="filterHeaderName != null">
+			and INNERA.FILTER_HEADER_NAME like '%' ||
+			#{filterHeaderName} || '%'
+		</if>
+		<if test="dimensionSegment != null and dimensionSegment !=''">
+			and INNERA.DIMENSION_SEGMENT = #{dimensionSegment}
+		</if>
+		) outerB
+		where rownum &lt;= ${count}
+	</sql>
+
+	<sql id="PAGE_SQL_BY_ID">
+		) innerA where innerA.row_number &gt;=${start}
+		<if test="filterHeaderName != null">
+			and INNERA.FILTER_HEADER_NAME like '%' ||
+			#{filterHeaderName} || '%'
+		</if>
+		<if test="dimensionSegment != null ">
+			and INNERA.DIMENSION_SEGMENT = #{dimensionSegment}
+		</if>
+		<if test="filterHeaderId != null ">
+			and INNERA.filter_Header_Id = #{filterHeaderId}
+		</if>
+		) outerB
+		where rownum &lt;= ${count}
+	</sql>
+
+	<!-- 获取规则数据 -->
+	<select id="getRuleList" resultType="java.util.Map">
+		SELECT
+		RULE_ID,LINE_NUM,RULE_NAME,DESCRIPTION,DRIVER_TYPE,START_DATE_ACTIVE,END_DATE_ACTIVE
+		FROM HAE_ALLOC_RULE
+	</select>
+	<!-- 获取所有类型数据 -->
+	<select id="findAllType" resultType="java.util.Map"
+		parameterType="java.lang.Long">
+		SELECT D.DRIVER_TYPE,S.SOURCE_TYPE,
+		(SELECT SH.DIMENSION_SEGMENT FROM HAE_DRIVER_STATIC_HEADER SH WHERE
+		SH.STATIC_HEADER_ID=D.STATIC_HEADER_ID)STATIC_DIMENSION_SEGMENT,
+		D.RULE_ID FROM HAE_ALLOC_DRIVER D,HAE_ALLOC_SOURCE S
+		WHERE D.RULE_ID=S.RULE_ID and D.RULE_ID=#{allocRuleId}
+	</select>
+
+	<!-- 获取静态分摊因子数据 -->
+	<select id="getStaticList" resultType="java.util.Map">
+		SELECT
+		STATIC_HEADER_ID,DRIVER_CODE FROM HAE_DRIVER_STATIC_HEADER
+	</select>
+
+	<!-- 获取筛选维度数据 -->
+	<select id="getSegmentList" resultType="java.util.Map"
+		parameterType="java.lang.String">
+		SELECT DIM_SEGMENT,DIMENSION_NAME FROM
+		<choose>
+			<when test="condition = 'filter'">
+				(SELECT DIM_SEGMENT,DIMENSION_NAME FROM
+				HRS_CORE_DIMENSION UNION ALL SELECT
+				'LEDGER_ID' DIM_SEGMENT,'账套'
+				DIMENSION_NAME FROM DUAL UNION ALL
+				SELECT 'FIN_ELEMENT'
+				DIM_SEGMENT,'财务要素' DIMENSION_NAME FROM
+				DUAL)WHERE DIM_SEGMENT NOT IN
+				(SELECT DIMENSION_SEGMENT FROM
+				HAE_DIM_FILTER_HEADER)
+			</when>
+			<when test="condition = 'all'">
+				HRS_CORE_DIMENSION UNION ALL SELECT 'LEDGER_ID'
+				DIM_SEGMENT,'账套' DIMENSION_NAME FROM
+				DUAL UNION ALL SELECT
+				'FIN_ELEMENT' DIM_SEGMENT,'财务要素'
+				DIMENSION_NAME FROM DUAL
+			</when>
+		</choose>
+	</select>
+
+
+	<!-- 获取维度筛选条件设置界面数据总数 -->
+	<select id="getCountFilterHeader" resultType="java.lang.Integer">
+		select count(1) from hae_dim_filter_header
+		<where>
+			<if test="filterHeaderName != null">
+				filter_Header_Name like '%' || #{filterHeaderName} || '%'
+			</if>
+			<if test="dimensionSegment != null and dimensionSegment !='' ">
+				and dimension_Segment= #{dimensionSegment}
+			</if>
+		</where>
+	</select>
+	<!-- 获取分摊规则设置总数 -->
+	<select id="getAllocRuleDataGridCount" resultType="java.lang.Integer">
+		select count(1) from HAE_ALLOC_RULE
+		<where>
+			<if test="ruleName != null">
+				rule_Name like '%' || #{ruleName} || '%'
+			</if>
+		</where>
+	</select>
+	
+	<!-- 获取分摊因子账户设置界面数据总数 -->
+	<select id="getCountAllocDriverAccount" resultType="java.lang.Integer">
+		select
+		count(1) from HRS_CORE_DIMENSION
+	</select>
+
+
+	<!-- 获取静态分摊因子头表设置界面数据总数 -->
+	<select id="getCountDriverStaticHeader" resultType="java.lang.Integer">
+		select count(1) from HAE_DRIVER_STATIC_HEADER
+		<where>
+			<if test="driverCode != null">
+				driver_Code like '%' || #{driverCode} || '%'
+			</if>
+			<if test="description != null ">
+				and description like '%' || #{description} || '%'
+			</if>
+		</where>
+	</select>
+
+	<!-- 获取分摊规则设置界面数据总数 -->
+	<select id="getCountAllocRulesGroupHaeader" parameterType="java.lang.String"
+		resultType="java.lang.Integer">
+		select count(1) from HAE_ALLOC_RULES_GROUP_HAEADER
+		<if test="groupName != null ">
+			where GROUP_NAME like '%'||#{groupName} || '%'
+		</if>
+	</select>
+	<!-- 根据sourceId判断数目对sourceaccount进行初始化操作 ： 1.判定是否已经初始化过 ，如果未初始化，进行初始化 -->
+	<select id="getCountAllocSourceAccountTrue" parameterType="java.lang.Integer"
+		resultType="java.lang.Integer">
+		select count(1) from hae_alloc_source_account  where source_id= #{sourceId}
+	</select>
+	<!-- 根据drvierId判断数目对sourceaccount进行初始化操作 ： 1.判定是否已经初始化过 ，如果未初始化，进行初始化 -->
+	<select id="getCountAllocDriverAccountTrue" parameterType="java.lang.Integer"
+		resultType="java.lang.Integer">
+		SELECT count(1) FROM HAE_ALLOC_DRIVER_ACCOUNT  where drvier_id= #{drvierId}
+	</select>
+	<!-- 根据targetId判断数目对sourceaccount进行初始化操作 ： 1.判定是否已经初始化过 ，如果未初始化，进行初始化 -->
+	<select id="getCountAllocTargetAccountTrue" parameterType="java.lang.Integer"
+		resultType="java.lang.Integer">
+		SELECT count(1) FROM HAE_ALLOC_TARGET_ACCOUNT where target_id= #{targetId}
+	</select>
+
+	<!-- 获取分摊规则组设置界面数据总数 -->
+	<select id="getCountAllocRulesGroupLine" resultType="java.lang.Integer">
+		select
+		count(1) from HAE_VIEW_GROUP_LINE
+		where
+		GROUP_HEADER_ID=#{groupHeaderId}
+	</select>
+
+	<!-- 获取静态分摊因子子值范围界面数据总数 -->
+	<select id="getCountDriverStaticLine" resultType="java.lang.Integer">
+		select count(1) from HAE_DRIVER_STATIC_LINE
+		<where>
+			STATIC_HEADER_ID=#{headerId}
+			<if test="dimValue != null">
+				and dim_Value like '%' || #{dimValue} || '%'
+			</if>
+			<if test="driverCode != null ">
+				and driver_Name like '%' || #{driverCode} || '%'
+			</if>
+		</where>
+	</select>
+	<!-- 获取子值范围界面数据总数 -->
+	<select id="getCountByFilterLineValuesByCondition" resultType="java.lang.Integer">
+		select count(1) from HAE_DIM_FILTER_LINE
+		<where>
+			<if test="filterHeaderId != null">
+				FILTER_HEADER_ID= #{filterHeaderId}
+			</if>
+		</where>
+	</select>
+
+	<!-- 根据RowId获取RuleRecord记录 -->
+	<select id="getAllocRuleByKey" resultMap="BaseResultMapRuleDataGrid"
+		parameterType="java.lang.Long">
+		SELECT
+		RULE_ID,LINE_NUM,rule_Name,driver_Type,start_Date_Active,end_Date_Active
+		,description,source_id,target_id,driver_id,offset_id,isSourceOver
+		,isDriverOver
+		FROM
+		HAE_ALLOC_RULE
+		where RULE_ID=#{ruleId}
+	</select>
+	<!-- 根据sourceId获取SourceRecord记录 -->
+	<select id="getAllocSourceByKey" resultMap="BaseResultMapSourceDataGrid"
+		parameterType="java.lang.Long">
+		SELECT
+		source_Type,
+		actual_Flag,
+		currency_Type,
+		currency_Code,
+		amount_Type,
+		direction_Code,
+		operator,
+		constant,
+		description,
+		source_Id
+		FROM
+		HAE_ALLOC_SOURCE
+		where source_Id=#{sourceId}
+	</select>
+
+	<!-- 根据id获取分摊规则组设置记录数据 -->
+	<select id="getAllocRulesGroupHaeaderById" resultMap="BaseResultMapAllocRequestInstance"
+		parameterType="java.lang.Integer">
+		SELECT
+		GROUP_HEADER_ID,GROUP_NUM,GROUP_NAME,START_DATE_ACTIVE,END_DATE_ACTIVE,DESCRIPTION
+		FROM
+		HAE_ALLOC_RULES_GROUP_HAEADER
+		where GROUP_HEADER_ID=#{parentId}
+	</select>
+	<!-- 根据id获取静态分摊因子头表设置记录数据 -->
+	<select id="getDriverStaticHeaderById" resultMap="BaseResultMapDriverHeader"
+		parameterType="java.lang.Integer">
+		SELECT
+		STATIC_HEADER_ID,DRIVER_CODE,DESCRIPTION,DIMENSION_SEGMENT,
+		START_DATE_ACTIVE,END_DATE_ACTIVE
+		from HAE_DRIVER_STATIC_HEADER
+		where
+		STATIC_HEADER_ID=#{parentId}
+	</select>
+	<!-- 根据id获取维度筛选条件设置记录数据 -->
+	<select id="getDimFilterHeaderBeanById" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		SELECT
+		FILTER_HEADER_ID,
+		FILTER_HEADER_NAME,
+		DIMENSION_SEGMENT,
+		TYPE,
+		DESCRIPTION
+		FROM
+		hae_dim_filter_header
+		where
+		FILTER_HEADER_ID=#{primaryKey}
+	</select>
+
+
+	<!-- 根据ruleId获取SourceRecord记录 -->
+	<select id="getAllocSourceByRuleId" resultMap="BaseResultMapSourceDataGrid"
+		parameterType="java.lang.Long">
+		SELECT
+		source_Type,
+		actual_Flag,
+		currency_Type,
+		currency_Code,
+		amount_Type,
+		direction_Code,
+		operator,
+		constant,
+		description,
+		source_Id
+		FROM
+		HAE_ALLOC_SOURCE
+		where RULE_ID=#{ruleId}
+	</select>
+
+	<!-- 获取分摊源因子账户配置数据 -->
+	<select id="getAllocSourceById" resultMap="BaseResultMapAllocSourceBean"
+		parameterType="java.lang.Integer">
+		select
+		SOURCE_ID,RULE_ID,SOURCE_TYPE,CONSTANT,ACTUAL_FLAG,CURRENCY_TYPE,CURRENCY_CODE,AMOUNT_TYPE,
+		DIRECTION_CODE,OPERATOR,DESCRIPTION,CREATED_BY,CREATED_DATE,UPDATED_BY,UPDATED_DATE
+		from HAE_ALLOC_SOURCE
+		where SOURCE_ID=#{parentid}
+	</select>
+	<!-- 获取分摊源账户配置数据 -->
+	<select id="getAllocRuleById" resultMap="BaseResultMapAllocRuleBean"
+		parameterType="java.lang.Integer">
+		select
+		RULE_ID,LINE_NUM,RULE_NAME,DRIVER_TYPE,DESCRIPTION,START_DATE_ACTIVE,END_DATE_ACTIVE,
+		SOURCE_ID,DRIVER_ID,TARGET_ID,OFFSET_ID,CREATED_BY,CREATED_DATE,UPDATED_BY,UPDATED_DATE
+		FROM HAE_ALLOC_RULE
+		where RULE_ID=#{parentid}
+	</select>
+	<!-- 获取分摊目标账户配置数据 -->
+	<select id="getAllocDriverById" resultMap="BaseResultMapDriverDataGrid"
+		parameterType="java.lang.Integer">
+		SELECT DRIVER_ID,RULE_ID,DRIVER_TYPE,STATIC_HEADER_ID,
+		CONSTANT,ACTUAL_FLAG,CURRENCY_TYPE,CURRENCY_CODE,AMOUNT_TYPE,
+		DIRECTION_CODE,DESCRIPTION,CREATED_BY,CREATED_DATE,UPDATED_BY,UPDATED_DATE
+		FROM HAE_ALLOC_DRIVER
+		where DRIVER_ID=#{parentid}
+	</select>
+	<!-- 获取分摊目标账户配置数据 -->
+	<select id="getAllocTargetById" resultMap="BaseResultMapTargetDataGrid"
+		parameterType="java.lang.Integer">
+		SELECT TARGET_ID, RULE_ID, TYPE, ACTUAL_FLAG,
+		CURRENCY_TYPE, CURRENCY_CODE, AMOUNT_TYPE,
+		DIRECTION_CODE, DESCRIPTION,
+		CREATED_BY, CREATED_DATE, UPDATED_BY, UPDATED_DATE
+		FROM
+		HAE_ALLOC_TARGET WHERE TARGET_ID=#{parentid}
+	</select>
+
+
+	<!-- 根据ruleId获取TargetRecord记录 -->
+	<select id="getAllocTargetByRuleId" resultMap="BaseResultMapTargetDataGrid"
+		parameterType="java.lang.Long">
+		SELECT
+		rule_id,
+		Type,
+		actual_Flag,
+		currency_Type,
+		currency_Code,
+		amount_Type,
+		direction_Code,
+		description,
+		target_Id
+		FROM
+		HAE_ALLOC_TARGET
+		where rule_id=#{ruleId}
+	</select>
+	<!-- 根据ruleId获取DriverRecord记录 -->
+	<select id="getAllocDriverByRuleId" resultMap="BaseResultMapDriverDataGrid"
+		parameterType="java.lang.Long">
+		SELECT
+		rule_id,
+		driver_Type,
+		actual_Flag,
+		currency_Type,
+		currency_Code,
+		direction_Code,
+		description,
+		constant,
+		static_Header_Id,
+		AMOUNT_TYPE,
+		driver_Id
+		FROM
+		HAE_ALLOC_DRIVER
+		where rule_id=#{ruleId}
+	</select>
+	<!-- 获取动态分摊因子账户设置筛选条件参数 -->
+	<select id="getDimFilterListForCombo" resultType="java.util.Map"
+		parameterType="java.lang.String">
+		SELECT FILTER_HEADER_ID, FILTER_HEADER_NAME,
+		DIMENSION_SEGMENT, TYPE,
+		DESCRIPTION, (FILTER_HEADER_NAME || '-' ||
+		DESCRIPTION) AS FILTER_DISP
+		FROM hae_dim_filter_header
+		<where>
+			<if test="filterHeaderId != 0">
+				FILTER_HEADER_ID=#{filterHeaderId}
+			</if>
+			<if test="dimensionSegment != null and dimensionSegment !=''">
+				and DIMENSION_SEGMENT= #{dimensionSegment}
+			</if>
+		</where>
+	</select>
+
+	<!-- 获取分摊规则设置界面数据 -->
+	<select id="getAllocRequestLines" resultMap="BaseResultMapRulesGroupLine"
+		parameterType="java.lang.String">
+		SELECT
+		outerB.*
+		FROM (select * from(SELECT
+		GROUP_LINE_ID,GROUP_HEADER_ID,LINE_NUM,RULE_ID,RULE_NAME,DRIVER_TYPE,
+		DESCRIPTION,START_DATE_ACTIVE,END_DATE_ACTIVE
+		<if test="start != 0 and count != 0">
+			,ROW_NUMBER()OVER (ORDER BY GROUP_LINE_ID) AS row_number
+		</if>
+		from HAE_VIEW_GROUP_LINE
+		) innerA where innerA.row_number
+		&gt;=${start}
+		and innerA.GROUP_HEADER_ID=#{headerId}
+		) outerB
+		where rownum &lt;=
+		${count}
+		order by outerB.GROUP_LINE_ID
+	</select>
+
+	<!-- 获取分摊因子账户设置界面数据 -->
+	<select id="findAllocDriverAccount" resultMap="BaseResultMapDriverAccount"
+		parameterType="java.lang.Integer">
+		SELECT
+		outerB.DRVIER_ACC_ID,outerB.DRVIER_ID,outerB.LEDGER_ID,outerB.FIN_ELEMENT
+		,outerB.DIMENSION_SEGMENT,outerB.DIMENSION_NAME,outerB.DIMENSION_VALUE,outerB.FILTER_HEADER_ID,outerB.DESCRIPTION
+		FROM (SELECT * from (
+		select
+		RESULTMAP.DRVIER_ACC_ID,
+		RESULTMAP.DRVIER_ID,
+		RESULTMAP.LEDGER_ID,
+		RESULTMAP.FIN_ELEMENT,
+		DIM.DIM_SEGMENT DIMENSION_SEGMENT,
+		DIM.DIMENSION_NAME,
+		RESULTMAP.DIMENSION_VALUE,
+		RESULTMAP.FILTER_HEADER_ID,
+		RESULTMAP.DESCRIPTION,
+		ROW_NUMBER () OVER (ORDER BY DIM.DIM_SEGMENT) AS
+		ROW_NUMBER
+		FROM
+		(
+		SELECT
+		DIM_SEGMENT,
+		DIMENSION_NAME
+		FROM
+		HRS_CORE_DIMENSION
+		UNION ALL
+		SELECT
+		'LEDGER_ID' DIM_SEGMENT,
+		'账套' DIMENSION_NAME
+		FROM
+		DUAL
+		UNION ALL
+		SELECT
+		'FIN_ELEMENT' DIM_SEGMENT,
+		'财务要素' DIMENSION_NAME
+		FROM
+		DUAL
+		) DIM
+		LEFT JOIN (
+		SELECT
+		DRVIER_ACC_ID,
+		DRVIER_ID,
+		LEDGER_ID,
+		FIN_ELEMENT,
+		DIMENSION_SEGMENT,
+		DIMENSION_VALUE,
+		FILTER_HEADER_ID,
+		DESCRIPTION
+		FROM
+		hae_alloc_driver_account
+		WHERE
+		DRVIER_ID = ${driverId}
+		)
+		RESULTMAP ON DIM.DIM_SEGMENT = RESULTMAP.DIMENSION_SEGMENT
+		) innerA
+		where innerA.row_number
+		&gt;=${start}
+		) outerB
+		where rownum &lt;=
+		${count}
+		order by outerB.DRVIER_ACC_ID
+	</select>
+	<!-- 获取目标账户设置界面数据 -->
+	<select id="findAllocTargetAccount" resultMap="BaseResultMapTargetAccount"
+		parameterType="java.lang.Integer">
+		SELECT
+		outerB.TARGET_ID,outerB.TARGET_ACC_ID,outerB.LEDGER_ID,outerB.FIN_ELEMENT
+		,outerB.DIMENSION_SEGMENT,outerB.DIMENSION_NAME,outerB.DIMENSION_VALUE,outerB.DIM_ALLOC_TYPE,outerB.DESCRIPTION
+		FROM (SELECT * from (
+		SELECT DIM.DIM_SEGMENT DIMENSION_SEGMENT,
+		DIM.DIMENSION_NAME, RESULTMAP.TARGET_ACC_ID,
+		RESULTMAP.TARGET_ID,
+		RESULTMAP.LEDGER_ID, RESULTMAP.FIN_ELEMENT,
+		RESULTMAP.DIM_ALLOC_TYPE,
+		RESULTMAP.DIMENSION_VALUE, RESULTMAP.DESCRIPTION,
+		RESULTMAP.CREATED_BY, RESULTMAP.CREATED_DATE, RESULTMAP.UPDATED_BY,
+		RESULTMAP.UPDATED_DATE,
+		ROW_NUMBER() OVER(ORDER BY DIM.DIM_SEGMENT) AS
+		ROW_NUMBER FROM (SELECT
+		DIM_SEGMENT, DIMENSION_NAME
+		FROM
+		HRS_CORE_DIMENSION UNION ALL SELECT 'LEDGER_ID' DIM_SEGMENT, '账套'
+		DIMENSION_NAME FROM DUAL
+		UNION ALL SELECT 'FIN_ELEMENT' DIM_SEGMENT,
+		'财务要素' DIMENSION_NAME FROM
+		DUAL) DIM LEFT JOIN (
+		SELECT TARGET_ACC_ID,
+		TARGET_ID, LEDGER_ID, FIN_ELEMENT, DIMENSION_SEGMENT,
+		DIM_ALLOC_TYPE,
+		DIMENSION_VALUE,
+		DESCRIPTION, CREATED_BY, CREATED_DATE, UPDATED_BY,
+		UPDATED_DATE FROM
+		HAE_ALLOC_TARGET_ACCOUNT WHERE
+		TARGET_ID = #{targetId}
+		) RESULTMAP ON DIM.DIM_SEGMENT = RESULTMAP.DIMENSION_SEGMENT
+		) innerA
+		where innerA.row_number
+		&gt;=${start}
+		) outerB
+		where rownum &lt;=
+		${count}
+		order by outerB.TARGET_ACC_ID
+	</select>
+	<!-- 取来源账户设置界面数据 -->
+	<select id="findAllocSourceAccount" resultMap="BaseResultMapSourceAccount"
+		parameterType="java.lang.Integer">
+		SELECT
+		outerB.SOURCE_ACC_ID,outerB.SOURCE_ID,outerB.LEDGER_ID,outerB.FIN_ELEMENT
+		,outerB.DIMENSION_SEGMENT,outerB.DIMENSION_NAME,outerB.DIMENSION_VALUE,outerB.FILTER_HEADER_ID,outerB.DESCRIPTION
+		FROM (SELECT * from (
+		SELECT RESULTMAP.SOURCE_ACC_ID,
+		RESULTMAP.SOURCE_ID, RESULTMAP.LEDGER_ID,
+		RESULTMAP.FIN_ELEMENT,
+		DIM.DIM_SEGMENT DIMENSION_SEGMENT,
+		DIM.DIMENSION_NAME,
+		RESULTMAP.DIMENSION_VALUE,
+		RESULTMAP.FILTER_HEADER_ID,
+		RESULTMAP.DESCRIPTION,
+		RESULTMAP.CREATED_BY, RESULTMAP.CREATED_DATE,
+		RESULTMAP.UPDATED_BY, RESULTMAP.UPDATED_DATE, ROW_NUMBER() OVER (ORDER
+		BY DIM.DIM_SEGMENT)
+		AS row_number from (SELECT DIM_SEGMENT,
+		DIMENSION_NAME FROM
+		HRS_CORE_DIMENSION UNION ALL SELECT 'LEDGER_ID'
+		DIM_SEGMENT,
+		'账套' DIMENSION_NAME FROM DUAL UNION ALL SELECT
+		'FIN_ELEMENT' DIM_SEGMENT,
+		'财务要素' DIMENSION_NAME FROM DUAL) DIM LEFT
+		JOIN (select SOURCE_ACC_ID,
+		SOURCE_ID, LEDGER_ID, FIN_ELEMENT,
+		DIMENSION_SEGMENT, DIMENSION_VALUE, FILTER_HEADER_ID, DESCRIPTION,
+		CREATED_BY,
+		CREATED_DATE, UPDATED_BY, UPDATED_DATE from
+		hae_alloc_source_account
+		WHERE SOURCE_ID=
+		#{sourceId}
+		) RESULTMAP
+		ON
+		DIM.DIM_SEGMENT = RESULTMAP.DIMENSION_SEGMENT
+		) innerA where
+		innerA.row_number
+		&gt;=${start}
+		) outerB
+		where rownum &lt;=
+		${count}
+		order
+		by outerB.SOURCE_ACC_ID
+	</select>
+	<!-- 获取分摊规则设置界面数据 -->
+	<select id="getAllocRuleDataGrid" resultMap="BaseResultMapRuleDataGrid"
+		parameterType="java.lang.String">
+		SELECT
+		outerB.*
+		FROM ( select * from (
+		SELECT
+		RULE_ID,LINE_NUM,rule_Name,driver_Type,start_Date_Active,end_Date_Active
+		,description,source_id,target_id,driver_id,offset_id,isSourceOver
+		,isDriverOver,CREATED_DATE,CREATED_BY,UPDATED_DATE,UPDATED_BY
+		<if test="start != 0 and count != 0">
+			,ROW_NUMBER()OVER (ORDER BY RULE_ID) AS row_number
+		</if>
+		FROM
+		HAE_ALLOC_RULE
+		) innerA where innerA.row_number
+		&gt;=${start}
+		<if test="ruleName != null">
+			and INNERA.rule_Name like '%' ||
+			#{ruleName} || '%'
+		</if>
+		) outerB
+		where rownum &lt;= ${count}
+	</select>
+	<!-- 获取分摊因子配置界面数据 -->
+	<select id="getAllocDriverDataGrid" resultMap="BaseResultMapDriverDataGrid"
+		parameterType="java.lang.String">
+		SELECT
+		outerB.*
+		FROM ( select * from (
+		SELECT
+		rule_id,
+		driver_Type,
+		actual_Flag,
+		currency_Type,
+		currency_Code,
+		direction_Code,
+		description,
+		constant,
+		static_Header_Id,
+		AMOUNT_TYPE,
+		driver_Id,CREATED_DATE,CREATED_BY,UPDATED_DATE,UPDATED_BY
+		<if test="start != 0 and count != 0">
+			,ROW_NUMBER()OVER (ORDER BY driver_Id) AS row_number
+		</if>
+		FROM
+		HAE_ALLOC_DRIVER
+		) innerA where innerA.row_number
+		&gt;=${start}
+		and
+		innerA.rule_id=#{ruleId}
+		)
+		outerB
+		where rownum &lt;= ${count}
+	</select>
+	<!-- 获取分摊源配置界面数据 -->
+	<select id="getAllocSourceDataGrid" resultMap="BaseResultMapSourceDataGrid"
+		parameterType="java.lang.String">
+		SELECT
+		outerB.*
+		FROM ( select * from (
+		SELECT
+		rule_id,
+		source_Type,
+		actual_Flag,
+		currency_Type,
+		currency_Code,
+		amount_Type,
+		direction_Code,
+		operator,
+		constant,
+		description,
+		source_Id
+		<if test="start != 0 and count != 0">
+			,ROW_NUMBER()OVER (ORDER BY source_Id) AS row_number
+		</if>
+		FROM
+		HAE_ALLOC_SOURCE
+		) innerA where innerA.row_number
+		&gt;=${start}
+		and
+		innerA.rule_id=#{ruleId}
+		<if test="sourceType != null ">
+			and INNERA.source_type like '%' ||
+			#{sourceType} || '%'
+		</if>
+		)
+		outerB
+		where rownum &lt;= ${count}
+	</select>
+
+	<!-- 获取分摊(目标/抵消)配置界面数据 -->
+	<select id="getAllocTargetDataGrid" resultMap="BaseResultMapTargetDataGrid"
+		parameterType="java.lang.String">
+		SELECT
+		outerB.*
+		FROM ( select * from (
+		SELECT
+		rule_id,
+		Type,
+		actual_Flag,
+		currency_Type,
+		currency_Code,
+		amount_Type,
+		direction_Code,
+		description,
+		target_Id
+		<if test="start != 0 and count != 0">
+			,ROW_NUMBER()OVER (ORDER BY target_Id) AS row_number
+		</if>
+		FROM
+		HAE_ALLOC_TARGET
+		) innerA where innerA.row_number
+		&gt;=${start}
+		and
+		innerA.rule_id=#{ruleId}
+		<if test="targetType != null ">
+			and INNERA.type like '%' ||
+			#{targetType} || '%'
+		</if>
+		)
+		outerB
+		where rownum &lt;= ${count}
+	</select>
+
+
+
+
+	<!-- 获取静态分摊因子子值范围界面数据 -->
+	<select id="getDriverStaticLine" resultMap="BaseResultMapStaticLine"
+		parameterType="java.lang.String">
+		SELECT
+		outerB.*
+		FROM ( select * from (
+		SELECT
+		STATIC_LINE_ID,STATIC_HEADER_ID,DIM_VALUE,DRIVER_NAME,DESCRIPTION,
+		PROPORTION,START_DATE_ACTIVE,END_DATE_ACTIVE,CREATED_DATE,CREATED_BY,LAST_UPDATED_DATE,LAST_UPDATED_BY
+		<if test="start != 0 and count != 0">
+			,ROW_NUMBER()OVER (ORDER BY STATIC_LINE_ID) AS row_number
+		</if>
+		FROM
+		HAE_DRIVER_STATIC_LINE
+		) innerA where innerA.row_number
+		&gt;=${start}
+		and innerA.STATIC_HEADER_ID=#{headerId}
+		<if test="dimValue != null">
+			and INNERA.DIM_VALUE like '%' ||
+			#{dimValue} || '%'
+		</if>
+		<if test="driverCode != null ">
+			and INNERA.DRIVER_NAME like '%' ||
+			#{driverCode} || '%'
+		</if>
+		) outerB
+		where rownum &lt;= ${count}
+	</select>
+	<!-- 获取分摊规则组设置界面数据 -->
+	<select id="getAllocRequestInstance" resultMap="BaseResultMapAllocRequestInstance"
+		parameterType="java.lang.String">
+		SELECT
+		outerB.*
+		FROM ( select * from (
+		SELECT
+		GROUP_HEADER_ID,GROUP_NUM,GROUP_NAME,START_DATE_ACTIVE,END_DATE_ACTIVE,DESCRIPTION,CREATED_DATE,CREATED_BY,UPDATED_DATE,UPDATED_BY
+		<if test="start != 0 and count != 0">
+			,ROW_NUMBER()OVER (ORDER BY GROUP_HEADER_ID) AS row_number
+		</if>
+		FROM
+		HAE_ALLOC_RULES_GROUP_HAEADER
+		) innerA where innerA.row_number
+		&gt;=${start}
+		<if test="groupName != null">
+			and INNERA.group_Name like '%' ||
+			#{groupName} || '%'
+		</if>
+		) outerB
+		where rownum &lt;= ${count}
+		order by outerB.GROUP_NUM
+	</select>
+
+	<!-- 获取子值范围界面数据 -->
+	<select id="getFilterLineValuesByCondition" resultMap="BaseResultMapById"
+		parameterType="java.lang.String">
+		SELECT
+		outerB.FILTER_LINE_ID,outerB.FILTER_HEADER_ID,outerB.VALUE_LOW,outerB.VALUE_HIGH,outerB.INC_EXC_INDICATOR,outerB.DESCRIPTION
+		FROM ( select * from (
+		SELECT
+		FILTER_LINE_ID,FILTER_HEADER_ID,VALUE_LOW,VALUE_HIGH,INC_EXC_INDICATOR,DESCRIPTION,CREATED_DATE,CREATED_BY,LAST_UPDATED_DATE,LAST_UPDATED_BY
+		<if test="start != 0 and count != 0">
+			,ROW_NUMBER()OVER (ORDER BY FILTER_LINE_ID) AS row_number
+		</if>
+		FROM
+		HAE_DIM_FILTER_LINE
+		<include refid="PAGE_SQL_BY_ID" />
+	</select>
+	<!-- 获取静态分摊因子头表设置界面数据 -->
+	<select id="findDriverStaticHeader" resultMap="BaseResultMapDriverHeader"
+		parameterType="java.lang.String">
+		SELECT
+		outerB.*
+		FROM ( select * from (
+		SELECT
+		STATIC_HEADER_ID,DRIVER_CODE,DESCRIPTION,DIMENSION_SEGMENT,
+		START_DATE_ACTIVE,END_DATE_ACTIVE,CREATED_DATE,CREATED_BY,LAST_UPDATED_DATE,LAST_UPDATED_BY
+		<if test="start != 0 and count != 0">
+			,ROW_NUMBER()OVER (ORDER BY STATIC_HEADER_ID) AS
+			row_number
+		</if>
+		from HAE_DRIVER_STATIC_HEADER
+		) innerA where innerA.row_number
+		&gt;=${start}
+		<if test="driverCode != null">
+			and INNERA.DRIVER_CODE like '%' ||
+			#{driverCode} || '%'
+		</if>
+		<if test="description != null ">
+			and INNERA.DESCRIPTION like '%' ||
+			#{description} || '%'
+		</if>
+		) outerB
+		where rownum &lt;= ${count}
+	</select>
+
+
+	<select id="existvaild" resultType="java.lang.Integer"
+		parameterType="java.lang.String" statementType="STATEMENT">
+		select COUNT(1) NUM
+		from ${tableName}
+		<where>
+			1=1
+			<if test="driverId != 0">
+				and DRVIER_ID= ${driverId}
+			</if>
+			<if test="sourceId != 0">
+				and SOURCE_ID= ${sourceId}
+			</if>
+			<if test="targetId != 0">
+				and TARGET_ID = ${targetId}
+			</if>
+			<if test="dimensionSegment != null and dimensionSegment !=''">
+				and DIMENSION_SEGMENT='${dimensionSegment}'
+			</if>
+		</where>
+	</select>
+
+
+
+	<!-- 获取维度筛选条件设置界面数据 -->
+	<select id="findDimFilterHeader" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		SELECT
+		outerB.*
+		FROM ( select * from (
+		SELECT
+		<if test="start != 0 and count != 0">
+			ROW_NUMBER()OVER (ORDER BY FILTER_HEADER_ID) AS
+			row_number,
+		</if>
+		FILTER_HEADER_ID,
+		FILTER_HEADER_NAME,
+		DIMENSION_SEGMENT,
+		TYPE,
+		DESCRIPTION,
+		CREATED_DATE,CREATED_BY,LAST_UPDATED_DATE,LAST_UPDATED_BY
+		FROM
+		hae_dim_filter_header
+		<include refid="PAGE_SQL" />
+	</select>
+	<!-- 删除子值范围记录 -->
+	<delete id="destroyFilterLineValues" parameterType="java.lang.Integer">
+		delete from
+		HAE_DIM_FILTER_LINE
+		WHERE FILTER_LINE_ID=#{filterLineId}
+	</delete>
+
+	<!-- 删除分摊规则设置界面记录 -->
+	<delete id="deleteAllocRule" parameterType="java.lang.Long">
+		delete from
+		HAE_ALLOC_RULE
+		WHERE RULE_ID=#{filterLineId}
+	</delete>
+
+	<!-- 删除分摊规则设置记录 -->
+	<delete id="deleteAllocRulesGroupLine" parameterType="java.lang.Integer">
+		delete from
+		HAE_ALLOC_RULES_GROUP_LINE
+		WHERE GROUP_LINE_ID=#{groupLineId}
+	</delete>
+
+
+	<!-- 删除分摊规则组设置记录 -->
+	<delete id="deleteAllocRulesGroupHaeader" parameterType="java.lang.String"
+		statementType="STATEMENT">
+		delete from
+		${tableName}
+		where GROUP_HEADER_ID
+		=${groupHeaderId}
+	</delete>
+
+	<!-- 删除静态分摊因子头表设置记录 -->
+	<delete id="deleteDriverStaticHeaderLine" parameterType="java.lang.Integer">
+		delete
+		from HAE_DRIVER_STATIC_LINE
+		<where>
+			<if test="staticHeaderId != 0">
+				STATIC_HEADER_ID=#{staticHeaderId}
+			</if>
+			<if test="staticLineId != 0">
+				and STATIC_LINE_ID= #{staticLineId}
+			</if>
+		</where>
+	</delete>
+
+	<delete id="deleteDriverStaticHeader" parameterType="java.lang.Integer">
+		delete from
+		HAE_DRIVER_STATIC_HEADER
+		WHERE STATIC_HEADER_ID=#{staticHeaderId}
+	</delete>
+
+	<!-- 增加维度筛选条件记录 -->
+	<insert id="createNewFilterHeader"
+		parameterType="com.hausontech.hrs.bean.allocationManager.DimFilterHeaderBean">
+		INSERT INTO HAE_DIM_FILTER_HEADER
+		(FILTER_HEADER_ID,FILTER_HEADER_NAME,DIMENSION_SEGMENT,TYPE
+		<if test="description != null">
+			,DESCRIPTION
+		</if>
+		<include refid="AUDIT_QUERY_STRING" />
+		)VALUES(#{filterHeaderId},#{filterHeaderName},#{dimensionSegment},#{type}
+		<if test="description != null">
+			,#{description,jdbcType=VARCHAR}
+		</if>
+		<include refid="AUDIT_QUERY_STRING_L" />
+		)
+	</insert>
+	<!-- 增加分摊规则设置界面记录 -->
+	<insert id="addAllocRule"
+		parameterType="com.hausontech.hrs.bean.allocationManager.model.AllocRuleRecord">
+		INSERT INTO HAE_ALLOC_RULE
+		(RULE_ID,LINE_NUM,RULE_NAME
+		<if test="description != null and description != ''">
+			,DESCRIPTION
+		</if>
+		<if test="driverType != null">
+			,DRIVER_TYPE
+		</if>
+		,SOURCE_ID
+		,DRIVER_ID
+		,TARGET_ID
+		,OFFSET_ID
+		<if test="isSourceOver != null">
+			,ISSOURCEOVER
+		</if>
+		<if test="isDriverOver != null">
+			,ISDRIVEROVER
+		</if>
+		<if test="startDateActive != null">
+			,START_DATE_ACTIVE
+		</if>
+		<if test="endDateActive != null">
+			,END_DATE_ACTIVE
+		</if>
+		,CREATED_DATE,CREATED_BY,UPDATED_DATE,UPDATED_BY
+		)VALUES(#{allocRuleId},#{lineNumber},#{ruleName}
+		<if test="description != null and description != ''">
+			,#{description,jdbcType=VARCHAR}
+		</if>
+		<if test="driverType != null">
+			,#{driverType,jdbcType=VARCHAR}
+		</if>
+		,#{sourceId,jdbcType=DECIMAL}
+		,#{driverId,jdbcType=DECIMAL}
+		,#{targetId,jdbcType=DECIMAL}
+		,#{offsetId,jdbcType=DECIMAL}
+		<if test="isSourceOver != null">
+			,#{isSourceOver,jdbcType=VARCHAR}
+		</if>
+		<if test="isDriverOver != null">
+			,#{isDriverOver,jdbcType=VARCHAR}
+		</if>
+		<if test="startDateActive != null">
+			,#{startDateActive,jdbcType=TIMESTAMP}
+		</if>
+		<if test="endDateActive != null">
+			,#{endDateActive,jdbcType=TIMESTAMP}
+		</if>
+		,#{creationDate},#{createdBy},#{lastUpdateDate},#{lastUpdatedBy}
+		)
+	</insert>
+	<!-- 增加分摊因子配置界面记录 -->
+	<insert id="addAllocDriver"
+		parameterType="com.hausontech.hrs.bean.allocationManager.model.AllocDriverRecord">
+		INSERT INTO HAE_ALLOC_DRIVER
+		(DRIVER_ID,RULE_ID,DRIVER_TYPE,STATIC_HEADER_ID,CONSTANT,
+		ACTUAL_FLAG,CURRENCY_TYPE,CURRENCY_CODE,AMOUNT_TYPE,DIRECTION_CODE
+		<if test="description != null and description != ''">
+			,DESCRIPTION
+		</if>
+		,CREATED_DATE,CREATED_BY,UPDATED_DATE,UPDATED_BY
+		)VALUES(#{driverId},#{ruleId},#{driverType},#{staticHeaderId},#{constant}
+		,#{actualFlag},#{currencyType},#{currencyCode},#{amountType},#{directionCode}
+		<if test="description != null and description != ''">
+			,#{description,jdbcType=VARCHAR}
+		</if>
+		,#{creationDate},#{createdBy},#{lastUpdateDate},#{lastUpdatedBy}
+		)
+	</insert>
+	<!-- 增加分摊源配置界面记录 -->
+	<insert id="addAllocSource"
+		parameterType="com.hausontech.hrs.bean.allocationManager.model.AllocSourceRecord">
+		INSERT INTO HAE_ALLOC_SOURCE
+		(SOURCE_ID,RULE_ID,SOURCE_TYPE,CONSTANT,
+		ACTUAL_FLAG,CURRENCY_TYPE,CURRENCY_CODE,AMOUNT_TYPE,DIRECTION_CODE,OPERATOR
+		<if test="description != null and description != ''">
+			,DESCRIPTION
+		</if>
+		,CREATED_DATE,CREATED_BY,UPDATED_DATE,UPDATED_BY
+		)VALUES(#{sourceId},#{allocRuleId},#{sourceType},#{constantValue}
+		,#{actualFlag},#{currencyType},#{currencyCode},#{amountType},#{directionCode},#{operator}
+		<if test="description != null and description != ''">
+			,#{description,jdbcType=VARCHAR}
+		</if>
+		,#{creationDate},#{createdBy},#{lastUpdateDate},#{lastUpdatedBy}
+		)
+	</insert>
+
+	<insert id="addAllocTarget"
+		parameterType="com.hausontech.hrs.bean.allocationManager.model.AllocTargetRecord">
+		INSERT INTO HAE_ALLOC_TARGET
+		(TARGET_ID,RULE_ID,TYPE,
+		ACTUAL_FLAG,CURRENCY_TYPE,CURRENCY_CODE,AMOUNT_TYPE,DIRECTION_CODE
+		<if test="description != null and description != ''">
+			,DESCRIPTION
+		</if>
+		,CREATED_DATE,CREATED_BY,UPDATED_DATE,UPDATED_BY
+		)VALUES(#{targetId},#{allocRuleId},#{targetType}
+		,#{actualFlag},#{currencyType},#{currencyCode},#{amountType},#{directionCode}
+		<if test="description != null and description != ''">
+			,#{description,jdbcType=VARCHAR}
+		</if>
+		,#{creationDate},#{createdBy},#{lastUpdateDate},#{lastUpdatedBy}
+		)
+	</insert>
+
+	<!-- 增加子值范围记录 -->
+	<insert id="createFilterLineValues"
+		parameterType="com.hausontech.hrs.bean.allocationManager.DimFilterLineBean">
+		INSERT INTO HAE_DIM_FILTER_LINE
+		(FILTER_LINE_ID,FILTER_HEADER_ID,VALUE_LOW,VALUE_HIGH,INC_EXC_INDICATOR
+		<if test="description != null">
+			,DESCRIPTION
+		</if>
+		<include refid="AUDIT_QUERY_STRING" />
+		)VALUES(#{filterLineId},#{filterHeaderId},#{valueLow},#{valueHigh},#{incExcIndicator}
+		<if test="description != null">
+			,#{description,jdbcType=VARCHAR}
+		</if>
+		<include refid="AUDIT_QUERY_STRING_L" />
+		)
+	</insert>
+
+
+	<!-- 增加静态分摊因子头表设置记录 -->
+	<insert id="createNewDriverStaticHeader"
+		parameterType="com.hausontech.hrs.bean.allocationManager.DriverStaticHeader">
+		INSERT INTO HAE_DRIVER_STATIC_HEADER
+		(STATIC_HEADER_ID,DRIVER_CODE,DIMENSION_SEGMENT
+		<if test="description != null">
+			,DESCRIPTION
+		</if>
+		<if test="startDateActive != null">
+			,START_DATE_ACTIVE
+		</if>
+		<if test="endDateActive != null">
+			,END_DATE_ACTIVE
+		</if>
+		<include refid="AUDIT_QUERY_STRING" />
+		)VALUES(#{staticHeaderId},#{driverCode},#{dimensionSegment}
+		<if test="description != null">
+			,#{description,jdbcType=VARCHAR}
+		</if>
+		<if test="startDateActive != null">
+			,#{startDateActive,jdbcType=TIMESTAMP}
+		</if>
+		<if test="endDateActive != null">
+			,#{endDateActive,jdbcType=TIMESTAMP}
+		</if>
+		<include refid="AUDIT_QUERY_STRING_L" />
+		)
+	</insert>
+
+
+	<!-- 增加分摊规则组设置记录 -->
+	<insert id="createNewAllocRulesGroupHaeader"
+		parameterType="com.hausontech.hrs.bean.allocationManager.AllocRulesGroupHaeaderBean">
+		INSERT INTO HAE_ALLOC_RULES_GROUP_HAEADER
+		(GROUP_HEADER_ID,GROUP_NUM,GROUP_NAME
+		<if test="description != null">
+			,DESCRIPTION
+		</if>
+		<if test="startDateActive != null">
+			,START_DATE_ACTIVE
+		</if>
+		<if test="endDateActive != null">
+			,END_DATE_ACTIVE
+		</if>
+		, CREATED_DATE,
+		CREATED_BY,UPDATED_DATE,UPDATED_BY
+		)VALUES(#{groupHeaderId},#{groupNum},#{groupName}
+		<if test="description != null">
+			,#{description,jdbcType=VARCHAR}
+		</if>
+		<if test="startDateActive != null">
+			,#{startDateActive,jdbcType=TIMESTAMP}
+		</if>
+		<if test="endDateActive != null">
+			,#{endDateActive,jdbcType=TIMESTAMP}
+		</if>
+		<include refid="AUDIT_QUERY_STRING_L" />
+		)
+	</insert>
+	<!-- 增加分摊规则设置记录 -->
+	<insert id="createAllocRulesGroupLine"
+		parameterType="com.hausontech.hrs.bean.allocationManager.AllocRulesGroupLineBean">
+		insert into HAE_ALLOC_RULES_GROUP_LINE
+		(
+		GROUP_LINE_ID,GROUP_HEADER_ID,LINE_NUM,RULE_ID,CREATED_BY,CREATED_DATE,
+		UPDATED_BY,UPDATED_DATE )
+		values (#{groupLineId},
+		#{groupHeaderId},#{lineNum},#{ruleId},#{createdBy},#{creationDate},
+		#{lastUpdatedBy},#{lastUpdateDate})
+	</insert>
+	<!-- 判断没有分摊账户配置则新增 -->
+	<insert id="createAllocDriverAccount"
+		parameterType="com.hausontech.hrs.bean.allocationManager.AllocDriverAccountBean">
+		insert into hae_alloc_driver_account
+		(
+		DRVIER_ACC_ID,DRVIER_ID,
+		<if test="ledgerId != 0">
+			LEDGER_ID,
+		</if>
+		<if test="finElement != null">
+			FIN_ELEMENT,
+		</if>
+		<if test="dimensionSegment != null">
+			DIMENSION_SEGMENT,
+		</if>
+		<if test="dimensionValue != null">
+			DIMENSION_VALUE,
+		</if>
+		<if test="filterHeaderId != 0">
+			FILTER_HEADER_ID,
+		</if>
+		<if test="description != null">
+			DESCRIPTION,
+		</if>
+		CREATED_BY,CREATED_DATE,
+		UPDATED_BY,UPDATED_DATE ) values
+		(#{drvierAccId},
+		#{drvierId},
+		<if test="ledgerId != 0">
+			#{ledgerId,jdbcType=DECIMAL},
+		</if>
+		<if test="finElement != null">
+			#{finElement,jdbcType=VARCHAR},
+		</if>
+		<if test="dimensionSegment != null">
+			#{dimensionSegment,jdbcType=VARCHAR},
+		</if>
+		<if test="dimensionValue != null">
+			#{dimensionValue,jdbcType=VARCHAR},
+		</if>
+		<if test="filterHeaderId != 0">
+			#{filterHeaderId,jdbcType=DECIMAL},
+		</if>
+		<if test="description != null">
+			#{description,jdbcType=VARCHAR},
+		</if>
+		#{createdBy},#{creationDate},#{lastUpdatedBy},#{lastUpdateDate})
+	</insert>
+	<!-- 判断没有分摊源账户配置则新增 -->
+	<insert id="createAllocSourceAccount"
+		parameterType="com.hausontech.hrs.bean.allocationManager.AllocSourceAccountBean">
+		insert into HAE_ALLOC_SOURCE_ACCOUNT
+		(SOURCE_ACC_ID,SOURCE_ID,
+		<if test="ledgerId != 0">
+			LEDGER_ID,
+		</if>
+		<if test="finElement != null">
+			FIN_ELEMENT,
+		</if>
+		<if test="dimensionSegment != null">
+			DIMENSION_SEGMENT,
+		</if>
+		<if test="dimensionValue != null">
+			DIMENSION_VALUE,
+		</if>
+		<if test="filterHeaderId != 0">
+			FILTER_HEADER_ID,
+		</if>
+		<if test="description != null">
+			DESCRIPTION,
+		</if>
+		CREATED_BY,CREATED_DATE,
+		UPDATED_BY,UPDATED_DATE ) values
+		(#{sourceAccId},
+		#{sourceId},
+		<if test="ledgerId != 0">
+			#{ledgerId,jdbcType=DECIMAL},
+		</if>
+		<if test="finElement != null">
+			#{finElement,jdbcType=VARCHAR},
+		</if>
+		<if test="dimensionSegment != null">
+			#{dimensionSegment,jdbcType=VARCHAR},
+		</if>
+		<if test="dimensionValue != null">
+			#{dimensionValue,jdbcType=VARCHAR},
+		</if>
+		<if test="filterHeaderId != 0">
+			#{filterHeaderId,jdbcType=DECIMAL},
+		</if>
+		<if test="description != null">
+			#{description,jdbcType=VARCHAR},
+		</if>
+		#{createdBy},#{creationDate},
+		#{lastUpdatedBy},#{lastUpdateDate})
+	</insert>
+	<!-- 判断没有分摊目标账户配置则新增 -->
+	<insert id="createNewAllocTargetAccount"
+		parameterType="com.hausontech.hrs.bean.allocationManager.AllocTargetAccountBean">
+		insert into HAE_ALLOC_TARGET_ACCOUNT
+		(TARGET_ACC_ID, TARGET_ID,
+		<if test="ledgerId != 0">
+			LEDGER_ID,
+		</if>
+		<if test="finElement != null">
+			FIN_ELEMENT,
+		</if>
+		<if test="dimensionSegment != null">
+			DIMENSION_SEGMENT,
+		</if>
+		<if test="dimensionValue != null">
+			DIMENSION_VALUE,
+		</if>
+		<if test="filterHeaderId != 0">
+			FILTER_HEADER_ID,
+		</if>
+		<if test="description != null">
+			DESCRIPTION,
+		</if>
+		CREATED_BY,CREATED_DATE,
+		UPDATED_BY,UPDATED_DATE ) values
+		(#{targetAccId},
+		#{targetId},
+		<if test="ledgerId != 0">
+			#{ledgerId,jdbcType=DECIMAL},
+		</if>
+		<if test="finElement != null">
+			#{finElement,jdbcType=VARCHAR},
+		</if>
+		<if test="dimensionSegment != null">
+			#{dimensionSegment,jdbcType=VARCHAR},
+		</if>
+		<if test="dimensionValue != null">
+			#{dimensionValue,jdbcType=VARCHAR},
+		</if>
+		<if test="filterHeaderId != 0">
+			#{filterHeaderId,jdbcType=DECIMAL},
+		</if>
+		<if test="description != null">
+			#{description,jdbcType=VARCHAR},
+		</if>
+		#{createdBy},#{creationDate},
+		#{lastUpdatedBy},#{lastUpdateDate})
+	</insert>
+
+	<!-- 增加静态分摊因子子值范围记录 -->
+	<insert id="createDriverStaticLine"
+		parameterType="com.hausontech.hrs.bean.allocationManager.DriverStaticLine">
+		INSERT INTO HAE_DRIVER_STATIC_LINE
+		(STATIC_LINE_ID,STATIC_HEADER_ID,DIM_VALUE,DRIVER_NAME,PROPORTION
+		<if test="description != null">
+			,DESCRIPTION
+		</if>
+		<if test="startDateActive != null">
+			,START_DATE_ACTIVE
+		</if>
+		<if test="endDateActive != null">
+			,END_DATE_ACTIVE
+		</if>
+		<include refid="AUDIT_QUERY_STRING" />
+		)VALUES(#{staticLineId},#{staticHeaderId},#{dimValue},#{driverName},#{proportion}
+		<if test="description != null">
+			,#{description,jdbcType=VARCHAR}
+		</if>
+		<if test="startDateActive != null">
+			,#{startDateActive,jdbcType=TIMESTAMP}
+		</if>
+		<if test="endDateActive != null">
+			,#{endDateActive,jdbcType=TIMESTAMP}
+		</if>
+		<include refid="AUDIT_QUERY_STRING_L" />
+		)
+	</insert>
+	<!-- 更新子值范围记录 -->
+	<update id="updateFilterLineValues"
+		parameterType="com.hausontech.hrs.bean.allocationManager.DimFilterLineBean">
+		UPDATE
+		HAE_DIM_FILTER_LINE
+		SET
+		VALUE_LOW =
+		#{valueLow,jdbcType=VARCHAR},
+		VALUE_HIGH =
+		#{valueHigh,
+		jdbcType=VARCHAR},
+		INC_EXC_INDICATOR=
+		#{incExcIndicator,jdbcType=VARCHAR},
+		DESCRIPTION =
+		#{description,
+		jdbcType=VARCHAR},
+		LAST_UPDATED_DATE =
+		#{lastUpdateDate,jdbcType=TIMESTAMP},
+		LAST_UPDATED_BY=
+		#{lastUpdatedBy,jdbcType=VARCHAR}
+		WHERE FILTER_LINE_ID =
+		#{filterLineId,jdbcType=DECIMAL}
+	</update>
+	<!-- 更新维度筛选条件记录 -->
+	<update id="updateDimFilterHeader"
+		parameterType="com.hausontech.hrs.bean.allocationManager.DimFilterHeaderBean">
+		UPDATE
+		HAE_DIM_FILTER_HEADER
+		SET
+		FILTER_HEADER_NAME =
+		#{filterHeaderName,jdbcType=VARCHAR},
+		DIMENSION_SEGMENT =
+		#{dimensionSegment,
+		jdbcType=VARCHAR},
+		TYPE=
+		#{type,jdbcType=VARCHAR},
+		DESCRIPTION =
+		#{description, jdbcType=VARCHAR},
+		LAST_UPDATED_DATE =
+		#{lastUpdateDate,jdbcType=TIMESTAMP},
+		LAST_UPDATED_BY=
+		#{lastUpdatedBy,jdbcType=VARCHAR}
+		WHERE FILTER_HEADER_ID =
+		#{filterHeaderId,jdbcType=DECIMAL}
+	</update>
+	<!-- 更新静态分摊因子子值范围记录 -->
+	<update id="updateDriverStaticLine"
+		parameterType="com.hausontech.hrs.bean.allocationManager.DriverStaticLine">
+		UPDATE
+		HAE_DRIVER_STATIC_LINE
+		SET
+		STATIC_HEADER_ID =
+		#{staticHeaderId,jdbcType=DECIMAL},
+		DIM_VALUE=
+		#{dimValue,jdbcType=VARCHAR},
+		DRIVER_NAME =
+		#{driverName,
+		jdbcType=VARCHAR},
+		DESCRIPTION =
+		#{description,jdbcType=VARCHAR},
+		START_DATE_ACTIVE =
+		#{startDateActive,jdbcType=TIMESTAMP},
+		END_DATE_ACTIVE =
+		#{endDateActive, jdbcType=TIMESTAMP},
+		LAST_UPDATED_DATE =
+		#{lastUpdateDate,jdbcType=TIMESTAMP},
+		LAST_UPDATED_BY=
+		#{lastUpdatedBy,jdbcType=VARCHAR}
+		WHERE
+		STATIC_LINE_ID =
+		#{staticLineId,jdbcType=DECIMAL}
+	</update>
+	<!-- 更新静态分摊因子头表设置记录 -->
+	<update id="updateDriverStaticHeader"
+		parameterType="com.hausontech.hrs.bean.allocationManager.DriverStaticHeader">
+		UPDATE
+		HAE_DRIVER_STATIC_HEADER
+		SET
+		DRIVER_CODE =
+		#{driverCode,jdbcType=VARCHAR},
+		DIMENSION_SEGMENT=
+		#{dimensionSegment,jdbcType=VARCHAR},
+		DESCRIPTION =
+		#{description,
+		jdbcType=VARCHAR},
+		START_DATE_ACTIVE =
+		#{startDateActive,
+		jdbcType=TIMESTAMP},
+		END_DATE_ACTIVE =
+		#{endDateActive,
+		jdbcType=TIMESTAMP},
+		LAST_UPDATED_DATE =
+		#{lastUpdateDate,jdbcType=TIMESTAMP},
+		LAST_UPDATED_BY=
+		#{lastUpdatedBy,jdbcType=VARCHAR}
+		WHERE
+		STATIC_HEADER_ID =
+		#{staticHeaderId,jdbcType=DECIMAL}
+	</update>
+
+	<!-- 更新分摊规则组设置记录 -->
+	<update id="updateAllocRulesGroupHaeader"
+		parameterType="com.hausontech.hrs.bean.allocationManager.AllocRulesGroupHaeaderBean">
+		UPDATE
+		HAE_ALLOC_RULES_GROUP_HAEADER
+		SET
+		GROUP_NUM=#{groupNum,jdbcType=DECIMAL},
+		GROUP_NAME=#{groupName,jdbcType=VARCHAR},
+		START_DATE_ACTIVE=#{startDateActive,jdbcType=TIMESTAMP},
+		END_DATE_ACTIVE =#{endDateActive,jdbcType=TIMESTAMP},
+		DESCRIPTION
+		=#{description,jdbcType=VARCHAR},
+		UPDATED_BY
+		=#{lastUpdatedBy,jdbcType=VARCHAR},
+		UPDATED_DATE
+		=#{lastUpdateDate,jdbcType=TIMESTAMP}
+		WHERE
+		GROUP_HEADER_ID =
+		#{groupHeaderId,jdbcType=DECIMAL}
+	</update>
+	<!-- 更新分摊源因子账户配置数据 -->
+	<update id="updateAllocSourceBean"
+		parameterType="com.hausontech.hrs.bean.allocationManager.AllocSourceBean">
+		UPDATE HAE_ALLOC_SOURCE SET
+		RULE_ID=#{ruleId,
+		jdbcType=DECIMAL},
+		SOURCE_TYPE =#{sourceType, jdbcType=VARCHAR},
+		CONSTANT =#{constant, jdbcType=DECIMAL},
+		ACTUAL_FLAG =#{actualFlag,
+		jdbcType=VARCHAR},
+		CURRENCY_TYPE =#{currencyType, jdbcType=VARCHAR},
+		CURRENCY_CODE =#{currencyCode, jdbcType=VARCHAR},
+		AMOUNT_TYPE
+		=#{amountType, jdbcType=VARCHAR},
+		DIRECTION_CODE =#{directionCode,
+		jdbcType=VARCHAR},
+		OPERATOR =#{operator, jdbcType=VARCHAR},
+		DESCRIPTION
+		=#{description, jdbcType=VARCHAR},
+		UPDATED_BY =#{lastUpdatedBy,
+		jdbcType=VARCHAR},
+		UPDATED_DATE =#{lastUpdateDate,jdbcType=TIMESTAMP}
+		WHERE SOURCE_ID=#{sourceId,jdbcType=DECIMAL}
+	</update>
+
+	<!-- 更新分摊规则设置记录 -->
+	<update id="updateAllocRulesGroupLine"
+		parameterType="com.hausontech.hrs.bean.allocationManager.AllocRulesGroupLineBean">
+		UPDATE HAE_ALLOC_RULES_GROUP_LINE SET
+		GROUP_HEADER_ID=#{groupHeaderId,jdbcType=DECIMAL},
+		LINE_NUM=#{lineNum,jdbcType=DECIMAL},
+		RULE_ID
+		=#{ruleId,jdbcType=DECIMAL},
+		UPDATED_BY
+		=#{lastUpdatedBy,jdbcType=VARCHAR},
+		UPDATED_DATE
+		=#{lastUpdateDate,jdbcType=TIMESTAMP}
+		WHERE
+		GROUP_LINE_ID=#{groupLineId,jdbcType=DECIMAL}
+	</update>
+	<!-- 更新分摊规则设置界面记录 -->
+	<update id="updateAllocRule"
+		parameterType="com.hausontech.hrs.bean.allocationManager.model.AllocRuleRecord">
+		UPDATE HAE_ALLOC_RULE SET
+		RULE_NAME=#{ruleName,jdbcType=VARCHAR},
+		LINE_NUM=#{lineNumber,jdbcType=DECIMAL},
+		description
+		=#{description,jdbcType=VARCHAR},
+		START_DATE_ACTIVE=#{startDateActive,jdbcType=TIMESTAMP},
+		END_DATE_ACTIVE=#{endDateActive,jdbcType=TIMESTAMP},
+		UPDATED_BY
+		=#{lastUpdatedBy,jdbcType=VARCHAR},
+		UPDATED_DATE
+		=#{lastUpdateDate,jdbcType=TIMESTAMP}
+		WHERE
+		RULE_ID=#{allocRuleId,jdbcType=DECIMAL}
+	</update>
+
+	<!-- 更新分摊因子配置界面记录 -->
+	<update id="updateAllocDriver"
+		parameterType="com.hausontech.hrs.bean.allocationManager.model.AllocDriverRecord">
+		UPDATE HAE_ALLOC_DRIVER SET
+		driver_Type=#{driverType,jdbcType=VARCHAR},
+		actual_Flag=#{actualFlag,jdbcType=VARCHAR},
+		currency_Type
+		=#{currencyType,jdbcType=VARCHAR},
+		currency_Code=#{currencyCode,jdbcType=VARCHAR},
+		amount_Type=#{amountType,jdbcType=VARCHAR},
+		direction_Code=#{directionCode,jdbcType=VARCHAR},
+		description=#{description,jdbcType=VARCHAR},
+		constant=#{constant,jdbcType=DECIMAL},
+		static_Header_Id=#{staticHeaderId,jdbcType=DECIMAL},
+		UPDATED_BY
+		=#{lastUpdatedBy,jdbcType=VARCHAR},
+		UPDATED_DATE
+		=#{lastUpdateDate,jdbcType=TIMESTAMP}
+		WHERE
+		driver_Id=#{driverId,jdbcType=DECIMAL}
+	</update>
+
+	<!-- 更新动态分摊因子账户设置界面记录 -->
+	<update id="updateAllocDriverAccount"
+		parameterType="com.hausontech.hrs.bean.allocationManager.AllocDriverAccountBean">
+		UPDATE hae_alloc_driver_account SET
+		DRVIER_ID=#{drvierId,jdbcType=DECIMAL},
+		LEDGER_ID
+		=#{ledgerId,jdbcType=DECIMAL},
+		FIN_ELEMENT
+		=#{finElement,jdbcType=VARCHAR},
+		DIMENSION_SEGMENT
+		=#{dimensionSegment,jdbcType=VARCHAR},
+		DIMENSION_VALUE
+		=#{dimensionValue,jdbcType=VARCHAR},
+		FILTER_HEADER_ID
+		=#{filterHeaderId,jdbcType=DECIMAL},
+		DESCRIPTION
+		=#{description,jdbcType=VARCHAR},
+		UPDATED_BY
+		=#{lastUpdatedBy,jdbcType=VARCHAR},
+		UPDATED_DATE
+		=#{lastUpdateDate,jdbcType=TIMESTAMP}
+		WHERE
+		DRVIER_ACC_ID=#{drvierAccId,jdbcType=DECIMAL}
+	</update>
+
+	<!-- 更新分摊源配置界面记录 -->
+	<update id="updateAllocSource"
+		parameterType="com.hausontech.hrs.bean.allocationManager.model.AllocSourceRecord">
+		UPDATE HAE_ALLOC_SOURCE SET
+		source_Type=#{sourceType,jdbcType=VARCHAR},
+		actual_Flag=#{actualFlag,jdbcType=VARCHAR},
+		currency_Type
+		=#{currencyType,jdbcType=VARCHAR},
+		currency_Code=#{currencyCode,jdbcType=VARCHAR},
+		amount_Type=#{amountType,jdbcType=VARCHAR},
+		direction_Code=#{directionCode,jdbcType=VARCHAR},
+		description=#{description,jdbcType=VARCHAR},
+		constant=#{constantValue,jdbcType=DECIMAL},
+		operator=#{operator,jdbcType=VARCHAR},
+		UPDATED_BY
+		=#{lastUpdatedBy,jdbcType=VARCHAR},
+		UPDATED_DATE
+		=#{lastUpdateDate,jdbcType=TIMESTAMP}
+		WHERE
+		source_Id=#{sourceId,jdbcType=DECIMAL}
+	</update>
+	<!-- 更新来源账户设置界面记录 -->
+	<update id="updateAllocSourceAccount"
+		parameterType="com.hausontech.hrs.bean.allocationManager.AllocSourceAccountBean">
+		UPDATE HAE_ALLOC_SOURCE_ACCOUNT SET
+		SOURCE_ID=#{sourceId,jdbcType=DECIMAL},
+		LEDGER_ID
+		=#{ledgerId,jdbcType=DECIMAL},
+		FIN_ELEMENT
+		=#{finElement,jdbcType=VARCHAR},
+		DIMENSION_SEGMENT
+		=#{dimensionSegment,jdbcType=VARCHAR},
+		DIMENSION_VALUE
+		=#{dimensionValue,jdbcType=VARCHAR},
+		FILTER_HEADER_ID
+		=#{filterHeaderId,jdbcType=DECIMAL},
+		DESCRIPTION
+		=#{description,jdbcType=VARCHAR},
+		UPDATED_BY
+		=#{lastUpdatedBy,jdbcType=VARCHAR},
+		UPDATED_DATE
+		=#{lastUpdateDate,jdbcType=TIMESTAMP}
+		WHERE SOURCE_ACC_ID=#{sourceAccId
+		,jdbcType=DECIMAL}
+	</update>
+	<!-- 更新目标账户设置界面记录 -->
+	<update id="updateAllocTargetAccount"
+		parameterType="com.hausontech.hrs.bean.allocationManager.AllocTargetAccountBean">
+		UPDATE HAE_ALLOC_TARGET_ACCOUNT SET
+		TARGET_ID=#{targetId,jdbcType=DECIMAL},
+		LEDGER_ID
+		=#{ledgerId,jdbcType=DECIMAL},
+		FIN_ELEMENT
+		=#{finElement,jdbcType=VARCHAR},
+		DIMENSION_SEGMENT
+		=#{dimensionSegment,jdbcType=VARCHAR},
+		DIMENSION_VALUE
+		=#{dimensionValue,jdbcType=VARCHAR},
+		DIM_ALLOC_TYPE
+		=#{dimAllocType,jdbcType=VARCHAR},
+		DESCRIPTION
+		=#{description,jdbcType=VARCHAR},
+		UPDATED_BY
+		=#{lastUpdatedBy,jdbcType=VARCHAR},
+		UPDATED_DATE
+		=#{lastUpdateDate,jdbcType=TIMESTAMP}
+		WHERE
+		TARGET_ACC_ID=#{targetAccId,jdbcType=DECIMAL}
+	</update>
+	<!-- 更新分摊(目标/抵消)配置界面记录 -->
+	<update id="updateAllocTarget"
+		parameterType="com.hausontech.hrs.bean.allocationManager.model.AllocTargetRecord">
+		UPDATE HAE_ALLOC_TARGET SET
+		Type=#{targetType,jdbcType=VARCHAR},
+		actual_Flag=#{actualFlag,jdbcType=VARCHAR},
+		currency_Type
+		=#{currencyType,jdbcType=VARCHAR},
+		currency_Code=#{currencyCode,jdbcType=VARCHAR},
+		amount_Type=#{amountType,jdbcType=VARCHAR},
+		direction_Code=#{directionCode,jdbcType=VARCHAR},
+		description=#{description,jdbcType=VARCHAR},
+		UPDATED_BY
+		=#{lastUpdatedBy,jdbcType=VARCHAR},
+		UPDATED_DATE
+		=#{lastUpdateDate,jdbcType=TIMESTAMP}
+		WHERE
+		target_Id=#{targetId,jdbcType=DECIMAL}
+	</update>
+
+</mapper>

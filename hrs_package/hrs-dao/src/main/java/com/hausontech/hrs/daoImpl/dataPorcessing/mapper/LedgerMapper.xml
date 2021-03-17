@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hausontech.hrs.daoImpl.dataPorcessing.mapper.LedgerMapper" >
+  <resultMap id="BaseResultMap" type="com.hausontech.hrs.bean.dataProcess.LedgerBean" >
+    <result column="LOOKUP_VALUE" property="lederCode" jdbcType="VARCHAR" />
+    <result column="DESCRIPTION" property="lederName" jdbcType="VARCHAR" />
+  </resultMap>
+  
+   <select id="getLedgerList" resultMap="BaseResultMap" >
+    SELECT lookupVal.LOOKUP_VALUE, lookupVal.DESCRIPTION
+			FROM HRS_CORE_LOOKUP_TYPE lookupType, HRS_CORE_LOOKUP_VALUE lookupVal
+			 where lookupType.Lookup_Type_Id = lookupVal.Lookup_Type_Id and lookupType.Lookup_Type='HRS_CORE_LEDGER'
+			 ORDER BY lookupVal.Lookup_Value
+  </select>
+  
+  
+</mapper>

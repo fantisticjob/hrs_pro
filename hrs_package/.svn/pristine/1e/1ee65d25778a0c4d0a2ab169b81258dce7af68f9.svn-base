@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hausontech.hrs.daoImpl.dataPorcessing.mapper.PeriodMapper" >
+
+  <resultMap id="BaseResultMap" type="com.hausontech.hrs.bean.dataProcess.PeriodBean" >
+    <result column="PERIOD_NAME" property="periodName" jdbcType="VARCHAR" />
+    <result column="PERIOD_YEAR" property="periodYear" jdbcType="DECIMAL" />
+    <result column="PERIOD_NUM" property="periodNum" jdbcType="DECIMAL" />
+    <result column="QUARTER_NUM" property="quarterNum" jdbcType="DECIMAL" />
+    <result column="ADJ_FLAG" property="adjFlag" jdbcType="VARCHAR" />
+    <result column="CREATION_DATE" property="creationDate" jdbcType="TIMESTAMP" />
+	<result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+	<result column="LAST_UPDATE_DATE" property="lastUpdateDate" jdbcType="TIMESTAMP" />
+	<result column="LAST_UPDATED_BY" property="lastUpdatedBy" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  
+  <sql id="AUDIT_QUERY_STRING">
+		, CREATION_DATE,
+		CREATED_BY,LAST_UPDATE_DATE,LAST_UPDATED_BY
+	</sql>
+
+	<sql id="AUDIT_QUERY_STRING_L">
+		,#{creationDate},
+		#{createdBy},#{lastUpdateDate},#{lastUpdatedBy}
+	</sql>
+	
+  <resultMap id="BaseResultMap1" type="com.hausontech.hrs.bean.dataProcess.PeriodBean" >
+    <result column="PERIOD_NAME" property="periodName" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    PERIOD_NAME, PERIOD_YEAR, PERIOD_NUM, QUARTER_NUM, ADJ_FLAG, CREATION_DATE,CREATED_BY, LAST_UPDATE_DATE, LAST_UPDATED_BY
+  </sql>
+  
+   <select id="getPeriodList" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from HRS_CORE_FIN_PERIOD
+  </select>
+  
+  <select id="getPeriodListMapForDisplay" resultMap="BaseResultMap1" >
+    SELECT 
+			PERIOD_NAME
+			FROM HRS_CORE_FIN_PERIOD 
+			ORDER BY PERIOD_NAME DESC
+  </select>
+  
+   <select id="getAvailablePeriodListMapForDisplay" resultMap="BaseResultMap1" >
+    SELECT 
+			PERIOD_NAME 
+			 FROM HRS_CORE_FIN_PERIOD WHERE PERIOD_STATUS='O' 
+			 ORDER BY PERIOD_NAME DESC
+  </select>
+  
+  <select id="getAvailablePeriodList" resultMap="BaseResultMap" >
+    SELECT PERIOD_NAME, PERIOD_YEAR, PERIOD_NUM, QUARTER_NUM, ADJ_FLAG
+    <include refid="AUDIT_QUERY_STRING" />
+	FROM HRS_CORE_FIN_PERIOD 
+	WHERE PERIOD_STATUS='O'
+	ORDER BY PERIOD_NAME DESC
+  </select>
+  
+</mapper>

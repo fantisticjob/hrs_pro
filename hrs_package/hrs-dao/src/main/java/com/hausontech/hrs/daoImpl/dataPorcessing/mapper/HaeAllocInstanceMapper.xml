@@ -1,0 +1,616 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper
+	namespace="com.hausontech.hrs.daoImpl.dataPorcessing.mapper.HaeAllocInstanceMapper">
+	<resultMap id="BaseResultMap"
+		type="com.hausontech.hrs.bean.dataProcess.AllocRequestInstanceRecord">
+		<result column="INSTANCE_ID" property="instanceId" jdbcType="DECIMAL" />
+		<result column="RULE_ID" property="ruleId" jdbcType="DECIMAL" />
+		<result column="RULE_TYPE" property="ruleType" jdbcType="VARCHAR" />
+		<result column="PERIOD" property="period" jdbcType="VARCHAR" />
+		<result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+		<result column="CREATION_DATE" property="creationDate"
+			jdbcType="TIMESTAMP" />
+		<result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+		<result column="LAST_UPDATE_DATE" property="lastUpdateDate"
+			jdbcType="TIMESTAMP" />
+		<result column="LAST_UPDATED_BY" property="lastUpdatedBy"
+			jdbcType="VARCHAR" />
+	</resultMap>
+
+	<resultMap id="BaseResultScheduleMapById"
+		type="com.hausontech.hrs.bean.dataProcess.AllocScheduleInstanceBean">
+		<result column="SCHEDULE_ID" property="scheduleId" jdbcType="DECIMAL" />
+		<result column="INSTANCE_ID" property="instanceId" jdbcType="DECIMAL" />
+		<result column="TYPE_PROCESS" property="typeProcess" jdbcType="VARCHAR" />
+		<result column="VALUE_PROCESS" property="valueProcess"
+			jdbcType="VARCHAR" />
+		<result column="CONCURRENT" property="concurrent" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<resultMap id="BaseResultMapSchedule"
+		type="com.hausontech.hrs.bean.dataProcess.AllocScheduleInstanceBean">
+		<result column="SCHEDULE_ID" property="scheduleId" jdbcType="DECIMAL" />
+		<result column="INSTANCE_ID" property="instanceId" jdbcType="DECIMAL" />
+		<result column="TYPE_PROCESS" property="typeProcess" jdbcType="VARCHAR" />
+		<result column="VALUE_PROCESS" property="valueProcess"
+			jdbcType="VARCHAR" />
+		<result column="CONCURRENT" property="concurrent" jdbcType="VARCHAR" />
+		<result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+		<result column="RULE_TYPE" property="ruleType" jdbcType="VARCHAR" />
+		<result column="CREATION_DATE" property="creationDate"
+			jdbcType="TIMESTAMP" />
+		<result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+		<result column="LAST_UPDATE_DATE" property="lastUpdateDate"
+			jdbcType="TIMESTAMP" />
+		<result column="LAST_UPDATED_BY" property="lastUpdatedBy"
+			jdbcType="VARCHAR" />
+	</resultMap>
+
+	<resultMap id="BaseResultMapHistory"
+		type="com.hausontech.hrs.bean.dataProcess.AllocRequestInstanceHistoryRecord">
+		<result column="INSTANCE_ID" property="instanceId" jdbcType="DECIMAL" />
+		<result column="HISTORY_ID" property="historyId" jdbcType="DECIMAL" />
+		<result column="RULE_ID" property="ruleId" jdbcType="DECIMAL" />
+		<result column="PERIOD" property="period" jdbcType="VARCHAR" />
+		<result column="START_TIME" property="startTime" jdbcType="TIMESTAMP" />
+		<result column="END_TIME" property="endTime" jdbcType="TIMESTAMP" />
+		<result column="ELAPSED_TIME" property="elapsedTime" jdbcType="DECIMAL" />
+		<result column="STATUS" property="status" jdbcType="VARCHAR" />
+		<result column="MESSAGE" property="message" jdbcType="VARCHAR" />
+		<result column="ROLLBACK_TIME" property="rollbackTime"
+			jdbcType="TIMESTAMP" />
+		<result column="ATTRIBUTE1" property="attribute1" jdbcType="VARCHAR" />
+		<result column="ATTRIBUTE2" property="attribute2" jdbcType="VARCHAR" />
+		<result column="ATTRIBUTE3" property="attribute3" jdbcType="VARCHAR" />
+		<result column="ATTRIBUTE4" property="attribute4" jdbcType="VARCHAR" />
+		<result column="ATTRIBUTE5" property="attribute5" jdbcType="VARCHAR" />
+		<result column="GROUP_HEADER_ID" property="groupHeaderId"
+			jdbcType="DECIMAL" />
+		<result column="CREATION_DATE" property="creationDate"
+			jdbcType="TIMESTAMP" />
+		<result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+		<result column="LAST_UPDATE_DATE" property="lastUpdateDate"
+			jdbcType="TIMESTAMP" />
+		<result column="LAST_UPDATED_BY" property="lastUpdatedBy"
+			jdbcType="VARCHAR" />
+
+	</resultMap>
+
+
+	<resultMap id="BaseAllocRequestInstanceResultMapById"
+		type="com.hausontech.hrs.bean.dataProcess.AllocRequestInstanceRecord">
+		<result column="INSTANCE_ID" property="instanceId" jdbcType="DECIMAL" />
+		<result column="RULE_ID" property="ruleId" jdbcType="DECIMAL" />
+		<result column="RULE_TYPE" property="ruleType" jdbcType="VARCHAR" />
+		<result column="PERIOD" property="period" jdbcType="VARCHAR" />
+		<result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="AUDIT_QUERY_STRING">
+		, CREATION_DATE,
+		CREATED_BY,LAST_UPDATE_DATE,LAST_UPDATED_BY
+	</sql>
+
+	<sql id="AUDIT_QUERY_STRING_L">
+		,#{creationDate},
+		#{createdBy},#{lastUpdateDate},#{lastUpdatedBy}
+	</sql>
+
+	<sql id="PAGE_SQL">
+		) innerA where innerA.row_number &gt;=${start}
+		<if test="ruleType != null">
+			and INNERA.RULE_TYPE =#{ruleType}
+		</if>
+		<if test="period != null">
+			and INNERA.PERIOD = #{period}
+		</if>
+		) outerB
+		where rownum &lt;= ${count}
+	</sql>
+
+	<sql id="PAGE_SQL_HISTORY">
+		) innerA where innerA.row_number &gt;=${start}
+		) outerB
+		where rownum &lt;= ${count}
+	</sql>
+	<!-- 获取账簿数据 -->
+	<select id="getLedgerListMapForDisplay" resultType="java.util.Map">
+		SELECT
+		lookupVal.LOOKUP_VALUE ledgerId, lookupVal.DESCRIPTION ledgerName
+		FROM
+		HRS_CORE_LOOKUP_TYPE lookupType, HRS_CORE_LOOKUP_VALUE lookupVal
+		where
+		lookupType.Lookup_Type_Id = lookupVal.Lookup_Type_Id and
+		lookupType.Lookup_Type='HRS_CORE_LEDGER'
+		ORDER BY ledgerId
+	</select>
+	<!-- 获取规则组数据 -->
+	<select id="getGroupRuleList" resultType="java.util.Map">
+		SELECT GROUP_HEADER_ID
+		RULE_ID,GROUP_NAME RULE_NAME FROM
+		HAE_ALLOC_RULES_GROUP_HAEADER ORDER
+		BY GROUP_NUM DESC
+	</select>
+
+	<!-- 获取规则数据 -->
+	<select id="getruleList" resultType="java.util.Map"
+		parameterType="java.lang.String">
+		SELECT R.RULE_ID,R.RULE_NAME FROM HAE_ALLOC_RULE
+		R,HAE_ALLOC_DRIVER D
+		WHERE R.RULE_ID=D.RULE_ID AND
+		D.DRIVER_TYPE=#{type} ORDER BY R.RULE_ID DESC
+	</select>
+
+	<!-- 获取期间数据 -->
+	<select id="getAvailablePeriodListMapForDisplay" resultType="java.util.Map">
+		SELECT PERIOD_NAME periodId, PERIOD_NAME periodName
+		FROM
+		HRS_CORE_FIN_PERIOD WHERE PERIOD_STATUS='O'
+		ORDER BY periodId DESC
+	</select>
+
+	<select id="getScheduleById" resultMap="BaseResultScheduleMapById"
+		parameterType="java.lang.String">
+		SELECT SCHEDULE_ID, INSTANCE_ID, TYPE_PROCESS,
+		VALUE_PROCESS, CONCURRENT
+		FROM HAE_ALLOC_SCHEDULE
+		WHERE
+		SCHEDULE_ID=#{scheduleId}
+	</select>
+
+	<select id="getItemContentsAlloc" statementType="CALLABLE" parameterType="java.util.Map" >
+	  <![CDATA[    
+	  { #{returnvalue, mode=OUT, jdbcType=VARCHAR} = call hae_alloc_engine_api.run_alloc (#{historyId, mode=IN, jdbcType=BIGINT})}    
+	  ]]>
+	</select>
+	
+	<select id="getRollbackItemContentsAlloc" statementType="CALLABLE" parameterType="java.util.Map" >
+	  <![CDATA[    
+	  { #{returnvalue, mode=OUT, jdbcType=VARCHAR} = call hae_alloc_engine_api.rollback_alloc(#{historyId, mode=IN, jdbcType=BIGINT})}    
+	  ]]>
+	</select>
+		
+
+	<select id="getAllocRequestInstanceHistoryByPrimaryKey"
+		resultMap="BaseResultMapHistory" parameterType="java.lang.Long">
+		SELECT INSTANCE_ID,
+		HISTORY_ID, RULE_ID, PERIOD, START_TIME, END_TIME, ELAPSED_TIME,
+		STATUS, MESSAGE, ROLLBACK_TIME, ATTRIBUTE1,
+		ATTRIBUTE2, ATTRIBUTE3,
+		ATTRIBUTE4, ATTRIBUTE5, CREATION_DATE, CREATED_BY,
+		LAST_UPDATE_DATE,
+		LAST_UPDATED_BY FROM HAE_ALLOC_INSTANCE_HISTORY
+		WHERE HISTORY_ID=
+		#{historyId}
+	</select>
+
+
+	<!-- 获取报表运行实例历史记录 -->
+	<select id="findAllocInstanceHistory" resultMap="BaseResultMapHistory"
+		parameterType="java.lang.String">
+		SELECT
+		outerB.*
+		FROM
+		(
+		SELECT
+		*
+		FROM
+		(
+		SELECT
+		H .INSTANCE_ID,
+		H .HISTORY_ID,
+		H .RULE_ID,
+		H .GROUP_HEADER_ID,
+		H
+		.PERIOD,
+		H .START_TIME,
+		H .END_TIME,
+		H .ELAPSED_TIME,
+		H .STATUS,
+		H
+		.MESSAGE,
+		H .ROLLBACK_TIME,
+		H .ATTRIBUTE1,
+		H .ATTRIBUTE2,
+		H .ATTRIBUTE3,
+		H
+		.ATTRIBUTE4,
+		H .ATTRIBUTE5,
+		H .CREATION_DATE,
+					H .CREATED_BY,
+					H .LAST_UPDATE_DATE,
+					H .LAST_UPDATED_BY,
+		CASE
+		WHEN H .ROLLBACKSTATUS = 'Y'
+		AND H
+		.ROW_NUM = 1 THEN
+		'Y'
+		ELSE
+		NULL
+		END CANBEROLLBACK
+		<if test="start != 0 and count != 0">
+			,ROW_NUMBER () OVER
+			(ORDER BY HISTORY_ID DESC) AS
+			ROW_NUMBER
+		</if>
+
+		FROM
+		(
+		SELECT
+		INNER .*,
+		ROW_NUMBER () OVER (
+		PARTITION BY ROLLBACKSTATUS
+		ORDER BY
+		HISTORY_ID DESC
+		) AS ROW_NUM
+		FROM
+		(
+		SELECT
+		INSTANCE_ID,
+		HISTORY_ID,
+		RULE_ID,
+		GROUP_HEADER_ID,
+		PERIOD,
+		START_TIME,
+		END_TIME,
+		ELAPSED_TIME,
+		STATUS,
+		CASE
+		WHEN STATUS = 'S101'
+		OR STATUS = 'R102' THEN
+		'Y'
+		ELSE
+		NULL
+		END
+		ROLLBACKSTATUS,
+		MESSAGE,
+		ROLLBACK_TIME,
+		ATTRIBUTE1,
+		ATTRIBUTE2,
+		ATTRIBUTE3,
+		ATTRIBUTE4,
+		ATTRIBUTE5,
+		CREATION_DATE,
+		CREATED_BY,
+		LAST_UPDATE_DATE,
+		LAST_UPDATED_BY
+		FROM
+		HAE_ALLOC_INSTANCE_HISTORY
+		<if test="instanceId != 0">
+			where INSTANCE_ID = #{instanceId}
+		</if>
+		) INNER
+		) H
+		<include refid="PAGE_SQL_HISTORY" />
+		ORDER BY outerB.HISTORY_ID DESC
+	</select>
+	<!-- 获取报表调度运行数据界面 -->
+	<select id="getAllocScheduleInstance" resultMap="BaseResultMapSchedule"
+		parameterType="java.lang.String">
+		SELECT
+		outerB.*
+		FROM
+		(
+		SELECT
+		*
+		FROM
+		(
+		SELECT
+		sch.INSTANCE_ID,
+		sch.SCHEDULE_ID,
+		sch.TYPE_PROCESS,
+		sch.VALUE_PROCESS,
+		sch.CONCURRENT,
+		sch.CREATION_DATE,sch.CREATED_BY,sch.LAST_UPDATE_DATE,sch.LAST_UPDATED_BY,
+		ins.RULE_TYPE,
+		ins.DESCRIPTION
+		<if test="start != 0 and count != 0">
+			,ROW_NUMBER () OVER (ORDER BY SCHEDULE_ID
+			DESC) AS
+			ROW_NUMBER
+		</if>
+
+		FROM
+		HAE_ALLOC_SCHEDULE sch,
+		HAE_ALLOC_INSTANCE ins
+		WHERE
+		sch.INSTANCE_ID
+		= ins.INSTANCE_ID
+		<include refid="PAGE_SQL" />
+		ORDER BY outerB.INSTANCE_ID DESC
+	</select>
+	<!-- 获取报表运行记录界面数据 -->
+	<select id="getAllocRequestInstance" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		SELECT
+		outerB.*
+		FROM
+		(
+		SELECT
+		*
+		FROM
+		(
+		SELECT
+		INSTANCE_ID,
+		RULE_ID,
+		RULE_TYPE,
+		PERIOD,
+		DESCRIPTION,CREATION_DATE,CREATED_BY,LAST_UPDATE_DATE,LAST_UPDATED_BY
+		<if test="start != 0 and count != 0">
+			,ROW_NUMBER () OVER (ORDER BY
+			INSTANCE_ID DESC) AS
+			ROW_NUMBER
+		</if>
+		FROM
+		HAE_ALLOC_INSTANCE
+		<include refid="PAGE_SQL" />
+		ORDER BY outerB.INSTANCE_ID DESC
+	</select>
+	<!-- 根据规则ID获取规则类型 -->
+	<select id="getruleListForLoop" resultType="java.lang.Long"
+		parameterType="java.lang.Long">
+		SELECT L.RULE_ID
+		FROM HAE_ALLOC_RULES_GROUP_HAEADER H,
+		HAE_ALLOC_RULES_GROUP_LINE L WHERE
+		H.GROUP_HEADER_ID=L.GROUP_LINE_ID
+		AND
+		H.GROUP_HEADER_ID=#{ruleId}
+		ORDER
+		BY L.LINE_NUM
+	</select>
+	<!-- 获取报表运行实例历史记录总数 -->
+	<select id="getAllocRequestInstanceHistoryRecordCount"
+		parameterType="java.lang.String" resultType="java.lang.Integer">
+		select count(1)
+		from hae_alloc_instance_history
+		<where>
+			<if test="instanceId != null and instanceId !=0">
+				INSTANCE_ID = #{instanceId}
+			</if>
+			<if test="status != null">
+				and STATUS = #{status}
+			</if>
+		</where>
+
+	</select>
+	<!-- 获取报表运行记录界面数据总数 -->
+	<select id="getAllocRequestInstanceCount" resultType="java.lang.Integer"
+		parameterType="java.lang.String">
+		select count(1)
+		from HAE_ALLOC_INSTANCE
+		<where>
+			<if test="ruleType != null">
+				RULE_TYPE = #{ruleType}
+			</if>
+			<if test="period != null">
+				and PERIOD = #{period}
+			</if>
+		</where>
+	</select>
+	<!-- 获取报表调度运行数据界面总数 -->
+	<select id="getAllocScheduleInstanceCount" resultType="java.lang.Integer"
+		parameterType="java.lang.String">
+		select count(1)
+		from
+		<choose>
+			<when test="ruleType != null">
+				(select * from HAE_ALLOC_SCHEDULE
+				schedule,HAE_ALLOC_INSTANCE instance
+				where
+				INSTANCE.INSTANCE_ID=schedule.INSTANCE_ID and
+				INSTANCE.RULE_TYPE=
+				#{ruleType})
+			</when>
+			<otherwise>
+				HAE_ALLOC_SCHEDULE
+			</otherwise>
+		</choose>
+	</select>
+	<!-- 根据主键获取报表运行记录 -->
+	<select id="getAllocRequestInstanceByPrimaryKey" resultMap="BaseAllocRequestInstanceResultMapById"
+		parameterType="java.lang.Long">
+		SELECT INSTANCE_ID, RULE_ID, RULE_TYPE,
+		PERIOD,DESCRIPTION
+		FROM HAE_ALLOC_INSTANCE
+		WHERE
+		INSTANCE_ID=#{instanceId}
+	</select>
+	<!-- 获取状态ID、状态TYPE -->
+	<select id="getStatus" resultType="java.lang.String"
+		parameterType="java.lang.String">
+		select
+		<choose>
+			<when test="statusId != null">
+				STATUS_TYPE from HRS_STATUS where
+				STATUS_ID=#{statusId}
+			</when>
+			<when test="statusType != null">
+				STATUS_ID from HRS_STATUS where
+				STATUS_TYPE=#{statusType}
+			</when>
+		</choose>
+	</select>
+	<!-- 更新报表调度运行记录 -->
+	<update id="updateAllocSchedule"
+		parameterType="com.hausontech.hrs.bean.dataProcess.AllocScheduleInstanceBean">
+		UPDATE HAE_ALLOC_SCHEDULE SET
+		TYPE_PROCESS =
+		#{typeProcess, jdbcType=VARCHAR},
+		VALUE_PROCESS = #{valueProcess,
+		jdbcType=VARCHAR},
+		CONCURRENT = #{concurrent,jdbcType=VARCHAR},
+		LAST_UPDATE_DATE = #{lastUpdateDate,jdbcType=TIMESTAMP},
+		LAST_UPDATED_BY = #{lastUpdatedBy,jdbcType=VARCHAR}
+		WHERE SCHEDULE_ID =
+		#{scheduleId,jdbcType=DECIMAL}
+	</update>
+	<!-- 更新报表运行实例历史记录 -->
+	<update id="updateAllocRequestInstanceHistoryRecord"
+		parameterType="com.hausontech.hrs.bean.dataProcess.AllocRequestInstanceHistoryRecord">
+		UPDATE hae_alloc_instance_history
+		SET
+		INSTANCE_ID =
+		#{instanceId, jdbcType=DECIMAL},
+		PERIOD =
+		#{period, jdbcType=VARCHAR},
+		RULE_ID =
+		#{ruleId, jdbcType=DECIMAL},
+		START_TIME =
+		#{startTime,jdbcType=TIMESTAMP},
+		END_TIME =
+		#{endTime,jdbcType=TIMESTAMP},
+		ELAPSED_TIME =
+		#{elapsedTime,
+		jdbcType=DECIMAL},
+		STATUS =
+		#{status,jdbcType=VARCHAR},
+		MESSAGE =
+		#{message,jdbcType=VARCHAR},
+		ROLLBACK_TIME=
+		#{rollbackTime,jdbcType=TIMESTAMP},
+		LAST_UPDATE_DATE =
+		#{lastUpdateDate,jdbcType=TIMESTAMP} ,
+		LAST_UPDATED_BY =
+		#{lastUpdatedBy,jdbcType=VARCHAR}
+		WHERE HISTORY_ID =
+		#{historyId,jdbcType=DECIMAL}
+	</update>
+	<!-- 更新报表运行记录 -->
+	<update id="updateAllocRequestInstance"
+		parameterType="com.hausontech.hrs.bean.dataProcess.AllocRequestInstanceRecord">
+		update HAE_ALLOC_INSTANCE
+		set RULE_ID =
+		#{ruleId,jdbcType=DECIMAL},
+		RULE_TYPE =
+		#{ruleType,jdbcType=VARCHAR},
+		PERIOD
+		=#{period,jdbcType=VARCHAR},
+		DESCRIPTION
+		=#{description,jdbcType=VARCHAR},
+		LAST_UPDATE_DATE =
+		#{lastUpdateDate,jdbcType=TIMESTAMP},
+		LAST_UPDATED_BY =
+		#{lastUpdatedBy,jdbcType=VARCHAR}
+		where INSTANCE_ID =
+		#{instanceId,jdbcType=DECIMAL}
+	</update>
+	<!-- 删除报表调度运行记录 -->
+	<delete id="deleteScheduleRecordForInstanceId" parameterType="java.lang.Long">
+		DELETE HAE_ALLOC_SCHEDULE
+		WHERE
+		SCHEDULE_ID=#{scheduleId}
+	</delete>
+	<!-- 删除报表运行记录 -->
+	<delete id="deleteAllocRequestInstance" statementType="STATEMENT"
+		parameterType="java.lang.String">
+		DELETE
+		${tableName}
+		WHERE INSTANCE_ID = ${instanceId}
+	</delete>
+	<!-- 增加报表运行实例历史记录 -->
+	<insert id="saveAllocRequestInstanceHistoryRecord"
+		parameterType="com.hausontech.hrs.bean.dataProcess.AllocRequestInstanceHistoryRecord">
+		INSERT INTO hae_alloc_instance_history(INSTANCE_ID,HISTORY_ID,RULE_ID,
+		PERIOD, START_TIME, STATUS
+		<if test="endTime != null">
+			, END_TIME
+		</if>
+		<if test="elapsedTime != null">
+			, ELAPSED_TIME
+		</if>
+		<if test="groupHeaderId != null">
+			,GROUP_HEADER_ID
+		</if>
+		<if test="message != null">
+			,MESSAGE
+		</if>
+		<if test="rollbackTime != null">
+			,ROLLBACK_TIME
+		</if>
+		<if test="attribute1 != null">
+			,ATTRIBUTE1
+		</if>
+		<if test="attribute2 != null">
+			,ATTRIBUTE2
+		</if>
+		<if test="attribute3 != null">
+			,ATTRIBUTE3
+		</if>
+		<if test="attribute4 != null">
+			,ATTRIBUTE4
+		</if>
+		<if test="attribute5 != null">
+			,ATTRIBUTE5
+		</if>
+		<include refid="AUDIT_QUERY_STRING" />
+		)VALUES(#{instanceId}, #{historyId}, #{ruleId},
+		#{period},
+		#{startTime}, #{status}
+		<if test="endTime != null">
+			,#{endTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="elapsedTime != null">
+			,#{elapsedTime,jdbcType=DECIMAL}
+		</if>
+		<if test="groupHeaderId != null">
+			,#{groupHeaderId,jdbcType=DECIMAL}
+		</if>
+		<if test="message != null">
+			,#{message,jdbcType=VARCHAR}
+		</if>
+		<if test="rollbackTime != null">
+			,#{rollbackTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="attribute1 != null">
+			,#{attribute1,jdbcType=VARCHAR}
+		</if>
+		<if test="attribute2 != null">
+			,#{attribute2,jdbcType=VARCHAR}
+		</if>
+		<if test="attribute3 != null">
+			,#{attribute3,jdbcType=VARCHAR}
+		</if>
+		<if test="attribute4 != null">
+			,#{attribute4,jdbcType=VARCHAR}
+		</if>
+		<if test="attribute5 != null">
+			,#{attribute5,jdbcType=VARCHAR}
+		</if>
+		<include refid="AUDIT_QUERY_STRING_L" />
+		)
+	</insert>
+	<!-- 新增报表调度运行记录 -->
+	<insert id="saveAllocScheduleInstance"
+		parameterType="com.hausontech.hrs.bean.dataProcess.AllocScheduleInstanceBean">
+		INSERT INTO HAE_ALLOC_SCHEDULE(INSTANCE_ID,SCHEDULE_ID, TYPE_PROCESS ,
+		VALUE_PROCESS, CONCURRENT
+		<include refid="AUDIT_QUERY_STRING" />
+		)VALUES(#{instanceId}, #{scheduleId}, #{typeProcess}, #{valueProcess},
+		#{concurrent}
+		<include refid="AUDIT_QUERY_STRING_L" />
+		)
+	</insert>
+	<!-- 增加报表运行记录 -->
+	<insert id="saveAllocRequestInstance"
+		parameterType="com.hausontech.hrs.bean.dataProcess.AllocRequestInstanceRecord">
+		INSERT INTO HAE_ALLOC_INSTANCE(INSTANCE_ID,RULE_ID, RULE_TYPE
+		<if test="period != null">
+			,PERIOD
+		</if>
+		<if test="description != null">
+			,DESCRIPTION
+		</if>
+		<include refid="AUDIT_QUERY_STRING" />
+		)VALUES(#{instanceId}, #{ruleId}, #{ruleType}
+		<if test="period != null">
+			,#{period,jdbcType=VARCHAR}
+		</if>
+		<if test="description != null">
+			,#{description,jdbcType=VARCHAR}
+		</if>
+		<include refid="AUDIT_QUERY_STRING_L" />
+		)
+	</insert>
+
+</mapper>

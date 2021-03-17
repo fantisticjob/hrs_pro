@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper
+	namespace="com.hausontech.hrs.daoImpl.dataPorcessing.mapper.CalculationProcessorMapper">
+	<resultMap id="BaseResultMap"
+		type="com.hausontech.hrs.bean.dataProcess.RequestInstanceBean">
+		<result column="INSTANCE_ID" property="instanceId" jdbcType="DECIMAL" />
+		<result column="LEDGER_ID" property="ledgerId" jdbcType="DECIMAL" />
+		<result column="FIN_ELEMENT_TYPE" property="finElementType"
+			jdbcType="VARCHAR" />
+		<result column="PERIOD_FROM" property="periodFrom" jdbcType="VARCHAR" />
+		<result column="PERIOD_TO" property="periodTo" jdbcType="VARCHAR" />
+		<result column="START_TIME" property="startDate" jdbcType="TIMESTAMP" />
+		<result column="END_TIME" property="endDate" jdbcType="TIMESTAMP" />
+		<result column="ELAPSED_TIME" property="elapsedTime" jdbcType="DECIMAL" />
+		<result column="STATUS" property="status" jdbcType="VARCHAR" />
+		<result column="MESSAGE" property="message" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<resultMap id="BaseResultMapCalculationProcessor"
+		type="com.hausontech.hrs.bean.engine.CalculationProcessorBean">
+		<result column="ITEM_CODE" property="itemCode" jdbcType="VARCHAR" />
+		<result column="RULE_CODE" property="ruleCode" jdbcType="VARCHAR" />
+		<result column="LEDGER_ID" property="ledgerId" jdbcType="DECIMAL" />
+		<result column="ACTUAL_FLAG" property="actualFlag" jdbcType="VARCHAR" />
+		<result column="CURRENCY_TYPE" property="currencyType"
+			jdbcType="VARCHAR" />
+		<result column="CURRENCY_CODE" property="currencyCode"
+			jdbcType="VARCHAR" />
+		<result column="FIN_ELEMENT" property="finElement" jdbcType="VARCHAR" />
+		<result column="SEGMENT1" property="segment1" jdbcType="VARCHAR" />
+		<result column="SEGMENT2" property="segment2" jdbcType="VARCHAR" />
+		<result column="SEGMENT3" property="segment3" jdbcType="VARCHAR" />
+		<result column="SEGMENT4" property="segment4" jdbcType="VARCHAR" />
+		<result column="SEGMENT5" property="segment5" jdbcType="VARCHAR" />
+		<result column="SEGMENT6" property="segment6" jdbcType="VARCHAR" />
+		<result column="SEGMENT7" property="segment7" jdbcType="VARCHAR" />
+		<result column="SEGMENT8" property="segment8" jdbcType="VARCHAR" />
+		<result column="SEGMENT9" property="segment9" jdbcType="VARCHAR" />
+		<result column="SEGMENT10" property="segment10" jdbcType="VARCHAR" />
+		<result column="SEGMENT11" property="segment11" jdbcType="VARCHAR" />
+		<result column="SEGMENT12" property="segment12" jdbcType="VARCHAR" />
+		<result column="SEGMENT13" property="segment13" jdbcType="VARCHAR" />
+		<result column="SEGMENT14" property="segment14" jdbcType="VARCHAR" />
+		<result column="SEGMENT15" property="segment15" jdbcType="VARCHAR" />
+		<result column="SEGMENT16" property="segment16" jdbcType="VARCHAR" />
+		<result column="SEGMENT17" property="segment17" jdbcType="VARCHAR" />
+		<result column="SEGMENT18" property="segment18" jdbcType="VARCHAR" />
+		<result column="SEGMENT19" property="segment19" jdbcType="VARCHAR" />
+		<result column="SEGMENT20" property="segment20" jdbcType="VARCHAR" />
+		<result column="PERIOD_NAME" property="periodName" jdbcType="VARCHAR" />
+		<result column="PERIOD_NUM" property="periodNumber" jdbcType="VARCHAR" />
+		<result column="PERIOD_YEAR" property="periodYear" jdbcType="VARCHAR" />
+		<result column="BEGIN_BALANCE_DR" property="beginBalanceDR"
+			jdbcType="DECIMAL" />
+		<result column="BEGIN_BALANCE_CR" property="beginBalanceCR;"
+			jdbcType="DECIMAL" />
+		<result column="PERIOD_DR" property="periodDR" jdbcType="DECIMAL" />
+		<result column="PERIOD_CR" property="periodCR" jdbcType="DECIMAL" />
+		<result column="END_BALANCE_DR" property="endBalanceDR"
+			jdbcType="DECIMAL" />
+		<result column="END_BALANCE_CR" property="endBalanceCR"
+			jdbcType="DECIMAL" />
+		<result column="REQUEST_INSTANCE_ID" property="requestInstanceId"
+			jdbcType="DECIMAL" />
+		<!-- <result column="CREATION_DATE" property="creationDate"
+			jdbcType="TIMESTAMP" /> -->
+		<result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+		<!-- <result column="LAST_UPDATE_DATE" property="lastUpdateDate"
+			jdbcType="TIMESTAMP" /> -->
+		<result column="LAST_UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="AUDIT_QUERY_STRING">
+		, CREATION_DATE,
+		CREATED_BY,LAST_UPDATE_DATE,LAST_UPDATED_BY
+	</sql>
+
+	<sql id="AUDIT_QUERY_STRING_L">
+		,#{creationDate},
+		#{createdBy},#{lastUpdateDate},#{lastUpdatedBy}
+	</sql>
+
+	<sql id="PAGE_SQL">
+		) innerA where innerA.row_number &gt;=${start}
+		<if test="jobName != null">
+			and INNERA.JOB_NAME like '%' || #{jobName} || '%'
+		</if>
+		<if test="status != null">
+			and INNERA.STATUS = #{status}
+		</if>
+		) outerB
+		where rownum &lt;= ${count}
+	</sql>
+
+	<select id="getItemContentsAlloc" statementType="CALLABLE"
+		parameterType="java.util.Map">
+	  <![CDATA[    
+	  { #{processResult, mode=OUT, jdbcType=VARCHAR} = call hae_alloc_engine_test.get_alloc_source_amount(#{instanceId, mode=IN, jdbcType=BIGINT})}    
+	  ]]>
+	</select>
+
+	<select id="generateFinIndex" statementType="CALLABLE"
+		parameterType="com.hausontech.hrs.bean.dataProcess.RequestInstanceBean">
+	  <![CDATA[    
+	  { call hrs_core_item_result_api.generate_fin_index(
+	  #{finElementType, mode=IN, jdbcType=VARCHAR},
+	  #{ledgerId, mode=IN, jdbcType=BIGINT},
+	  #{periodFrom, mode=IN, jdbcType=VARCHAR},
+	  #{periodTo, mode=IN, jdbcType=VARCHAR},
+	  #{instanceId, mode=IN, jdbcType=BIGINT})}    
+	  ]]>
+	</select>
+
+	<select id="getItemContents" statementType="CALLABLE"
+		parameterType="java.util.Map">
+	  <![CDATA[    
+	  { call hrs_core_item_result_api.get_item_contents(
+	  #{finElementType, mode=IN, jdbcType=VARCHAR},
+	  #{ledgerId, mode=IN, jdbcType=BIGINT},
+	  #{periodFrom, mode=IN, jdbcType=VARCHAR},
+	  #{periodTo, mode=IN, jdbcType=VARCHAR},
+	  #{instanceId, mode=IN, jdbcType=BIGINT},
+	  #{result,jdbcType=CURSOR,mode=OUT,javaType=ResultSet, resultMap=BaseResultMapCalculationProcessor})}    
+	  ]]>
+	</select>
+
+
+	<!-- <insert id="insertCalculationItems" parameterType="com.hausontech.hrs.bean.dataProcess.RequestInstanceBean"> 
+		INSERT INTO HRS_CORE_ITEM_RESULT(ITEM_CODE, RULE_CODE, FIN_ELEMENT, LEDGER_ID, 
+		ACTUAL_FLAG, CURRENCY_TYPE, CURRENCY_CODE, SEGMENT1, SEGMENT2, SEGMENT3, 
+		SEGMENT4, SEGMENT5, SEGMENT6, SEGMENT7,SEGMENT8,SEGMENT9, SEGMENT10,SEGMENT11,SEGMENT12,SEGMENT13,SEGMENT14,SEGMENT15,SEGMENT16,SEGMENT17,SEGMENT18,SEGMENT19,SEGMENT20,PERIOD_NAME, 
+		PERIOD_NUM,PERIOD_YEAR,BEGIN_BALANCE_DR,BEGIN_BALANCE_CR,PERIOD_DR,PERIOD_CR,END_BALANCE_DR,END_BALANCE_CR, 
+		REQUEST_INSTANCE_ID, CREATION_DATE, CREATED_BY,LAST_UPDATE_DATE,LAST_UPDATED_BY) 
+		VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 
+		?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) </insert> -->
+
+</mapper>

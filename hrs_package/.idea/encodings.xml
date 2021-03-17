@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/hrs" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/hrs-api" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/hrs-bean" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/hrs-dao" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/hrs-exceptions" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/hrs-service" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/hrs-utils" charset="UTF-8" />
+  </component>
+</project>

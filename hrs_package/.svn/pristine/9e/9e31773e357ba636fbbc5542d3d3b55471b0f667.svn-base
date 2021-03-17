@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hausontech.hrs.daoImpl.transactionProcess.mapper.TransactionProcessHeaderMapper" >
+  <resultMap id="BaseResultMap" type="com.hausontech.hrs.bean.transactionProcess.TransactionProcessHeader" >
+    <id column="TXN_HEADER_ID" property="txnHeaderId" jdbcType="INTEGER" />
+    <result column="TYPE_CODE" property="typeCode" jdbcType="VARCHAR" />
+    <result column="LEDGER_ID" property="ledgerId" jdbcType="INTEGER" />
+    <result column="COMPANY_SEG_VAL" property="companySegValue" jdbcType="VARCHAR" />
+    <result column="CURRENCY_CODE" property="currencyCode" jdbcType="VARCHAR" />
+    <result column="PERIOD_NAME" property="periodName" jdbcType="VARCHAR" />
+    <result column="TXN_DATE" property="transactionDate" jdbcType="TIMESTAMP" />
+    <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+    <result column="AUDIT_FLAG" property="auditFlag" jdbcType="VARCHAR" />
+    <result column="TRANSFER_FLAY" property="transferFlag" jdbcType="VARCHAR" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+    <result column="CREATED_DATE" property="creationDate" jdbcType="TIMESTAMP" />
+    <result column="UPDATED_BY" property="lastUpdatedBy" jdbcType="VARCHAR" />
+    <result column="UPDATED_DATE" property="lastUpdateDate" jdbcType="TIMESTAMP" />
+  <!--  <result column="ALLOC_HISTORY_ID" property="allocHistoryId" jdbcType="INTEGER" />
+    <result column="ALLOC_INSTANCE_ID" property="allocInstanceId" jdbcType="INTEGER" />
+    <result column="ACTUAL_FLAG" property="actualFlag" jdbcType="VARCHAR" />
+    <result column="CURRENCY_TYPE" property="currencyType" jdbcType="VARCHAR" /> --> 
+  </resultMap>
+  <sql id="Base_Column_List" >
+    TXN_HEADER_ID, TYPE_CODE, LEDGER_ID, COMPANY_SEG_VAL, CURRENCY_CODE, PERIOD_NAME, 
+    TXN_DATE, DESCRIPTION, AUDIT_FLAG, TRANSFER_FLAY, CREATED_BY, CREATED_DATE, UPDATED_BY, 
+    UPDATED_DATE, ALLOC_HISTORY_ID, ALLOC_INSTANCE_ID, ACTUAL_FLAG, CURRENCY_TYPE
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from HAE_TXN_PROCESS_HEADER
+    where TXN_HEADER_ID = #{txnHeaderId,jdbcType=DECIMAL}
+  </select>
+  
+   <select id="selectAll" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from HAE_TXN_PROCESS_HEADER
+  </select>
+  
+   <select id="selectCount" resultType="java.lang.Long">
+    select 
+    count(*)
+    from HAE_TXN_PROCESS_HEADER
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from HAE_TXN_PROCESS_HEADER
+    where TXN_HEADER_ID = #{txnHeaderId,jdbcType=DECIMAL}
+  </delete>
+  <insert id="insert" parameterType="com.hausontech.hrs.bean.transactionProcess.TransactionProcessHeader" >
+    insert into HAE_TXN_PROCESS_HEADER (TXN_HEADER_ID, TYPE_CODE, LEDGER_ID, 
+      COMPANY_SEG_VAL, CURRENCY_CODE, PERIOD_NAME, 
+      TXN_DATE, DESCRIPTION, AUDIT_FLAG, 
+      TRANSFER_FLAY, CREATED_BY, CREATED_DATE, 
+      UPDATED_BY, UPDATED_DATE, ALLOC_HISTORY_ID, 
+      ALLOC_INSTANCE_ID, ACTUAL_FLAG, CURRENCY_TYPE
+      )
+    values (#{txnHeaderId,jdbcType=DECIMAL}, #{typeCode,jdbcType=VARCHAR}, #{ledgerId,jdbcType=DECIMAL}, 
+      #{companySegVal,jdbcType=VARCHAR}, #{currencyCode,jdbcType=VARCHAR}, #{periodName,jdbcType=VARCHAR}, 
+      #{txnDate,jdbcType=TIMESTAMP}, #{description,jdbcType=VARCHAR}, #{auditFlag,jdbcType=CHAR}, 
+      #{transferFlay,jdbcType=CHAR}, #{createdBy,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, 
+      #{updatedBy,jdbcType=VARCHAR}, #{updatedDate,jdbcType=TIMESTAMP}, #{allocHistoryId,jdbcType=DECIMAL}, 
+      #{allocInstanceId,jdbcType=DECIMAL}, #{actualFlag,jdbcType=VARCHAR}, #{currencyType,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.hausontech.hrs.bean.transactionProcess.TransactionProcessHeader" >
+    insert into HAE_TXN_PROCESS_HEADER
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="txnHeaderId != null" >
+        TXN_HEADER_ID,
+      </if>
+      <if test="typeCode != null" >
+        TYPE_CODE,
+      </if>
+      <if test="ledgerId != null" >
+        LEDGER_ID,
+      </if>
+      <if test="companySegVal != null" >
+        COMPANY_SEG_VAL,
+      </if>
+      <if test="currencyCode != null" >
+        CURRENCY_CODE,
+      </if>
+      <if test="periodName != null" >
+        PERIOD_NAME,
+      </if>
+      <if test="txnDate != null" >
+        TXN_DATE,
+      </if>
+      <if test="description != null" >
+        DESCRIPTION,
+      </if>
+      <if test="auditFlag != null" >
+        AUDIT_FLAG,
+      </if>
+      <if test="transferFlay != null" >
+        TRANSFER_FLAY,
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY,
+      </if>
+      <if test="createdDate != null" >
+        CREATED_DATE,
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY,
+      </if>
+      <if test="updatedDate != null" >
+        UPDATED_DATE,
+      </if>
+      <if test="allocHistoryId != null" >
+        ALLOC_HISTORY_ID,
+      </if>
+      <if test="allocInstanceId != null" >
+        ALLOC_INSTANCE_ID,
+      </if>
+      <if test="actualFlag != null" >
+        ACTUAL_FLAG,
+      </if>
+      <if test="currencyType != null" >
+        CURRENCY_TYPE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="txnHeaderId != null" >
+        #{txnHeaderId,jdbcType=DECIMAL},
+      </if>
+      <if test="typeCode != null" >
+        #{typeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="ledgerId != null" >
+        #{ledgerId,jdbcType=DECIMAL},
+      </if>
+      <if test="companySegVal != null" >
+        #{companySegVal,jdbcType=VARCHAR},
+      </if>
+      <if test="currencyCode != null" >
+        #{currencyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="periodName != null" >
+        #{periodName,jdbcType=VARCHAR},
+      </if>
+      <if test="txnDate != null" >
+        #{txnDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="auditFlag != null" >
+        #{auditFlag,jdbcType=CHAR},
+      </if>
+      <if test="transferFlay != null" >
+        #{transferFlay,jdbcType=CHAR},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate != null" >
+        #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+        #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updatedDate != null" >
+        #{updatedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="allocHistoryId != null" >
+        #{allocHistoryId,jdbcType=DECIMAL},
+      </if>
+      <if test="allocInstanceId != null" >
+        #{allocInstanceId,jdbcType=DECIMAL},
+      </if>
+      <if test="actualFlag != null" >
+        #{actualFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="currencyType != null" >
+        #{currencyType,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hausontech.hrs.bean.transactionProcess.TransactionProcessHeader" >
+    update HAE_TXN_PROCESS_HEADER
+    <set >
+      <if test="typeCode != null" >
+        TYPE_CODE = #{typeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="ledgerId != null" >
+        LEDGER_ID = #{ledgerId,jdbcType=DECIMAL},
+      </if>
+      <if test="companySegValue != null" >
+        COMPANY_SEG_VAL = #{companySegValue,jdbcType=VARCHAR},
+      </if>
+      <if test="currencyCode != null" >
+        CURRENCY_CODE = #{currencyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="periodName != null" >
+        PERIOD_NAME = #{periodName,jdbcType=VARCHAR},
+      </if>
+      <if test="transactionDate != null" >
+        TXN_DATE = #{transactionDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="description != null" >
+        DESCRIPTION = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="auditFlag != null" >
+        AUDIT_FLAG = #{auditFlag,jdbcType=CHAR},
+      </if>
+      <if test="transferFlag != null" >
+        TRANSFER_FLAY = #{transferFlag,jdbcType=CHAR},
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="creationDate != null" >
+        CREATED_DATE = #{creationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdatedBy != null" >
+        UPDATED_BY = #{lastUpdatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateDate != null" >
+        UPDATED_DATE = #{lastUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where TXN_HEADER_ID = #{txnHeaderId,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hausontech.hrs.bean.transactionProcess.TransactionProcessHeader" >
+    update HAE_TXN_PROCESS_HEADER
+    set TYPE_CODE = #{typeCode,jdbcType=VARCHAR},
+      LEDGER_ID = #{ledgerId,jdbcType=DECIMAL},
+      COMPANY_SEG_VAL = #{companySegVal,jdbcType=VARCHAR},
+      CURRENCY_CODE = #{currencyCode,jdbcType=VARCHAR},
+      PERIOD_NAME = #{periodName,jdbcType=VARCHAR},
+      TXN_DATE = #{txnDate,jdbcType=TIMESTAMP},
+      DESCRIPTION = #{description,jdbcType=VARCHAR},
+      AUDIT_FLAG = #{auditFlag,jdbcType=CHAR},
+      TRANSFER_FLAY = #{transferFlay,jdbcType=CHAR},
+      CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      CREATED_DATE = #{createdDate,jdbcType=TIMESTAMP},
+      UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      UPDATED_DATE = #{updatedDate,jdbcType=TIMESTAMP},
+      ALLOC_HISTORY_ID = #{allocHistoryId,jdbcType=DECIMAL},
+      ALLOC_INSTANCE_ID = #{allocInstanceId,jdbcType=DECIMAL},
+      ACTUAL_FLAG = #{actualFlag,jdbcType=VARCHAR},
+      CURRENCY_TYPE = #{currencyType,jdbcType=VARCHAR}
+    where TXN_HEADER_ID = #{txnHeaderId,jdbcType=DECIMAL}
+  </update>
+</mapper>
